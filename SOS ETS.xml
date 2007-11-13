@@ -325,29 +325,29 @@
 
 			</ctl:code>
 		</ctl:test>
-		<ctl:test name="tns:core-SOS.GetCapabilities-ResponseContentsValidTime.1">
+		<ctl:test name="tns:core-SOS.GetCapabilities-ResponseContentsValidProcedure.1">
 			<ctl:param name="test.document"/>
 			<ctl:assertion>The values in the procedure element(s) for each ObservationOffering contain a value and are valid URNs.</ctl:assertion>
 			<ctl:comment>Check that the values in the procedure element(s) for each ObservationOffering contain a value and are valid URNs according to the OGC URN scheme.  Pass if values in the procedure element(s) contain a value and are valid URNs; fail otherwise.</ctl:comment>
-			<ctl:link title="Verify that the procedure values provided for each ObservationOffering are valid.">ATS_URL#SOS.GetCapabilities-ResponseContentsValidTime</ctl:link>
-			<ctl:code>				<!--PUT TEST CODE HERE-->
-
-			</ctl:code>
-		</ctl:test>
-		<ctl:test name="tns:core-SOS.GetCapabilities-ResponseContentsValidProcedure.1">
-			<ctl:param name="test.document"/>
-			<ctl:assertion>The values in the observedProperty element(s) for each ObservationOffering contain a value and are valid URNs.</ctl:assertion>
-			<ctl:comment>Check that the values in the observedProperty element(s) for each ObservationOffering contain a value and are valid URNs according to the OGC URN scheme.  Pass if the values in the observedProperty element(s) contain a value and are valid URNs; fail otherwise.</ctl:comment>
-			<ctl:link title="Verify that the observedProperty values provided for each ObservationOffering are valid.">ATS_URL#SOS.GetCapabilities-ResponseContentsValidProcedure</ctl:link>
+			<ctl:link title="Verify that the procedure values provided for each ObservationOffering are valid.">ATS_URL#SOS.GetCapabilities-ResponseContentsValidProcedure</ctl:link>
 			<ctl:code>				<!--PUT TEST CODE HERE-->
 
 			</ctl:code>
 		</ctl:test>
 		<ctl:test name="tns:core-SOS.GetCapabilities-ResponseContentsValidObservedProperty.1">
 			<ctl:param name="test.document"/>
+			<ctl:assertion>The values in the observedProperty element(s) for each ObservationOffering contain a value and are valid URNs.</ctl:assertion>
+			<ctl:comment>Check that the values in the observedProperty element(s) for each ObservationOffering contain a value and are valid URNs according to the OGC URN scheme.  Pass if the values in the observedProperty element(s) contain a value and are valid URNs; fail otherwise.</ctl:comment>
+			<ctl:link title="Verify that the observedProperty values provided for each ObservationOffering are valid.">ATS_URL#SOS.GetCapabilities-ResponseContentsValidObservedProperty</ctl:link>
+			<ctl:code>				<!--PUT TEST CODE HERE-->
+
+			</ctl:code>
+		</ctl:test>
+		<ctl:test name="tns:core-SOS.GetCapabilities-ResponseContentsValidResponseFormat.1">
+			<ctl:param name="test.document"/>
 			<ctl:assertion>The values in the responseFormat element(s) for each ObservationOffering contain a value and are valid MIME types.</ctl:assertion>
 			<ctl:comment>Check that the values in the responseFormat element(s) for each ObservationOffering contain a value and are valid MIME types.  Pass if assertions hold; fail otherwise.</ctl:comment>
-			<ctl:link title="Verify that the responseFormat values provided for each ObservationOffering are valid MIME types.">ATS_URL#SOS.GetCapabilities-ResponseContentsValidObservedProperty</ctl:link>
+			<ctl:link title="Verify that the responseFormat values provided for each ObservationOffering are valid MIME types.">ATS_URL#SOS.GetCapabilities-ResponseContentsValidResponseFormat</ctl:link>
 			<ctl:code>				<!--PUT TEST CODE HERE-->
 
 			</ctl:code>
