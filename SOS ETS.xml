@@ -141,11 +141,11 @@
 				</ctl:call-test>
 			</ctl:code>
 		</ctl:test>
-		<ctl:test name="tns:general-SPS.General-InvalidRequest.1">
+		<ctl:test name="tns:general-SOS.General-InvalidRequest.1">
 			<ctl:param name="test.document"/>
 			<ctl:assertion>Test purpose</ctl:assertion>
 			<ctl:comment>Test method</ctl:comment>
-			<ctl:link title="Verify that an invalid request produces an appropriate response from the server.">ATS_URL#SPS.General-InvalidRequest</ctl:link>
+			<ctl:link title="Verify that an invalid request produces an appropriate response from the server.">ATS_URL#SOS.General-InvalidRequest</ctl:link>
 			<ctl:code>				<!--PUT TEST CODE HERE-->
 
 			</ctl:code>
