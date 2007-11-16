@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ctl:package
+ xmlns:spsFunctions="https://cite.opengeospatial.org/wms-1.3.0/src/ctl/functions.xml"
+ xmlns:ctl="http://www.occamlab.com/ctl"
+ xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+ xmlns:wms="http://www.opengis.net/wms"
+ xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+ xmlns:xlink="http://www.w3.org/1999/xlink"
+ xmlns:parsers="http://www.occamlab.com/te/parsers"
+>
+    
+    <!--Validates an ExceptionReport-->
+    <ctl:function name="spsFunctions:validateExceptionReport">
+        <ctl:param name="exceptionReport">The exception report document to validate</ctl:param>
+        <ctl:return>The exception report if it's valid</ctl:return>
+        <ctl:description>Validates a returned exception report according to its schema and determines if it is an appropriate exception report for an SPS</ctl:description>
+        <ctl:code>
+            <parsers:XMLValidatingParser>
+                <parsers:schemas>
+                    <parsers:schema type="url">
+                        <!--Link to appropriate schema-->
+                    </parsers:schema>
+                </parsers:schemas>
+            </parsers:XMLValidatingParser>
+        </ctl:code>
+    </ctl:function>
+    
+    <!--Validates a SensorML document-->
+    <ctl:function name="spsFunctions:validateSensorML">
+        <ctl:param name="sensorMLDocument">The SensorML document to validate</ctl:param>
+        <ctl:return>The SensorML document if it's valid</ctl:return>
+        <ctl:description>Validates a SensorML document according to its schema</ctl:description>
+        <ctl:code>
+            <parsers:XMLValidatingParser>
+                <parsers:schemas>
+                    <parsers:schema type="url">
+                        <!--Link to appropriate schema-->
+                    </parsers:schema>
+                </parsers:schemas>
+            </parsers:XMLValidatingParser>
+        </ctl:code>
+    </ctl:function>
+    
+    <!--Validates a TML document-->
+    <ctl:function name="spsFunctions:validateTML">
+        <ctl:param name="tmlDocument">The TML document to validate</ctl:param>
+        <ctl:return>The TML document if it's valid</ctl:return>
+        <ctl:description>Validates a TML document according to its schema</ctl:description>
+        <ctl:code>
+            <parsers:XMLValidatingParser>
+                <parsers:schemas>
+                    <parsers:schema type="url">
+                        <!--Link to appropriate schema-->
+                    </parsers:schema>
+                </parsers:schemas>
+            </parsers:XMLValidatingParser>
+        </ctl:code>
+    </ctl:function>
+    
+    <!--Validates a GetCapabilities response-->
+    <ctl:function name="spsFunctions:validateGetCapabilitiesResponse">
+        <ctl:param name="getCapabilitiesResponseDocument">The GetCapabilitiesResponse document to validate</ctl:param>
+        <ctl:return>The GetCapabilitiesResponse document if it's valid</ctl:return>
+        <ctl:description>Validates a GetCapabilitiesResponse document according to its schema</ctl:description>
+        <ctl:code>
+            <parsers:XMLValidatingParser>
+                <parsers:schemas>
+                    <parsers:schema type="url">
+                        <!--Link to appropriate schema-->
+                    </parsers:schema>
+                </parsers:schemas>
+            </parsers:XMLValidatingParser>
+        </ctl:code>
+    </ctl:function>
+
+	<!--Validates a DescribeSensor response-->
+    <ctl:function name="spsFunctions:validateDescribeSensorResponse">
+        <ctl:param name="describeSensorResponseDocument">The DescribeSensorResponse document to validate</ctl:param>
+        <ctl:return>The DescribeSensorResponse document if it's valid</ctl:return>
+        <ctl:description>Validates a DescribeSensorResponse document according to its schema</ctl:description>
+        <ctl:code>
+            <parsers:XMLValidatingParser>
+                <parsers:schemas>
+                    <parsers:schema type="url">
+                        <!--Link to appropriate schema-->
+                    </parsers:schema>
+                </parsers:schemas>
+            </parsers:XMLValidatingParser>
+        </ctl:code>
+    </ctl:function>
+    
+    <!--Validates a GetObservation response-->
+    <ctl:function name="spsFunctions:validateGetObservationResponse">
+        <ctl:param name="getObservationResponseDocument">The GetObservationResponse document to validate</ctl:param>
+        <ctl:return>The GetObservationResponse document if it's valid</ctl:return>
+        <ctl:description>Validates a GetObservationResponse document according to its schema</ctl:description>
+        <ctl:code>
+            <parsers:XMLValidatingParser>
+                <parsers:schemas>
+                    <parsers:schema type="url">
+                        <!--Link to appropriate schema-->
+                    </parsers:schema>
+                </parsers:schemas>
+            </parsers:XMLValidatingParser>
+        </ctl:code>
+    </ctl:function>
+    
+    <!--Validates a Response document-->
+    <ctl:function name="spsFunctions:validateResponse">
+        <ctl:param name="responseDocument">The response document to validate</ctl:param>
+        <ctl:return>The response if it's valid</ctl:return>
+        <ctl:description>Validates a returned document according to the appropriate schema</ctl:description>
+        <ctl:code>
+            <xsl:variable name="rootElementName" select="local-name-from-QName(node-name($responseDocument/*))" />
+            <xsl:choose>
+                <xsl:when test="$rootElementName='SensorML'">
+                    <ctl:call-function name="spsFunctions:validateSensorML">
+                        <with-param name="sensorMLDocument" select="$responseDocument" />
+                    </ctl:call-function>
+                </xsl:when>
+                <xsl:when test="$rootElementName='tml'">
+                    <ctl:call-function name="spsFunctions:validateTML">
+                        <with-param name="tmlDocument" select="$responseDocument" />
+                    </ctl:call-function>
+                </xsl:when>
+                <xsl:when test="$rootElementName='Observation'">
+                    <ctl:call-function name="spsFunctions:validateGetObservationResponse">
+                        <with-param name="getObservationResponseDocument" select="$responseDocument" />
+                    </ctl:call-function>
+                </xsl:when>
+                <xsl:when test="$rootElementName='SensorDescription'">
+                    <ctl:call-function name="spsFunctions:validateDescribeResponse">
+                        <with-param name="describeSensorResponseDocument" select="$responseDocument" />
+                    </ctl:call-function>
+                </xsl:when>
+                <xsl:otherwise>
+                    <ctl:message>The response document was not validated.</ctl:message>
+                </xsl:otherwise>
+            </xsl:choose>
+        </ctl:code>
+    </ctl:function>
+    
+    <!--Check for a valid URN-->
+    <ctl:function name="spsFunctions:validateURN">
+        <ctl:param name="urnString">The URN to validate</ctl:param>
+        <ctl:return>True/False depending on whether or not the URN is valid</ctl:return>
+        <ctl:description>Determines if a URN is valid</ctl:description>
+        <ctl:code>
+            <xsl:value-of select="string-length($urnString)>0 and matches($urnString,'[Uu][Rr][Nn]:')"/> <!--([^\s.]+|\.(?!\s))+')" / -->
+        </ctl:code>
+    </ctl:function>
+    
+    <!--Get the current Date/Time-->
+    <ctl:function name="spsFunctions:getCurrentDateTime">
+        <ctl:return>The current Date/Time</ctl:return>
+        <ctl:description>Returns the current Date/Time</ctl:description>
+        <ctl:java class="net.opengis.sps.getCurrentDateTime" method="getCurrentDateTime" />
+    </ctl:function>
+    
+    <!--Checks a time value to ensure that it is properly formatted and that it occurs after the compareTime-->
+
+    <ctl:function name="spsFunctions:checkTime">
+        <ctl:param name="timeToCheck">The time value to check for correctness</ctl:param>
+        <ctl:param name="compareTime">The value to compare this time value to</ctl:param>
+        <ctl:return>True if the time to check is valid; false otherwise</ctl:return>
+        <ctl:description>Checks that the supplied timeToCheck value is a valid time and that it occurs on or after the compareTime</ctl:description>
+        <ctl:code>
+            <xsl:value-of select="string-length(normalize-space($timeToCheck))>0 and ($timeToCheck)>=($compareTime)" />
+        </ctl:code>
+    </ctl:function>
+
+</ctl:package>

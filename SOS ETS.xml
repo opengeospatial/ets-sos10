@@ -1,60 +1,125 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ctl:package xmlns:ctl="http://www.occamlab.com/ctl" xmlns:db5="http://docbook.org/ns/docbook" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:ocp="http://www.occamlab.com/te/parsers" xmlns:saxon="http://saxon.sf.net/" xmlns:tep="http://teamengine.sourceforge.net/parsers" xmlns:tns="TARGET_NAMESPACE_URI" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-	<ctl:suite name="tns:suite">		<!--NOTE: Don't forget to update the TARGET_NAMESPACE_URI and ATS_URL placeholder values-->
+<ctl:package 
+	xmlns:ctl="http://www.occamlab.com/ctl" 
+	xmlns:db5="http://docbook.org/ns/docbook" 
+	xmlns:html="http://www.w3.org/1999/xhtml" 	
+	xmlns:saxon="http://saxon.sf.net/" 
+	xmlns:tep="http://teamengine.sourceforge.net/parsers" 
+	xmlns:sos="http://www.opengis.net/sos"
+	xmlns:xi="http://www.w3.org/2001/XInclude" 
+	xmlns:xlink="http://www.w3.org/1999/xlink" 
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:parsers="http://www.occamlab.com/te/parsers"
+	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
+>
+<!--
+   <parser name="parsers:XMLValidatingParser">
+      <java class="com.occamlab.te.parsers.XMLValidatingParser" initialized="true"
+            method="parse"/>
+   </parser>
+   -->
+	<ctl:suite name="sos:suite">		<!--NOTE: Don't forget to update the TARGET_NAMESPACE_URI and ATS_URL placeholder values-->
 
 		<ctl:title>Annex A - Abstract Test Suite for the Sensor Observation Service</ctl:title>
-		<ctl:starting-test>tns:Main</ctl:starting-test>
+		<ctl:starting-test>sos:Main</ctl:starting-test>
 	</ctl:suite>
-	<ctl:test name="tns:Main">
+	<ctl:test name="sos:Main">
 		<ctl:assertion>The IUT satisfies all applicable assertions.</ctl:assertion>
 		<ctl:code>
-			<xsl:variable xmlns:xsl="http://www.w3.org/1999/XSL/Transform" name="test.document"/>
-			<ctl:call-test name="tns:ows-main">
-				<ctl:with-param name="test.document" select="$test.document"/>
-			</ctl:call-test>
-			<ctl:call-test name="tns:general-main">
-				<ctl:with-param name="test.document" select="$test.document"/>
-			</ctl:call-test>
-			<ctl:call-test name="tns:core-main">
-				<ctl:with-param name="test.document" select="$test.document"/>
-			</ctl:call-test>
+		         
+        <xsl:variable name="form-values">
+            <ctl:form height="640" width="800">
+               <body>
+                  <h2>Compliance test suite for Sensor Planning Service (SOS) 1.0</h2>
+                  <h3>Service metadata</h3>
+                  <p>
+                  Please provide a URL from which a capabilities document can 
+                  be retrieved. Modify the URL template below to specify the 
+                  location of an OGC SOS implementation 
+                  under test.
+                  </p>
+                  <blockquote>
+                     <table border="1" padding="4" bgcolor="#00ffff">
+                        <tr>
+                           <td align="left">Service URL:</td>                        
+                           <td align="center">
+                              <input name="service-url" size="128" 
+                              type="text" 
+                              value="http://hostname:port/path"/>
+							  <select name="service-url-ddl">
+<option value="http://mars.uni-muenster.de:8080/OWS5SOS/sos">http://mars.uni-muenster.de:8080/OWS5SOS/sos</option>							  
+<option value="http://10.2.111.55:8080/52n/sos">http://10.2.111.55:8080/52n/sos</option>
+<option value="http://10.2.14.100:8080/52nSPS/SPS">http://10.2.14.100:8080/52nSPS/SPS</option>
+<option value="cow">cow</option>
+<option value="elephant">elephant</option>
+<option value="platypus">platypus</option>
+</select>
+                           </td>
+                        </tr>
+                     </table>
+                  </blockquote>
+                  <input type="submit" value="Start"/>
+               </body>
+            </ctl:form>
+         </xsl:variable>
+		 
+		 
+		<!-- Get user input:  Get the value of the sos URL that the user supplies -->
+	
+		<xsl:variable name="sos.service.url" select="$form-values/values/value[@key='service-url-ddl']"/>
+        
+        <!--Call each test passing the capabilities URL as the parameter-->
+		
+        <ctl:call-test name="sos:core-main">
+            <ctl:with-param name="serviceURL" select="$sos.service.url" />
+        </ctl:call-test>
+		
+		<!--
+        <ctl:call-test name="sos:general-main">
+            <ctl:with-param name="serviceURL" select="$sos.service.url" />
+        </ctl:call-test>
+        <ctl:call-test name="sos:core-main">
+            <ctl:with-param name="serviceURL" select="$sos.service.url" />
+        </ctl:call-test>
+		-->
+
 		</ctl:code>
 	</ctl:test>
 	<ctl:package>
-		<ctl:test name="tns:ows-main">
-			<ctl:param name="test.document"/>
+		<ctl:test name="sos:ows-main">
+			<ctl:param name="serviceURL"/>
 			<ctl:assertion>All assertions for "ows" conformance are satisfied.</ctl:assertion>
 			<ctl:comment>Test driver for the ows module.</ctl:comment>
 			<ctl:link title="1. OWS">ATS_URL#ows</ctl:link>
-			<ctl:code>
-				<ctl:call-test name="tns:ows-OWS.ClientError.1">
-					<ctl:with-param name="test.document" select="$test.document"/>
+			<ctl:code>							
+				<ctl:call-test name="sos:ows-OWS.ClientError.1">
+					<ctl:with-param name="serviceURL" select="$serviceURL"/>
 				</ctl:call-test>
-				<ctl:call-test name="tns:ows-OWS.ContentType.1">
-					<ctl:with-param name="test.document" select="$test.document"/>
+				<ctl:call-test name="sos:ows-OWS.ContentType.1">
+					<ctl:with-param name="serviceURL" select="$serviceURL"/>
 				</ctl:call-test>
-				<ctl:call-test name="tns:ows-OWS.CaseInsensitiveKvpNames.1">
-					<ctl:with-param name="test.document" select="$test.document"/>
+				<ctl:call-test name="sos:ows-OWS.CaseInsensitiveKvpNames.1">
+					<ctl:with-param name="serviceURL" select="$serviceURL"/>
 				</ctl:call-test>
-				<ctl:call-test name="tns:ows-OWS.GetCapabilities.1">
-					<ctl:with-param name="test.document" select="$test.document"/>
+				<ctl:call-test name="sos:ows-OWS.GetCapabilities.1">
+					<ctl:with-param name="serviceURL" select="$serviceURL"/>
 				</ctl:call-test>
-				<ctl:call-test name="tns:ows-OWS.GetCapabilities-Exceptions.1">
-					<ctl:with-param name="test.document" select="$test.document"/>
+				<ctl:call-test name="sos:ows-OWS.GetCapabilities-Exceptions.1">
+					<ctl:with-param name="serviceURL" select="$serviceURL"/>
 				</ctl:call-test>
-				<ctl:call-test name="tns:ows-OWS.GetCapabilities-AcceptVersions.1">
-					<ctl:with-param name="test.document" select="$test.document"/>
+				<ctl:call-test name="sos:ows-OWS.GetCapabilities-AcceptVersions.1">
+					<ctl:with-param name="serviceURL" select="$serviceURL"/>
 				</ctl:call-test>
-				<ctl:call-test name="tns:ows-OWS.GetCapabilities-Sections.1">
-					<ctl:with-param name="test.document" select="$test.document"/>
+				<ctl:call-test name="sos:ows-OWS.GetCapabilities-Sections.1">
+					<ctl:with-param name="serviceURL" select="$serviceURL"/>
 				</ctl:call-test>
-				<ctl:call-test name="tns:ows-OWS.GetCapabilities-AcceptFormats.1">
-					<ctl:with-param name="test.document" select="$test.document"/>
+				<ctl:call-test name="sos:ows-OWS.GetCapabilities-AcceptFormats.1">
+					<ctl:with-param name="serviceURL" select="$serviceURL"/>
 				</ctl:call-test>
 			</ctl:code>
 		</ctl:test>
-		<ctl:test name="tns:ows-OWS.ClientError.1">
-			<ctl:param name="test.document"/>
+		<ctl:test name="sos:ows-OWS.ClientError.1">
+			<ctl:param name="serviceURL"/>
 			<ctl:assertion>Test purpose</ctl:assertion>
 			<ctl:comment>Test method</ctl:comment>
 			<ctl:link title="Client error">ATS_URL#OWS.ClientError</ctl:link>
@@ -62,8 +127,8 @@
 
 			</ctl:code>
 		</ctl:test>
-		<ctl:test name="tns:ows-OWS.ContentType.1">
-			<ctl:param name="test.document"/>
+		<ctl:test name="sos:ows-OWS.ContentType.1">
+			<ctl:param name="serviceURL"/>
 			<ctl:assertion>Test purpose</ctl:assertion>
 			<ctl:comment>Test method</ctl:comment>
 			<ctl:link title="Content-Type response header">ATS_URL#OWS.ContentType</ctl:link>
@@ -71,8 +136,8 @@
 
 			</ctl:code>
 		</ctl:test>
-		<ctl:test name="tns:ows-OWS.CaseInsensitiveKvpNames.1">
-			<ctl:param name="test.document"/>
+		<ctl:test name="sos:ows-OWS.CaseInsensitiveKvpNames.1">
+			<ctl:param name="serviceURL"/>
 			<ctl:assertion>Test purpose</ctl:assertion>
 			<ctl:comment>Test method</ctl:comment>
 			<ctl:link title="KVP parameter names">ATS_URL#OWS.CaseInsensitiveKvpNames</ctl:link>
@@ -80,8 +145,8 @@
 
 			</ctl:code>
 		</ctl:test>
-		<ctl:test name="tns:ows-OWS.GetCapabilities.1">
-			<ctl:param name="test.document"/>
+		<ctl:test name="sos:ows-OWS.GetCapabilities.1">
+			<ctl:param name="serviceURL"/>
 			<ctl:assertion>Test purpose</ctl:assertion>
 			<ctl:comment>Test method</ctl:comment>
 			<ctl:link title="GetCapabilities request">ATS_URL#OWS.GetCapabilities</ctl:link>
@@ -89,8 +154,8 @@
 
 			</ctl:code>
 		</ctl:test>
-		<ctl:test name="tns:ows-OWS.GetCapabilities-Exceptions.1">
-			<ctl:param name="test.document"/>
+		<ctl:test name="sos:ows-OWS.GetCapabilities-Exceptions.1">
+			<ctl:param name="serviceURL"/>
 			<ctl:assertion>Test purpose</ctl:assertion>
 			<ctl:comment>Test method</ctl:comment>
 			<ctl:link title="GetCapabilities - Exceptions">ATS_URL#OWS.GetCapabilities-Exceptions</ctl:link>
@@ -98,8 +163,8 @@
 
 			</ctl:code>
 		</ctl:test>
-		<ctl:test name="tns:ows-OWS.GetCapabilities-AcceptVersions.1">
-			<ctl:param name="test.document"/>
+		<ctl:test name="sos:ows-OWS.GetCapabilities-AcceptVersions.1">
+			<ctl:param name="serviceURL"/>
 			<ctl:assertion>Test purpose</ctl:assertion>
 			<ctl:comment>Test method</ctl:comment>
 			<ctl:link title="GetCapabilities - AcceptVersions parameter">ATS_URL#OWS.GetCapabilities-AcceptVersions</ctl:link>
@@ -107,8 +172,8 @@
 
 			</ctl:code>
 		</ctl:test>
-		<ctl:test name="tns:ows-OWS.GetCapabilities-Sections.1">
-			<ctl:param name="test.document"/>
+		<ctl:test name="sos:ows-OWS.GetCapabilities-Sections.1">
+			<ctl:param name="serviceURL"/>
 			<ctl:assertion>Test purpose</ctl:assertion>
 			<ctl:comment>Test method</ctl:comment>
 			<ctl:link title="GetCapabilities - Sections parameter">ATS_URL#OWS.GetCapabilities-Sections</ctl:link>
@@ -116,8 +181,8 @@
 
 			</ctl:code>
 		</ctl:test>
-		<ctl:test name="tns:ows-OWS.GetCapabilities-AcceptFormats.1">
-			<ctl:param name="test.document"/>
+		<ctl:test name="sos:ows-OWS.GetCapabilities-AcceptFormats.1">
+			<ctl:param name="serviceURL"/>
 			<ctl:assertion>Test purpose</ctl:assertion>
 			<ctl:comment>Test method</ctl:comment>
 			<ctl:link title="GetCapabilities - AcceptFormats parameter">ATS_URL#OWS.GetCapabilities-AcceptFormats</ctl:link>
@@ -127,22 +192,22 @@
 		</ctl:test>
 	</ctl:package>
 	<ctl:package>
-		<ctl:test name="tns:general-main">
-			<ctl:param name="test.document"/>
+		<ctl:test name="sos:general-main">
+			<ctl:param name="serviceURL"/>
 			<ctl:assertion>All assertions for "general" conformance are satisfied.</ctl:assertion>
 			<ctl:comment>Test driver for the general module.</ctl:comment>
 			<ctl:link title="2. General">ATS_URL#general</ctl:link>
 			<ctl:code>
-				<ctl:call-test name="tns:general-SOS.General-InvalidRequest.1">
-					<ctl:with-param name="test.document" select="$test.document"/>
+				<ctl:call-test name="sos:general-SOS.General-InvalidRequest.1">
+					<ctl:with-param name="serviceURL" select="$serviceURL"/>
 				</ctl:call-test>
-				<ctl:call-test name="tns:general-SOS.General-ValidResponse.1">
-					<ctl:with-param name="test.document" select="$test.document"/>
+				<ctl:call-test name="sos:general-SOS.General-ValidResponse.1">
+					<ctl:with-param name="serviceURL" select="$serviceURL"/>
 				</ctl:call-test>
 			</ctl:code>
 		</ctl:test>
-		<ctl:test name="tns:general-SOS.General-InvalidRequest.1">
-			<ctl:param name="test.document"/>
+		<ctl:test name="sos:general-SOS.General-InvalidRequest.1">
+			<ctl:param name="serviceURL"/>
 			<ctl:assertion>Test purpose</ctl:assertion>
 			<ctl:comment>Test method</ctl:comment>
 			<ctl:link title="Verify that an invalid request produces an appropriate response from the server.">ATS_URL#SOS.General-InvalidRequest</ctl:link>
@@ -150,8 +215,8 @@
 
 			</ctl:code>
 		</ctl:test>
-		<ctl:test name="tns:general-SOS.General-ValidResponse.1">
-			<ctl:param name="test.document"/>
+		<ctl:test name="sos:general-SOS.General-ValidResponse.1">
+			<ctl:param name="serviceURL"/>
 			<ctl:assertion>Test purpose</ctl:assertion>
 			<ctl:comment>Test method</ctl:comment>
 			<ctl:link title="Verify that a response entity is schema-valid">ATS_URL#SOS.General-ValidResponse</ctl:link>
@@ -161,118 +226,189 @@
 		</ctl:test>
 	</ctl:package>
 	<ctl:package>
-		<ctl:test name="tns:core-main">
-			<ctl:param name="test.document"/>
+		<ctl:test name="sos:core-main">
+			<ctl:param name="serviceURL"/>
 			<ctl:assertion>All assertions for "core" conformance are satisfied.</ctl:assertion>
 			<ctl:comment>Test driver for the core module.</ctl:comment>
 			<ctl:link title="3. Core">ATS_URL#core</ctl:link>
 			<ctl:code>
-				<ctl:call-test name="tns:core-SOS.GetCapabilities-KVPRequestParameterHandling.1">
-					<ctl:with-param name="test.document" select="$test.document"/>
+			<ctl:message select="concat('This is the URL: ',$serviceURL)"/>
+
+		<xsl:variable name="request1">
+            <request>
+				<url>
+					<xsl:value-of select="$serviceURL"/>
+				</url>
+				<method>get</method>
+				<param name="service">SOS</param>
+				<!--<param name="BoGuS">ignored</param>-->
+				<param name="request">GetCapabilities</param>
+				
+				<!--parsers:XMLValidatingParser>
+					<parsers:schemas>
+						<parsers:schema type="url">
+						http://georepo.net/schemas/sos/1.0.0/sosGetCapabilities.xsd
+						</parsers:schema>
+					</parsers:schemas>
+				</parsers:XMLValidatingParser-->
+				
+            </request>			
+        </xsl:variable>
+		
+			<xsl:choose>
+				<xsl:when test="not($request1/*)">
+				<!--/sos:Capabilities-->
+			       	<ctl:message>FAILURE: Missing or invalid response entity.</ctl:message>
+					<ctl:fail/>
+			    </xsl:when>
+			    <xsl:otherwise>
+				<ctl:message>otherwise</ctl:message>				
+					<xsl:variable name="expression">//wfs:WFS_Capabilities</xsl:variable>
+					<!--
+					<ctl:call-test name="ctl:assert-xpath">
+						<ctl:with-param name="expr" select="$expression"/>
+						<ctl:with-param name="doc" select="$request1"/>
+					</ctl:call-test>		
+					<parsers:XMLValidatingParser.SOS/>
+					-->
+					
+				</xsl:otherwise>
+			</xsl:choose>	
+			
+                <xsl:if test="not($request1/sos:Capabilities)">
+                  <ctl:message>
+                  [FAILURE] The GetCapabilities response entity is NOT a valid sos:Capabilities document.
+                  </ctl:message>
+                  <ctl:fail/>
+                </xsl:if>			
+<!--		
+		<xsl:if test="not($request1/*)">
+			<ctl:message>hey now</ctl:message>
+			 <ctl:message select="$request1/*"/>
+		</xsl:if>
+
+		 <ctl:message>before</ctl:message>	 
+		    <xsl:for-each select="$request1">
+			<ctl:message>inside</ctl:message>
+				<xsl:variable name="VAR_SOS_VERSION">
+					<xsl:value-of select="headers/header/@name"/>				
+				</xsl:variable>				
+				<ctl:message select="$VAR_SOS_VERSION"/>
+			</xsl:for-each>
+		 <ctl:message>after</ctl:message>
+	-->	 
+		 <ctl:message select="string($request1/response/content/*)"/>
+		 <ctl:message select="string(count($request1/*))"/>
+		 <ctl:message select="string-length(string($request1/*))"/>
+		 <ctl:message select="string($request1/*)"/>
+		 <!--
+				<ctl:call-test name="sos:core-SOS.GetCapabilities-KVPRequestParameterHandling.1">
+					<ctl:with-param name="serviceURL" select="$serviceURL"/>
 				</ctl:call-test>
-				<ctl:call-test name="tns:core-SOS.GetCapabilities-KVPRequestServiceParameterHandling.1">
-					<ctl:with-param name="test.document" select="$test.document"/>
+				<ctl:call-test name="sos:core-SOS.GetCapabilities-KVPRequestServiceParameterHandling.1">
+					<ctl:with-param name="serviceURL" select="$serviceURL"/>
 				</ctl:call-test>
-				<ctl:call-test name="tns:core-SOS.GetCapabilities-KVPRequestRequestParameterHandling.1">
-					<ctl:with-param name="test.document" select="$test.document"/>
+				<ctl:call-test name="sos:core-SOS.GetCapabilities-KVPRequestRequestParameterHandling.1">
+					<ctl:with-param name="serviceURL" select="$serviceURL"/>
 				</ctl:call-test>
-				<ctl:call-test name="tns:core-SOS.GetCapabilities-OperationsMetadataMandatoryOperations.1">
-					<ctl:with-param name="test.document" select="$test.document"/>
+				<ctl:call-test name="sos:core-SOS.GetCapabilities-OperationsMetadataMandatoryOperations.1">
+					<ctl:with-param name="serviceURL" select="$serviceURL"/>
 				</ctl:call-test>
-				<ctl:call-test name="tns:core-SOS.GetCapabilities-OperationsMetadaOptionalOperations.1">
-					<ctl:with-param name="test.document" select="$test.document"/>
+				<ctl:call-test name="sos:core-SOS.GetCapabilities-OperationsMetadaOptionalOperations.1">
+					<ctl:with-param name="serviceURL" select="$serviceURL"/>
 				</ctl:call-test>
-				<ctl:call-test name="tns:core-SOS.GetCapabilities-ResponseContentsValidTime.1">
-					<ctl:with-param name="test.document" select="$test.document"/>
+				<ctl:call-test name="sos:core-SOS.GetCapabilities-ResponseContentsValidTime.1">
+					<ctl:with-param name="serviceURL" select="$serviceURL"/>
 				</ctl:call-test>
-				<ctl:call-test name="tns:core-SOS.GetCapabilities-ResponseContentsValidProcedure.1">
-					<ctl:with-param name="test.document" select="$test.document"/>
+				<ctl:call-test name="sos:core-SOS.GetCapabilities-ResponseContentsValidProcedure.1">
+					<ctl:with-param name="serviceURL" select="$serviceURL"/>
 				</ctl:call-test>
-				<ctl:call-test name="tns:core-SOS.GetCapabilities-ResponseContentsValidObservedProperty.1">
-					<ctl:with-param name="test.document" select="$test.document"/>
+				<ctl:call-test name="sos:core-SOS.GetCapabilities-ResponseContentsValidObservedProperty.1">
+					<ctl:with-param name="serviceURL" select="$serviceURL"/>
 				</ctl:call-test>
-				<ctl:call-test name="tns:core-SOS.GetCapabilities-ResponseContentsValidResponseFormat.1">
-					<ctl:with-param name="test.document" select="$test.document"/>
+				<ctl:call-test name="sos:core-SOS.GetCapabilities-ResponseContentsValidResponseFormat.1">
+					<ctl:with-param name="serviceURL" select="$serviceURL"/>
 				</ctl:call-test>
-				<ctl:call-test name="tns:core-SOS.GetCapabilities-ResponseContentsValidResultModel.1">
-					<ctl:with-param name="test.document" select="$test.document"/>
+				<ctl:call-test name="sos:core-SOS.GetCapabilities-ResponseContentsValidResultModel.1">
+					<ctl:with-param name="serviceURL" select="$serviceURL"/>
 				</ctl:call-test>
-				<ctl:call-test name="tns:core-SOS.DescribeSensor-RequestInvalidMIMEType.1">
-					<ctl:with-param name="test.document" select="$test.document"/>
+				<ctl:call-test name="sos:core-SOS.DescribeSensor-RequestInvalidMIMEType.1">
+					<ctl:with-param name="serviceURL" select="$serviceURL"/>
 				</ctl:call-test>
-				<ctl:call-test name="tns:core-SOS.DescribeSensor-RequestInvalidProcedure.1">
-					<ctl:with-param name="test.document" select="$test.document"/>
+				<ctl:call-test name="sos:core-SOS.DescribeSensor-RequestInvalidProcedure.1">
+					<ctl:with-param name="serviceURL" select="$serviceURL"/>
 				</ctl:call-test>
-				<ctl:call-test name="tns:core-SOS.DescribeSensor-ResponseMatchingResponseFormat.1">
-					<ctl:with-param name="test.document" select="$test.document"/>
+				<ctl:call-test name="sos:core-SOS.DescribeSensor-ResponseMatchingResponseFormat.1">
+					<ctl:with-param name="serviceURL" select="$serviceURL"/>
 				</ctl:call-test>
-				<ctl:call-test name="tns:core-SOS.DescribeSensor-ResponseMatchingProcedure.1">
-					<ctl:with-param name="test.document" select="$test.document"/>
+				<ctl:call-test name="sos:core-SOS.DescribeSensor-ResponseMatchingProcedure.1">
+					<ctl:with-param name="serviceURL" select="$serviceURL"/>
 				</ctl:call-test>
-				<ctl:call-test name="tns:core-SOS.GetObservation-RequestInvalidSRSName.1">
-					<ctl:with-param name="test.document" select="$test.document"/>
+				<ctl:call-test name="sos:core-SOS.GetObservation-RequestInvalidSRSName.1">
+					<ctl:with-param name="serviceURL" select="$serviceURL"/>
 				</ctl:call-test>
-				<ctl:call-test name="tns:core-SOS.GetObservation-RequestInvalidOffering.1">
-					<ctl:with-param name="test.document" select="$test.document"/>
+				<ctl:call-test name="sos:core-SOS.GetObservation-RequestInvalidOffering.1">
+					<ctl:with-param name="serviceURL" select="$serviceURL"/>
 				</ctl:call-test>
-				<ctl:call-test name="tns:core-SOS.GetObservation-RequestInvalidEventTime.1">
-					<ctl:with-param name="test.document" select="$test.document"/>
+				<ctl:call-test name="sos:core-SOS.GetObservation-RequestInvalidEventTime.1">
+					<ctl:with-param name="serviceURL" select="$serviceURL"/>
 				</ctl:call-test>
-				<ctl:call-test name="tns:core-SOS.GetObservation-RequestInvalidProcedure.1">
-					<ctl:with-param name="test.document" select="$test.document"/>
+				<ctl:call-test name="sos:core-SOS.GetObservation-RequestInvalidProcedure.1">
+					<ctl:with-param name="serviceURL" select="$serviceURL"/>
 				</ctl:call-test>
-				<ctl:call-test name="tns:core-SOS.GetObservation-RequestInvalidObservedProperty.1">
-					<ctl:with-param name="test.document" select="$test.document"/>
+				<ctl:call-test name="sos:core-SOS.GetObservation-RequestInvalidObservedProperty.1">
+					<ctl:with-param name="serviceURL" select="$serviceURL"/>
 				</ctl:call-test>
-				<ctl:call-test name="tns:core-SOS.GetObservation-RequestInvalidFeatureOfInterest.1">
-					<ctl:with-param name="test.document" select="$test.document"/>
+				<ctl:call-test name="sos:core-SOS.GetObservation-RequestInvalidFeatureOfInterest.1">
+					<ctl:with-param name="serviceURL" select="$serviceURL"/>
 				</ctl:call-test>
-				<ctl:call-test name="tns:core-SOS.GetObservation-RequestInvalidResult.1">
-					<ctl:with-param name="test.document" select="$test.document"/>
+				<ctl:call-test name="sos:core-SOS.GetObservation-RequestInvalidResult.1">
+					<ctl:with-param name="serviceURL" select="$serviceURL"/>
 				</ctl:call-test>
-				<ctl:call-test name="tns:core-SOS.GetObservation-RequestInvalidResponseFormat.1">
-					<ctl:with-param name="test.document" select="$test.document"/>
+				<ctl:call-test name="sos:core-SOS.GetObservation-RequestInvalidResponseFormat.1">
+					<ctl:with-param name="serviceURL" select="$serviceURL"/>
 				</ctl:call-test>
-				<ctl:call-test name="tns:core-SOS.GetObservation-RequestInvalidResultModel.1">
-					<ctl:with-param name="test.document" select="$test.document"/>
+				<ctl:call-test name="sos:core-SOS.GetObservation-RequestInvalidResultModel.1">
+					<ctl:with-param name="serviceURL" select="$serviceURL"/>
 				</ctl:call-test>
-				<ctl:call-test name="tns:core-SOS.GetObservation-RequestInvalidResponseMode.1">
-					<ctl:with-param name="test.document" select="$test.document"/>
+				<ctl:call-test name="sos:core-SOS.GetObservation-RequestInvalidResponseMode.1">
+					<ctl:with-param name="serviceURL" select="$serviceURL"/>
 				</ctl:call-test>
-				<ctl:call-test name="tns:core-SOS.GetObservation-ResponseMatchingSRSData.1">
-					<ctl:with-param name="test.document" select="$test.document"/>
+				<ctl:call-test name="sos:core-SOS.GetObservation-ResponseMatchingSRSData.1">
+					<ctl:with-param name="serviceURL" select="$serviceURL"/>
 				</ctl:call-test>
-				<ctl:call-test name="tns:core-SOS.GetObservation-ResponseMatchingProcedureData.1">
-					<ctl:with-param name="test.document" select="$test.document"/>
+				<ctl:call-test name="sos:core-SOS.GetObservation-ResponseMatchingProcedureData.1">
+					<ctl:with-param name="serviceURL" select="$serviceURL"/>
 				</ctl:call-test>
-				<ctl:call-test name="tns:core-SOS.GetObservation-ResponseMatchingObservedPropertyData.1">
-					<ctl:with-param name="test.document" select="$test.document"/>
+				<ctl:call-test name="sos:core-SOS.GetObservation-ResponseMatchingObservedPropertyData.1">
+					<ctl:with-param name="serviceURL" select="$serviceURL"/>
 				</ctl:call-test>
-				<ctl:call-test name="tns:core-SOS.GetObservation-ResponseAdvertisedEventTimeData.1">
-					<ctl:with-param name="test.document" select="$test.document"/>
+				<ctl:call-test name="sos:core-SOS.GetObservation-ResponseAdvertisedEventTimeData.1">
+					<ctl:with-param name="serviceURL" select="$serviceURL"/>
 				</ctl:call-test>
-				<ctl:call-test name="tns:core-SOS.GetObservation-ResponseMatchingEventTimeData.1">
-					<ctl:with-param name="test.document" select="$test.document"/>
+				<ctl:call-test name="sos:core-SOS.GetObservation-ResponseMatchingEventTimeData.1">
+					<ctl:with-param name="serviceURL" select="$serviceURL"/>
 				</ctl:call-test>
-				<ctl:call-test name="tns:core-SOS.GetObservation-ResponseMatchingFeatureOfInterestData.1">
-					<ctl:with-param name="test.document" select="$test.document"/>
+				<ctl:call-test name="sos:core-SOS.GetObservation-ResponseMatchingFeatureOfInterestData.1">
+					<ctl:with-param name="serviceURL" select="$serviceURL"/>
 				</ctl:call-test>
-				<ctl:call-test name="tns:core-SOS.GetObservation-ResponseMatchingResultData.1">
-					<ctl:with-param name="test.document" select="$test.document"/>
+				<ctl:call-test name="sos:core-SOS.GetObservation-ResponseMatchingResultData.1">
+					<ctl:with-param name="serviceURL" select="$serviceURL"/>
 				</ctl:call-test>
-				<ctl:call-test name="tns:core-SOS.GetObservation-ResponseMatchingResponseFormatData.1">
-					<ctl:with-param name="test.document" select="$test.document"/>
+				<ctl:call-test name="sos:core-SOS.GetObservation-ResponseMatchingResponseFormatData.1">
+					<ctl:with-param name="serviceURL" select="$serviceURL"/>
 				</ctl:call-test>
-				<ctl:call-test name="tns:core-SOS.GetObservation-ResponseMatchingResultModel.1">
-					<ctl:with-param name="test.document" select="$test.document"/>
+				<ctl:call-test name="sos:core-SOS.GetObservation-ResponseMatchingResultModel.1">
+					<ctl:with-param name="serviceURL" select="$serviceURL"/>
 				</ctl:call-test>
-				<ctl:call-test name="tns:core-SOS.GetObservation-ResponseMatchingResponseMode.1">
-					<ctl:with-param name="test.document" select="$test.document"/>
+				<ctl:call-test name="sos:core-SOS.GetObservation-ResponseMatchingResponseMode.1">
+					<ctl:with-param name="serviceURL" select="$serviceURL"/>
 				</ctl:call-test>
+				-->
 			</ctl:code>
-		</ctl:test>
-		<ctl:test name="tns:core-SOS.GetCapabilities-KVPRequestParameterHandling.1">
-			<ctl:param name="test.document"/>
+		</ctl:test>  <!-- sos:core-main -->
+		<ctl:test name="sos:core-SOS.GetCapabilities-KVPRequestParameterHandling.1">
+			<ctl:param name="serviceURL"/>
 			<ctl:assertion>The server returns a valid error report message with an exceptionCode of MissingParameterValue when mandatory parameters are missing from the request. </ctl:assertion>
 			<ctl:comment>Check that the server returns a valid error report message with an exception code of MissingParameterValue when mandatory parameters are missing from the request.  Pass if the server returns a valid error report message with an exception code of MissingParameterValue; fail otherwise.</ctl:comment>
 			<ctl:link title="Verify that the server handles missing parameters correctly.">ATS_URL#SOS.GetCapabilities-KVPRequestParameterHandling</ctl:link>
@@ -280,8 +416,8 @@
 
 			</ctl:code>
 		</ctl:test>
-		<ctl:test name="tns:core-SOS.GetCapabilities-KVPRequestServiceParameterHandling.1">
-			<ctl:param name="test.document"/>
+		<ctl:test name="sos:core-SOS.GetCapabilities-KVPRequestServiceParameterHandling.1">
+			<ctl:param name="serviceURL"/>
 			<ctl:assertion>The server returns a valid error report message with an exceptionCode of InvalidParameterValue when the service key value is not SOS. </ctl:assertion>
 			<ctl:comment>Check the server returns a valid error report message with an exception code of InvalidParameterValue when the service key value is not SOS.  Pass if the server returns a valid error report message with an exception code of InvalideParameterValue; fail otherwise.</ctl:comment>
 			<ctl:link title="Verify that the server handles invalid service key values correctly.">ATS_URL#SOS.GetCapabilities-KVPRequestServiceParameterHandling</ctl:link>
@@ -289,8 +425,8 @@
 
 			</ctl:code>
 		</ctl:test>
-		<ctl:test name="tns:core-SOS.GetCapabilities-KVPRequestRequestParameterHandling.1">
-			<ctl:param name="test.document"/>
+		<ctl:test name="sos:core-SOS.GetCapabilities-KVPRequestRequestParameterHandling.1">
+			<ctl:param name="serviceURL"/>
 			<ctl:assertion>The server returns a valid error report message with an exceptionCode of InvalidRequest when the request key value is not GetCapabilities.</ctl:assertion>
 			<ctl:comment>Check the server returns a valid error report message with an exceptionCode of InvalidRequest when the request key value is not SOS.  Pass if the server returns a valid error report message with an exception code of InvalideParameterValue; fail otherwise.</ctl:comment>
 			<ctl:link title="Verify that the server handles invalid request key values correctly.">ATS_URL#SOS.GetCapabilities-KVPRequestRequestParameterHandling</ctl:link>
@@ -298,8 +434,8 @@
 
 			</ctl:code>
 		</ctl:test>
-		<ctl:test name="tns:core-SOS.GetCapabilities-OperationsMetadataMandatoryOperations.1">
-			<ctl:param name="test.document"/>
+		<ctl:test name="sos:core-SOS.GetCapabilities-OperationsMetadataMandatoryOperations.1">
+			<ctl:param name="serviceURL"/>
 			<ctl:assertion>The OperationsMetadata section lists the mandatory operations of the SOS.</ctl:assertion>
 			<ctl:comment>Check that the OperationsMetadata section lists the mandatory operations of the SOS.  Pass if assertion holds; fail otherwise.</ctl:comment>
 			<ctl:link title="Verify that the OperationsMetadata section advertises the mandatory operations of the SOS.">ATS_URL#SOS.GetCapabilities-OperationsMetadataMandatoryOperations</ctl:link>
@@ -307,8 +443,8 @@
 
 			</ctl:code>
 		</ctl:test>
-		<ctl:test name="tns:core-SOS.GetCapabilities-OperationsMetadaOptionalOperations.1">
-			<ctl:param name="test.document"/>
+		<ctl:test name="sos:core-SOS.GetCapabilities-OperationsMetadaOptionalOperations.1">
+			<ctl:param name="serviceURL"/>
 			<ctl:assertion>Any non-mandatory operations advertised in the OperationsMetadata section have valid SOS method names.</ctl:assertion>
 			<ctl:comment>Check that any non-mandatory operations advertised in the OperationsMetadata section have valid SOS method names.  Pass if assertion holds; fail otherwise.</ctl:comment>
 			<ctl:link title="Verify that any non-mandatory operations listed in the OperationsMetadata section are valid SOS operation names.  This is still up for debate and will probably not be part of the final tests.">ATS_URL#SOS.GetCapabilities-OperationsMetadaOptionalOperations</ctl:link>
@@ -316,8 +452,8 @@
 
 			</ctl:code>
 		</ctl:test>
-		<ctl:test name="tns:core-SOS.GetCapabilities-ResponseContentsValidTime.1">
-			<ctl:param name="test.document"/>
+		<ctl:test name="sos:core-SOS.GetCapabilities-ResponseContentsValidTime.1">
+			<ctl:param name="serviceURL"/>
 			<ctl:assertion>The values in the time element for each ObservationOffering are valid time values (ISO 8601) or are valid named times (i.e. indeterminate, now, etc.).  If a time period is specified, then the beginTime must come before the endTime or be equal to the endTime.</ctl:assertion>
 			<ctl:comment>Check that the values in the time element for each ObservationOffering are valid time values (ISO 8601) or are valid named times (i.e. indeterminate, now, etc.).  If a time period is specified, then the beginTime must come before the endTime or be equal to the endTime.  Pass if time the values in the time element are valid time values; fail otherwise.</ctl:comment>
 			<ctl:link title="Verify that the time values provided for each ObservationOffering are valid.">ATS_URL#SOS.GetCapabilities-ResponseContentsValidTime</ctl:link>
@@ -325,8 +461,8 @@
 
 			</ctl:code>
 		</ctl:test>
-		<ctl:test name="tns:core-SOS.GetCapabilities-ResponseContentsValidProcedure.1">
-			<ctl:param name="test.document"/>
+		<ctl:test name="sos:core-SOS.GetCapabilities-ResponseContentsValidProcedure.1">
+			<ctl:param name="serviceURL"/>
 			<ctl:assertion>The values in the procedure element(s) for each ObservationOffering contain a value and are valid URNs.</ctl:assertion>
 			<ctl:comment>Check that the values in the procedure element(s) for each ObservationOffering contain a value and are valid URNs according to the OGC URN scheme.  Pass if values in the procedure element(s) contain a value and are valid URNs; fail otherwise.</ctl:comment>
 			<ctl:link title="Verify that the procedure values provided for each ObservationOffering are valid.">ATS_URL#SOS.GetCapabilities-ResponseContentsValidProcedure</ctl:link>
@@ -334,8 +470,8 @@
 
 			</ctl:code>
 		</ctl:test>
-		<ctl:test name="tns:core-SOS.GetCapabilities-ResponseContentsValidObservedProperty.1">
-			<ctl:param name="test.document"/>
+		<ctl:test name="sos:core-SOS.GetCapabilities-ResponseContentsValidObservedProperty.1">
+			<ctl:param name="serviceURL"/>
 			<ctl:assertion>The values in the observedProperty element(s) for each ObservationOffering contain a value and are valid URNs.</ctl:assertion>
 			<ctl:comment>Check that the values in the observedProperty element(s) for each ObservationOffering contain a value and are valid URNs according to the OGC URN scheme.  Pass if the values in the observedProperty element(s) contain a value and are valid URNs; fail otherwise.</ctl:comment>
 			<ctl:link title="Verify that the observedProperty values provided for each ObservationOffering are valid.">ATS_URL#SOS.GetCapabilities-ResponseContentsValidObservedProperty</ctl:link>
@@ -343,8 +479,8 @@
 
 			</ctl:code>
 		</ctl:test>
-		<ctl:test name="tns:core-SOS.GetCapabilities-ResponseContentsValidResponseFormat.1">
-			<ctl:param name="test.document"/>
+		<ctl:test name="sos:core-SOS.GetCapabilities-ResponseContentsValidResponseFormat.1">
+			<ctl:param name="serviceURL"/>
 			<ctl:assertion>The values in the responseFormat element(s) for each ObservationOffering contain a value and are valid MIME types.</ctl:assertion>
 			<ctl:comment>Check that the values in the responseFormat element(s) for each ObservationOffering contain a value and are valid MIME types.  Pass if assertions hold; fail otherwise.</ctl:comment>
 			<ctl:link title="Verify that the responseFormat values provided for each ObservationOffering are valid MIME types.">ATS_URL#SOS.GetCapabilities-ResponseContentsValidResponseFormat</ctl:link>
@@ -352,8 +488,8 @@
 
 			</ctl:code>
 		</ctl:test>
-		<ctl:test name="tns:core-SOS.GetCapabilities-ResponseContentsValidResultModel.1">
-			<ctl:param name="test.document"/>
+		<ctl:test name="sos:core-SOS.GetCapabilities-ResponseContentsValidResultModel.1">
+			<ctl:param name="serviceURL"/>
 			<ctl:assertion> If an ObservationOffering provides the resultModel element, then the resultModel element contains a value that is qualified name of a member of the om:AbstractObservation substitution group.</ctl:assertion>
 			<ctl:comment>Check If an ObservationOffering provides the resultModel element, then the resultModel element contains a value that is qualified name of a member of the om:AbstractObservation substitution group.  Pass if assertions hold; fail otherwise.</ctl:comment>
 			<ctl:link title="Verify that the resultModel values provided for each ObservationOffering are valid.">ATS_URL#SOS.GetCapabilities-ResponseContentsValidResultModel</ctl:link>
@@ -361,8 +497,8 @@
 
 			</ctl:code>
 		</ctl:test>
-		<ctl:test name="tns:core-SOS.DescribeSensor-RequestInvalidMIMEType.1">
-			<ctl:param name="test.document"/>
+		<ctl:test name="sos:core-SOS.DescribeSensor-RequestInvalidMIMEType.1">
+			<ctl:param name="serviceURL"/>
 			<ctl:assertion>Supplying an invalid MIME type (not advertised in the capabilities document) or no MIME type for the outputFormat produces a valid error report message. </ctl:assertion>
 			<ctl:comment>Check that supplying an invalid MIME type (not advertised in the capabilities document) or no MIME type for the outputFormat produces a valid error report message.  Pass if an invalid MIME type or no MIME type produces a valid error report; fail otherwise.</ctl:comment>
 			<ctl:link title="Verify that the server handles invalid MIME types in the outputFormat parameter correctly.">ATS_URL#SOS.DescribeSensor-RequestInvalidMIMEType</ctl:link>
@@ -370,8 +506,8 @@
 
 			</ctl:code>
 		</ctl:test>
-		<ctl:test name="tns:core-SOS.DescribeSensor-RequestInvalidProcedure.1">
-			<ctl:param name="test.document"/>
+		<ctl:test name="sos:core-SOS.DescribeSensor-RequestInvalidProcedure.1">
+			<ctl:param name="serviceURL"/>
 			<ctl:assertion>Supplying an invalid procedure (not advertised in the capabilities document) or no procedure for the procedure produces a valid error report message.</ctl:assertion>
 			<ctl:comment>Check that supplying an invalid Procedure (not advertised in the capabilities document) or no Procedure for the Procedure produces a valid error report message.  Pass if an invalid Procedure or no Procedure produces a valid error report message; fail otherwise.</ctl:comment>
 			<ctl:link title="Verify that the server handles an invalid procedure in the request correctly.">ATS_URL#SOS.DescribeSensor-RequestInvalidProcedure</ctl:link>
@@ -379,8 +515,8 @@
 
 			</ctl:code>
 		</ctl:test>
-		<ctl:test name="tns:core-SOS.DescribeSensor-ResponseMatchingResponseFormat.1">
-			<ctl:param name="test.document"/>
+		<ctl:test name="sos:core-SOS.DescribeSensor-ResponseMatchingResponseFormat.1">
+			<ctl:param name="serviceURL"/>
 			<ctl:assertion>The format of the response document matches the outputFormat specified in the request and is valid according to the outputFormat schema.</ctl:assertion>
 			<ctl:comment>Check that the format of the response document matches the outputFormat specified in the request and is valid according to the outputFormat schema.  Pass if assertion holds; fail otherwise.</ctl:comment>
 			<ctl:link title="Verify that the format of the returned document matches the requested outputFormat (i.e. SensorML, OM, etc.)">ATS_URL#SOS.DescribeSensor-ResponseMatchingResponseFormat</ctl:link>
@@ -388,8 +524,8 @@
 
 			</ctl:code>
 		</ctl:test>
-		<ctl:test name="tns:core-SOS.DescribeSensor-ResponseMatchingProcedure.1">
-			<ctl:param name="test.document"/>
+		<ctl:test name="sos:core-SOS.DescribeSensor-ResponseMatchingProcedure.1">
+			<ctl:param name="serviceURL"/>
 			<ctl:assertion>The unique identifier in the response document matches the procedure specified in the request.</ctl:assertion>
 			<ctl:comment>Check that the unique identifier in the response document matches the Procedure specified in the request.  Pass if assertion holds; fail otherwise.</ctl:comment>
 			<ctl:link title="Verify that the unique identifier for the sensor in the returned document matches the Procedure in the request">ATS_URL#SOS.DescribeSensor-ResponseMatchingProcedure</ctl:link>
@@ -397,8 +533,8 @@
 
 			</ctl:code>
 		</ctl:test>
-		<ctl:test name="tns:core-SOS.GetObservation-RequestInvalidSRSName.1">
-			<ctl:param name="test.document"/>
+		<ctl:test name="sos:core-SOS.GetObservation-RequestInvalidSRSName.1">
+			<ctl:param name="serviceURL"/>
 			<ctl:assertion>An invalid srsName in the request produces a valid error message.</ctl:assertion>
 			<ctl:comment>Check that an invalid srsName in the request produces a valid error message.  Pass if an invalid srsName produces a valid error message; fail otherwise.</ctl:comment>
 			<ctl:link title="Verify that an invalid srsName in the request produces a valid error message.  This includes providing an empty srsName element or providing an srsName that is not advertised for the requested offering.">ATS_URL#SOS.GetObservation-RequestInvalidSRSName</ctl:link>
@@ -406,8 +542,8 @@
 
 			</ctl:code>
 		</ctl:test>
-		<ctl:test name="tns:core-SOS.GetObservation-RequestInvalidOffering.1">
-			<ctl:param name="test.document"/>
+		<ctl:test name="sos:core-SOS.GetObservation-RequestInvalidOffering.1">
+			<ctl:param name="serviceURL"/>
 			<ctl:assertion>An invalid offering in the request produces a valid error message. </ctl:assertion>
 			<ctl:comment>Check that an invalid offering in the request produces a valid error message.    Pass if an invalid offering in the request produces a valid error message; fail otherwise.</ctl:comment>
 			<ctl:link title="Verify that an invalid offering in the request produces a valid error message.  This includes specifying no offering or an offering value that is not advertised in the Capabilities document.">ATS_URL#SOS.GetObservation-RequestInvalidOffering</ctl:link>
@@ -415,8 +551,8 @@
 
 			</ctl:code>
 		</ctl:test>
-		<ctl:test name="tns:core-SOS.GetObservation-RequestInvalidEventTime.1">
-			<ctl:param name="test.document"/>
+		<ctl:test name="sos:core-SOS.GetObservation-RequestInvalidEventTime.1">
+			<ctl:param name="serviceURL"/>
 			<ctl:assertion>An invalid eventTime in the request produces a valid error message.</ctl:assertion>
 			<ctl:comment>Check that an invalid eventTime in the request produces a valid error message.  Pass if an invalid eventTime in the request produces a valid error message; fail otherwise.</ctl:comment>
 			<ctl:link title="Verify that an invalid eventTime in the request produces a valid error message.">ATS_URL#SOS.GetObservation-RequestInvalidEventTime</ctl:link>
@@ -424,8 +560,8 @@
 
 			</ctl:code>
 		</ctl:test>
-		<ctl:test name="tns:core-SOS.GetObservation-RequestInvalidProcedure.1">
-			<ctl:param name="test.document"/>
+		<ctl:test name="sos:core-SOS.GetObservation-RequestInvalidProcedure.1">
+			<ctl:param name="serviceURL"/>
 			<ctl:assertion>An invalid procedure in the request produces a valid error message.</ctl:assertion>
 			<ctl:comment>Check that an invalid procedure in the request produces a valid error message.  Pass if an invalid procedure in the request produces a valid error message; fail otherwise.</ctl:comment>
 			<ctl:link title="Verify that an invalid procedure in the request produces a valid error message.  This includes providing an empty procedure element or providing one or more procedures that are not advertised for the requested offering in the Capabilities document.">ATS_URL#SOS.GetObservation-RequestInvalidProcedure</ctl:link>
@@ -433,8 +569,8 @@
 
 			</ctl:code>
 		</ctl:test>
-		<ctl:test name="tns:core-SOS.GetObservation-RequestInvalidObservedProperty.1">
-			<ctl:param name="test.document"/>
+		<ctl:test name="sos:core-SOS.GetObservation-RequestInvalidObservedProperty.1">
+			<ctl:param name="serviceURL"/>
 			<ctl:assertion>Supplying one or more invalid observedProperty values in the request produces a valid error message.</ctl:assertion>
 			<ctl:comment>Check that supplying one or more invalid observedProperty values in the request produces a valid error message.  Pass if an invalid observedProperty value produces a valid error message; fail otherwise.</ctl:comment>
 			<ctl:link title="Verify that one or more invalid observedProperty values cause the server to return a valid error message.  This includes providing empty observedProperty elements or providing observedProperty values that do not correspond with the observedProperty values advertised in the Capabilities document for the requested offering.">ATS_URL#SOS.GetObservation-RequestInvalidObservedProperty</ctl:link>
@@ -442,8 +578,8 @@
 
 			</ctl:code>
 		</ctl:test>
-		<ctl:test name="tns:core-SOS.GetObservation-RequestInvalidFeatureOfInterest.1">
-			<ctl:param name="test.document"/>
+		<ctl:test name="sos:core-SOS.GetObservation-RequestInvalidFeatureOfInterest.1">
+			<ctl:param name="serviceURL"/>
 			<ctl:assertion>Supplying one or more invalid featureOfInterest values in the request produces a valid error message.</ctl:assertion>
 			<ctl:comment>Check that supplying one or more invalid featureOfInterest values in the request produces a valid error message.  Pass if one or more invalid featureOfInterest values in the request produces a valid error message; fail otherwise.</ctl:comment>
 			<ctl:link title="Verify that an invalid named gml feature in the featureOfInterest value of the request causes the server to produce a valid error message.  This includes providing an empty featureOfInterest element or providing a named gml feature value in the featureOfInterest that does not correspond with the featureOfInterest values advertised in the Capabilities document for the requested offering.">ATS_URL#SOS.GetObservation-RequestInvalidFeatureOfInterest</ctl:link>
@@ -451,8 +587,8 @@
 
 			</ctl:code>
 		</ctl:test>
-		<ctl:test name="tns:core-SOS.GetObservation-RequestInvalidResult.1">
-			<ctl:param name="test.document"/>
+		<ctl:test name="sos:core-SOS.GetObservation-RequestInvalidResult.1">
+			<ctl:param name="serviceURL"/>
 			<ctl:assertion>Providing an invalid value in the result field produces a valid error message.</ctl:assertion>
 			<ctl:comment>Check that providing an invalid value in the result field produces a valid error message.  Pass if a valid error message is produced from providing an invalid value in the result field; fail otherwise.</ctl:comment>
 			<ctl:link title="Verify that supplying an invalid value in the result parameter produces a valid error message.  This includes providing an empty result element or providing a result element that is not advertised in the Filter_Capabilities section of the Capabilities document.">ATS_URL#SOS.GetObservation-RequestInvalidResult</ctl:link>
@@ -460,8 +596,8 @@
 
 			</ctl:code>
 		</ctl:test>
-		<ctl:test name="tns:core-SOS.GetObservation-RequestInvalidResponseFormat.1">
-			<ctl:param name="test.document"/>
+		<ctl:test name="sos:core-SOS.GetObservation-RequestInvalidResponseFormat.1">
+			<ctl:param name="serviceURL"/>
 			<ctl:assertion>Providing an invalid outputFormat value produces a valid error message.</ctl:assertion>
 			<ctl:comment>Check that providing an invalid outputFormat value produces a valid error message.  Pass if an invalid outputFormat produces a valid error message; fail otherwise.</ctl:comment>
 			<ctl:link title="Verify that providing an invalid outputFormat value in the request produces a valid error message.  This includes any outputFormat value that is not advertised by the requested offering in the Capabilities document.">ATS_URL#SOS.GetObservation-RequestInvalidResponseFormat</ctl:link>
@@ -469,8 +605,8 @@
 
 			</ctl:code>
 		</ctl:test>
-		<ctl:test name="tns:core-SOS.GetObservation-RequestInvalidResultModel.1">
-			<ctl:param name="test.document"/>
+		<ctl:test name="sos:core-SOS.GetObservation-RequestInvalidResultModel.1">
+			<ctl:param name="serviceURL"/>
 			<ctl:assertion>Providing an invalid resultModel in the request produces a valid error message.</ctl:assertion>
 			<ctl:comment>Check that providing an invalid resultModel in the request produces a valid error message.  Pass if providing an invalid resultModel in the request produces a valid error message; fail otherwise.</ctl:comment>
 			<ctl:link title="Verify that providing an invalid resultModel value in the request produces a valid error message.  This includes any resultModel value that is not advertised by the requested offering in the Capabilities document.">ATS_URL#SOS.GetObservation-RequestInvalidResultModel</ctl:link>
@@ -478,8 +614,8 @@
 
 			</ctl:code>
 		</ctl:test>
-		<ctl:test name="tns:core-SOS.GetObservation-RequestInvalidResponseMode.1">
-			<ctl:param name="test.document"/>
+		<ctl:test name="sos:core-SOS.GetObservation-RequestInvalidResponseMode.1">
+			<ctl:param name="serviceURL"/>
 			<ctl:assertion>Providing an invalid responseMode in the request produces a valid error message.</ctl:assertion>
 			<ctl:comment>Check that providing an invalid responseMode in the request produces a valid error message.  Pass if providing an invalid responseMode in the request produces a valid error mesage; fail otherwise.</ctl:comment>
 			<ctl:link title="Verify that providing an invalid responseMode in the request produces a valid error message.  This includes any responseMode that is not advertised by the requested offering in the Capabilities document.">ATS_URL#SOS.GetObservation-RequestInvalidResponseMode</ctl:link>
@@ -487,8 +623,8 @@
 
 			</ctl:code>
 		</ctl:test>
-		<ctl:test name="tns:core-SOS.GetObservation-ResponseMatchingSRSData.1">
-			<ctl:param name="test.document"/>
+		<ctl:test name="sos:core-SOS.GetObservation-ResponseMatchingSRSData.1">
+			<ctl:param name="serviceURL"/>
 			<ctl:assertion>If an srsName value is supplied in the request, then the srs of the response data is valid according to the format specified by the requested srsName.</ctl:assertion>
 			<ctl:comment>Check if a srsName value is supplied in the request, then the srs of the response data is valid according to the format specified by the requested srsName.  Pass if assertion holds; fail otherwise.</ctl:comment>
 			<ctl:link title="Verify that the srs of the returned data is in the correct format given the requested srsName.">ATS_URL#SOS.GetObservation-ResponseMatchingSRSData</ctl:link>
@@ -496,8 +632,8 @@
 
 			</ctl:code>
 		</ctl:test>
-		<ctl:test name="tns:core-SOS.GetObservation-ResponseMatchingProcedureData.1">
-			<ctl:param name="test.document"/>
+		<ctl:test name="sos:core-SOS.GetObservation-ResponseMatchingProcedureData.1">
+			<ctl:param name="serviceURL"/>
 			<ctl:assertion>The procedure value(s) in the response match or a subset of the procedure value(s) specified in the request.</ctl:assertion>
 			<ctl:comment>Check that the procedure value(s) in the response match or are a subset of the procedure value(s) specified in the request.  Pass if assertion holds; fail otherwise.</ctl:comment>
 			<ctl:link title="Verify that the procedure value(s) in the response match or are a subset of the procedure value(s) specified in the request.">ATS_URL#SOS.GetObservation-ResponseMatchingProcedureData</ctl:link>
@@ -505,8 +641,8 @@
 
 			</ctl:code>
 		</ctl:test>
-		<ctl:test name="tns:core-SOS.GetObservation-ResponseMatchingObservedPropertyData.1">
-			<ctl:param name="test.document"/>
+		<ctl:test name="sos:core-SOS.GetObservation-ResponseMatchingObservedPropertyData.1">
+			<ctl:param name="serviceURL"/>
 			<ctl:assertion>The observedProperty value(s) in the response match or are a subset of the observedProperty value(s) specified in the request.</ctl:assertion>
 			<ctl:comment>Check the observedProperty value(s) in the response match or are a subset of the observedProperty value(s) specified in the request.  Pass if assertion holds; fail otherwise.</ctl:comment>
 			<ctl:link title="Verify that the observedProperty value(s) in the response match or are a subset of the observedProperty value(s) specified in the request.">ATS_URL#SOS.GetObservation-ResponseMatchingObservedPropertyData</ctl:link>
@@ -514,8 +650,8 @@
 
 			</ctl:code>
 		</ctl:test>
-		<ctl:test name="tns:core-SOS.GetObservation-ResponseAdvertisedEventTimeData.1">
-			<ctl:param name="test.document"/>
+		<ctl:test name="sos:core-SOS.GetObservation-ResponseAdvertisedEventTimeData.1">
+			<ctl:param name="serviceURL"/>
 			<ctl:assertion>The server returns one or more observations when the advertised eventTime for the requested offering is supplied in a valid request.</ctl:assertion>
 			<ctl:comment>Check that the server returns one or more observations when the advertised eventTime for the requested offering is supplied in a valid request.  Pass if one more observations are returned when supplied a valid request; fail otherwise.</ctl:comment>
 			<ctl:link title="Verify that requesting data for the advertised eventTime for each offering returns one or more observations.">ATS_URL#SOS.GetObservation-ResponseAdvertisedEventTimeData</ctl:link>
@@ -523,8 +659,8 @@
 
 			</ctl:code>
 		</ctl:test>
-		<ctl:test name="tns:core-SOS.GetObservation-ResponseMatchingEventTimeData.1">
-			<ctl:param name="test.document"/>
+		<ctl:test name="sos:core-SOS.GetObservation-ResponseMatchingEventTimeData.1">
+			<ctl:param name="serviceURL"/>
 			<ctl:assertion>The time value(s) in the response data fall within the requested eventTime.</ctl:assertion>
 			<ctl:comment>Check the time value(s) in the response data fall within the requested eventTime.  Pass if assertion holds; fail otherwise.</ctl:comment>
 			<ctl:link title="Verify that the time values in the response data fall within the requested eventTime.  If no eventTime is specified, then any data from any time period matching the other request parameters must be returned.  If the requested eventTime range falls outside of the advertised eventTime range and overlaps the advertised event time range, then the data returned should fall within the advertised eventTime range for the requested offering.">ATS_URL#SOS.GetObservation-ResponseMatchingEventTimeData</ctl:link>
@@ -532,8 +668,8 @@
 
 			</ctl:code>
 		</ctl:test>
-		<ctl:test name="tns:core-SOS.GetObservation-ResponseMatchingFeatureOfInterestData.1">
-			<ctl:param name="test.document"/>
+		<ctl:test name="sos:core-SOS.GetObservation-ResponseMatchingFeatureOfInterestData.1">
+			<ctl:param name="serviceURL"/>
 			<ctl:assertion>The featureOfInterest value(s) in the response match or fall within the spatial extent identified in the featureOfInterest value specified in the request.</ctl:assertion>
 			<ctl:comment>Check the featureOfInterest value(s) in the response match or fall within the spatial extent identified in the featureOfInterest value specified in the request.  Pass if assertion holds; fail otherwise.</ctl:comment>
 			<ctl:link title="Verify that the featureOfInterest values in the response data match the requested featureOfInterest for a named gml feature or fall within the requested spatial extents for a spatially defined featureOfInterest">ATS_URL#SOS.GetObservation-ResponseMatchingFeatureOfInterestData</ctl:link>
@@ -541,8 +677,8 @@
 
 			</ctl:code>
 		</ctl:test>
-		<ctl:test name="tns:core-SOS.GetObservation-ResponseMatchingResultData.1">
-			<ctl:param name="test.document"/>
+		<ctl:test name="sos:core-SOS.GetObservation-ResponseMatchingResultData.1">
+			<ctl:param name="serviceURL"/>
 			<ctl:assertion>If a valid filter value is supplied in the result parameter of the request, then the response O &amp; M data is valid for that filter.</ctl:assertion>
 			<ctl:comment>Check that if a valid filter value is supplied in the result parameter of the request, then the response O &amp; M data is valid for that filter.  Pass if response O &amp; M data is valid for the filter when supplied a valid filter; fail otherwise.</ctl:comment>
 			<ctl:link title="Verify that OM response data is valid for the filter contained in the result parameter of the request, if a result parameter is specified.">ATS_URL#SOS.GetObservation-ResponseMatchingResultData</ctl:link>
@@ -550,8 +686,8 @@
 
 			</ctl:code>
 		</ctl:test>
-		<ctl:test name="tns:core-SOS.GetObservation-ResponseMatchingResponseFormatData.1">
-			<ctl:param name="test.document"/>
+		<ctl:test name="sos:core-SOS.GetObservation-ResponseMatchingResponseFormatData.1">
+			<ctl:param name="serviceURL"/>
 			<ctl:assertion> The format of the response data matches the format supplied in the responseFormat parameter of the request.</ctl:assertion>
 			<ctl:comment>Check that the format of the response data matches the format supplied in the responseFormat parameter of the request.  Pass if assertion holds; fail otherwise.</ctl:comment>
 			<ctl:link title="Verify that the format of the response data matches the requested format supplied in the responseFormat parameter.  If the requested responseFormat is TML, then the response will be an O &amp; M document with a link to the TML stream.">ATS_URL#SOS.GetObservation-ResponseMatchingResponseFormatData</ctl:link>
@@ -559,8 +695,8 @@
 
 			</ctl:code>
 		</ctl:test>
-		<ctl:test name="tns:core-SOS.GetObservation-ResponseMatchingResultModel.1">
-			<ctl:param name="test.document"/>
+		<ctl:test name="sos:core-SOS.GetObservation-ResponseMatchingResultModel.1">
+			<ctl:param name="serviceURL"/>
 			<ctl:assertion>The format of the response data matches the requested resultModel.</ctl:assertion>
 			<ctl:comment>Check that the format of the response data matches the requested resultModel.  Pass if assertion holds; fail otherwise.</ctl:comment>
 			<ctl:link title="Verify that the format of the response data matches the requested resultModel">ATS_URL#SOS.GetObservation-ResponseMatchingResultModel</ctl:link>
@@ -568,8 +704,8 @@
 
 			</ctl:code>
 		</ctl:test>
-		<ctl:test name="tns:core-SOS.GetObservation-ResponseMatchingResponseMode.1">
-			<ctl:param name="test.document"/>
+		<ctl:test name="sos:core-SOS.GetObservation-ResponseMatchingResponseMode.1">
+			<ctl:param name="serviceURL"/>
 			<ctl:assertion>The format of the response data matches the requested responseMode.</ctl:assertion>
 			<ctl:comment>Check that the format of the response data matches the requested responseMode.  Pass if assertion holds; fail otherwise.</ctl:comment>
 			<ctl:link title="Verify that the format of the response data matches the requested responseMode.">ATS_URL#SOS.GetObservation-ResponseMatchingResponseMode</ctl:link>
