@@ -47,15 +47,24 @@
                               type="text" 
                               value="http://hostname:port/path"/>
 							  <select name="service-url-ddl">
-<option value="http://mars.uni-muenster.de:8080/OWS5SOS/sos">http://mars.uni-muenster.de:8080/OWS5SOS/sos</option>							  
-<option value="http://10.2.111.55:8080/52n/sos">http://10.2.111.55:8080/52n/sos</option>
-<option value="http://10.2.14.100:8080/52nSPS/SPS">http://10.2.14.100:8080/52nSPS/SPS</option>
-<option value="cow">cow</option>
-<option value="elephant">elephant</option>
-<option value="platypus">platypus</option>
-</select>
+								<option value="http://mars.uni-muenster.de:8080/OWS5SOS/sos">http://mars.uni-muenster.de:8080/OWS5SOS/sos</option>							  
+								<option value="http://10.2.111.55:8080/52n/sos">http://10.2.111.55:8080/52n/sos</option>
+								<option value="http://10.2.14.100:8080/52nSPS/SPS">http://10.2.14.100:8080/52nSPS/SPS</option>
+								<option value="cow">cow</option>
+								<option value="elephant">elephant</option>
+								<option value="platypus">platypus</option>
+							  </select>
                            </td>
                         </tr>
+						<tr><td>	
+						Schema URL:
+						</td>
+						<td>
+							<select name="schema-url-ddl">
+								<option value="http://mars.uni-muenster.de/swerep1.0/swe/trunk/sos/0.0.0/sosGetCapabilities.xsd">http://mars.uni-muenster.de/swerep1.0/swe/trunk/sos/0.0.0/sosGetCapabilities.xsd</option>							  
+								<option value="http://georepo.net/schemas/sos/1.0.0/sosGetCapabilities.xsd">http://georepo.net/schemas/sos/1.0.0/sosGetCapabilities.xsd</option>
+							</select>
+						</td></tr>
                      </table>
                   </blockquote>
                   <input type="submit" value="Start"/>
@@ -67,11 +76,13 @@
 		<!-- Get user input:  Get the value of the sos URL that the user supplies -->
 	
 		<xsl:variable name="sos.service.url" select="$form-values/values/value[@key='service-url-ddl']"/>
+		<xsl:variable name="sos.schema.url" select="$form-values/values/value[@key='schema-url-ddl']"/>
         
         <!--Call each test passing the capabilities URL as the parameter-->
 		
         <ctl:call-test name="sos:core-main">
             <ctl:with-param name="serviceURL" select="$sos.service.url" />
+			<ctl:with-param name="schemaURL" select="$sos.schema.url" />
         </ctl:call-test>
 		
 		<!--
@@ -228,53 +239,62 @@
 	<ctl:package>
 		<ctl:test name="sos:core-main">
 			<ctl:param name="serviceURL"/>
+			<ctl:param name="schemaURL"/>
 			<ctl:assertion>All assertions for "core" conformance are satisfied.</ctl:assertion>
 			<ctl:comment>Test driver for the core module.</ctl:comment>
 			<ctl:link title="3. Core">ATS_URL#core</ctl:link>
 			<ctl:code>
-			<ctl:message select="concat('This is the URL: ',$serviceURL)"/>
+			
+<!--******************************************************Reqeust test************************************************************-->
 
+<ctl:message select="concat('This is the service URL: ',$serviceURL)"/>
+<ctl:message select="concat('This is the schema URL: ',$schemaURL)"/>
+			
 		<xsl:variable name="request1">
-            <request>
-				<url>
+            <ctl:request>
+				<ctl:url>
 					<xsl:value-of select="$serviceURL"/>
-				</url>
-				<method>get</method>
-				<param name="service">SOS</param>
+				</ctl:url>
+				<ctl:method>get</ctl:method>
+				<ctl:param name="service">SOS</ctl:param>
 				<!--<param name="BoGuS">ignored</param>-->
-				<param name="request">GetCapabilities</param>
+				<ctl:param name="request">GetCapabilities</ctl:param>
 				
-				<!--parsers:XMLValidatingParser>
+				<parsers:XMLValidatingParser>
 					<parsers:schemas>
 						<parsers:schema type="url">
-						http://georepo.net/schemas/sos/1.0.0/sosGetCapabilities.xsd
+						  <xsl:value-of select="$schemaURL" />
 						</parsers:schema>
 					</parsers:schemas>
-				</parsers:XMLValidatingParser-->
+				</parsers:XMLValidatingParser>
 				
-            </request>			
+            </ctl:request>			
         </xsl:variable>
-		
-			<xsl:choose>
+<ctl:message select="concat('This is the URL: ',$serviceURL)"/>		
+<!--******************************************************Reqeust test************************************************************-->
+		<xsl:choose>
 				<xsl:when test="not($request1/*)">
-				<!--/sos:Capabilities-->
+			
 			       	<ctl:message>FAILURE: Missing or invalid response entity.</ctl:message>
 					<ctl:fail/>
 			    </xsl:when>
 			    <xsl:otherwise>
 				<ctl:message>otherwise</ctl:message>				
 					<xsl:variable name="expression">//wfs:WFS_Capabilities</xsl:variable>
-					<!--
-					<ctl:call-test name="ctl:assert-xpath">
-						<ctl:with-param name="expr" select="$expression"/>
-						<ctl:with-param name="doc" select="$request1"/>
-					</ctl:call-test>		
-					<parsers:XMLValidatingParser.SOS/>
-					-->
+					
 					
 				</xsl:otherwise>
 			</xsl:choose>	
-			
+		<!--	<ctl:message><xsl:value-of select="$request1/*" /></ctl:message>-->
+		<!--  <ctl:message select="string($request1/response/content/*)"/>  displays blank  -->
+	<!--
+		<ctl:message select="string(count($request1/name()))"/>
+		
+		<ctl:message select="string($request1/*)"/>
+		<ctl:message select="string-length(string($request1/*))"/>
+		<ctl:message select="string($request1/sos:Capabilities/ows:ServiceIdentification/@xmlns:ogc)"/>	
+<ctl:message select="string(//name())"/>	
+-->	
                 <xsl:if test="not($request1/sos:Capabilities)">
                   <ctl:message>
                   [FAILURE] The GetCapabilities response entity is NOT a valid sos:Capabilities document.
@@ -297,10 +317,7 @@
 			</xsl:for-each>
 		 <ctl:message>after</ctl:message>
 	-->	 
-		 <ctl:message select="string($request1/response/content/*)"/>
-		 <ctl:message select="string(count($request1/*))"/>
-		 <ctl:message select="string-length(string($request1/*))"/>
-		 <ctl:message select="string($request1/*)"/>
+
 		 <!--
 				<ctl:call-test name="sos:core-SOS.GetCapabilities-KVPRequestParameterHandling.1">
 					<ctl:with-param name="serviceURL" select="$serviceURL"/>
