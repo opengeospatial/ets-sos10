@@ -1,19 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ctl:package
- xmlns:spsFunctions="https://cite.opengeospatial.org/wms-1.3.0/src/ctl/functions.xml"
+ xmlns:sosFunctions="https://cite.opengeospatial.org/wms-1.3.0/src/ctl/functions.xml"
  xmlns:ctl="http://www.occamlab.com/ctl"
  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
  xmlns:wms="http://www.opengis.net/wms"
  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
  xmlns:xlink="http://www.w3.org/1999/xlink"
  xmlns:parsers="http://www.occamlab.com/te/parsers"
+
 >
+	<!-- temporary function so that testing may be completed -->
+    <ctl:function name="sosFunctions:fixTimeZone">
+        <ctl:param name="dateString"></ctl:param>
+		<ctl:description>Append ":00" to $dateString.</ctl:description>
+        <ctl:code>				
+			<xsl:value-of select="concat($dateString, ':00')"/>
+        </ctl:code>
+    </ctl:function>
+	
+    <ctl:function name="sosFunctions:isTimeIndeterminateValueType">
+        <ctl:param name="dateString">The date to be tested</ctl:param>
+		<ctl:description>Check whether a date is a valid gml:TimeIndeterminateValueType.</ctl:description>
+        <ctl:code>				
+			<xsl:value-of select="$dateString = 'after'
+								or $dateString = 'before'
+								or $dateString = 'now'
+								or $dateString = 'unknown'"/>
+        </ctl:code>
+    </ctl:function>
+
+    <ctl:function name="sosFunctions:isValidDate">
+        <ctl:param name="dateString">The date to be tested</ctl:param>
+		<ctl:description>Check whether a date is a valid ISO 8601 date with at least a day included, or one of the valid constants.</ctl:description>
+		<!--ctl:return>Boolean</ctl:return-->
+        <ctl:code>	
+			<!--  this requires a complet time zone xsl:variable name="isoDateRegex" select="'^([0-9]{4})(-([0-9]{2})(-([0-9]{2})(T([0-9]{2}):([0-9]{2})(:([0-9]{2})(\.([0-9]+))?)?(Z|(([-+])([0-9]{2}):([0-9]{2})))?)?)?)?'"/-->
+			<xsl:variable name="isoDateRegex" select="'^([0-9]{4})(-([0-9]{2})(-([0-9]{2})(T([0-9]{2}):([0-9]{2})(:([0-9]{2})(\.([0-9]+))?)?(Z|(([-+])([0-9]{2})(:([0-9]{2}))?))?)?))'"/>
+			<xsl:value-of select="matches($dateString, $isoDateRegex) or sosFunctions:isTimeIndeterminateValueType($dateString) = 'true'"/>
+        </ctl:code>
+    </ctl:function>
+	
+    <!--Validates response against schema-->
+    <ctl:function name="sosFunctions:xmlValidatingParser">
+        <ctl:param name="schemaURL">The location of the schema used to validate response document</ctl:param>
+		<ctl:param name="request">The name of the request</ctl:param>
+		<ctl:param name="service">The name of the service</ctl:param>
+		<ctl:description>Standard CTL XMLValidatingParser</ctl:description>
+        <ctl:code>	
+			<!-- note that the ignoreErrors flag below seems to have the opposite of it's intended effect -->
+            <parsers:XMLValidatingParser ignoreErrors="true">
+                <parsers:schemas>
+                    <parsers:schema type="url">
+						<xsl:value-of select="concat($schemaURL, lower-case($service), $request, '.xsd')"/>
+                    </parsers:schema>
+                </parsers:schemas>
+            </parsers:XMLValidatingParser>
+	
+        </ctl:code>
+    </ctl:function>
+	
+	<!-- this function does not work -->
+	<ctl:function name="sosFunctions:getCapabilitiesRequest">
+		<ctl:param name="serviceURL">URL of the SOS</ctl:param>
+		<ctl:param name="sosSchemaURL">URL of the SOS schema used to validate response</ctl:param>
+		<ctl:code>		
+			<!--xsl:variable name="getCapabilitiesRequest"-->
+				<ctl:request>
+					<ctl:url>
+						<xsl:value-of select="$serviceURL"/>
+					</ctl:url>
+					<ctl:method>get</ctl:method>						
+					<ctl:param name="request">GetCapabilities</ctl:param>
+					<ctl:param name="service">SOS</ctl:param> 
+					<!--
+					<ctl:call-function name="sosFunctions:xmlValidatingParser">					
+					<ctl:with-param name="schemaURL" select="$sosSchemaURL"/>
+						<ctl:with-param name="request" select="'GetCapabilities'"/>
+						<ctl:with-param name="service" select="'sos'"/>
+					</ctl:call-function>	
+					-->
+				</ctl:request>
+				<!--/xsl:variable-->			
+			<!--xsl:value-of select="$getCapabilitiesRequest"/-->			
+		</ctl:code>
+	</ctl:function>
+	
     
     <!--Validates an ExceptionReport-->
-    <ctl:function name="spsFunctions:validateExceptionReport">
+    <ctl:function name="sosFunctions:validateExceptionReport">
         <ctl:param name="exceptionReport">The exception report document to validate</ctl:param>
         <ctl:return>The exception report if it's valid</ctl:return>
-        <ctl:description>Validates a returned exception report according to its schema and determines if it is an appropriate exception report for an SPS</ctl:description>
+        <ctl:description>Validates a returned exception report according to its schema and determines if it is an appropriate exception report for an sos</ctl:description>
         <ctl:code>
             <parsers:XMLValidatingParser>
                 <parsers:schemas>
@@ -26,7 +103,7 @@
     </ctl:function>
     
     <!--Validates a SensorML document-->
-    <ctl:function name="spsFunctions:validateSensorML">
+    <ctl:function name="sosFunctions:validateSensorML">
         <ctl:param name="sensorMLDocument">The SensorML document to validate</ctl:param>
         <ctl:return>The SensorML document if it's valid</ctl:return>
         <ctl:description>Validates a SensorML document according to its schema</ctl:description>
@@ -42,7 +119,7 @@
     </ctl:function>
     
     <!--Validates a TML document-->
-    <ctl:function name="spsFunctions:validateTML">
+    <ctl:function name="sosFunctions:validateTML">
         <ctl:param name="tmlDocument">The TML document to validate</ctl:param>
         <ctl:return>The TML document if it's valid</ctl:return>
         <ctl:description>Validates a TML document according to its schema</ctl:description>
@@ -58,7 +135,7 @@
     </ctl:function>
     
     <!--Validates a GetCapabilities response-->
-    <ctl:function name="spsFunctions:validateGetCapabilitiesResponse">
+    <ctl:function name="sosFunctions:validateGetCapabilitiesResponse">
         <ctl:param name="getCapabilitiesResponseDocument">The GetCapabilitiesResponse document to validate</ctl:param>
         <ctl:return>The GetCapabilitiesResponse document if it's valid</ctl:return>
         <ctl:description>Validates a GetCapabilitiesResponse document according to its schema</ctl:description>
@@ -74,7 +151,7 @@
     </ctl:function>
 
 	<!--Validates a DescribeSensor response-->
-    <ctl:function name="spsFunctions:validateDescribeSensorResponse">
+    <ctl:function name="sosFunctions:validateDescribeSensorResponse">
         <ctl:param name="describeSensorResponseDocument">The DescribeSensorResponse document to validate</ctl:param>
         <ctl:return>The DescribeSensorResponse document if it's valid</ctl:return>
         <ctl:description>Validates a DescribeSensorResponse document according to its schema</ctl:description>
@@ -90,7 +167,7 @@
     </ctl:function>
     
     <!--Validates a GetObservation response-->
-    <ctl:function name="spsFunctions:validateGetObservationResponse">
+    <ctl:function name="sosFunctions:validateGetObservationResponse">
         <ctl:param name="getObservationResponseDocument">The GetObservationResponse document to validate</ctl:param>
         <ctl:return>The GetObservationResponse document if it's valid</ctl:return>
         <ctl:description>Validates a GetObservationResponse document according to its schema</ctl:description>
@@ -106,7 +183,8 @@
     </ctl:function>
     
     <!--Validates a Response document-->
-    <ctl:function name="spsFunctions:validateResponse">
+	<!--
+    <ctl:function name="sosFunctions:validateResponse">
         <ctl:param name="responseDocument">The response document to validate</ctl:param>
         <ctl:return>The response if it's valid</ctl:return>
         <ctl:description>Validates a returned document according to the appropriate schema</ctl:description>
@@ -114,22 +192,22 @@
             <xsl:variable name="rootElementName" select="local-name-from-QName(node-name($responseDocument/*))" />
             <xsl:choose>
                 <xsl:when test="$rootElementName='SensorML'">
-                    <ctl:call-function name="spsFunctions:validateSensorML">
+                    <ctl:call-function name="sosFunctions:validateSensorML">
                         <with-param name="sensorMLDocument" select="$responseDocument" />
                     </ctl:call-function>
                 </xsl:when>
                 <xsl:when test="$rootElementName='tml'">
-                    <ctl:call-function name="spsFunctions:validateTML">
+                    <ctl:call-function name="sosFunctions:validateTML">
                         <with-param name="tmlDocument" select="$responseDocument" />
                     </ctl:call-function>
                 </xsl:when>
                 <xsl:when test="$rootElementName='Observation'">
-                    <ctl:call-function name="spsFunctions:validateGetObservationResponse">
+                    <ctl:call-function name="sosFunctions:validateGetObservationResponse">
                         <with-param name="getObservationResponseDocument" select="$responseDocument" />
                     </ctl:call-function>
                 </xsl:when>
                 <xsl:when test="$rootElementName='SensorDescription'">
-                    <ctl:call-function name="spsFunctions:validateDescribeResponse">
+                    <ctl:call-function name="sosFunctions:validateDescribeResponse">
                         <with-param name="describeSensorResponseDocument" select="$responseDocument" />
                     </ctl:call-function>
                 </xsl:when>
@@ -139,9 +217,9 @@
             </xsl:choose>
         </ctl:code>
     </ctl:function>
-    
+    -->
     <!--Check for a valid URN-->
-    <ctl:function name="spsFunctions:validateURN">
+    <ctl:function name="sosFunctions:validateURN">
         <ctl:param name="urnString">The URN to validate</ctl:param>
         <ctl:return>True/False depending on whether or not the URN is valid</ctl:return>
         <ctl:description>Determines if a URN is valid</ctl:description>
@@ -151,15 +229,15 @@
     </ctl:function>
     
     <!--Get the current Date/Time-->
-    <ctl:function name="spsFunctions:getCurrentDateTime">
+    <ctl:function name="sosFunctions:getCurrentDateTime">
         <ctl:return>The current Date/Time</ctl:return>
         <ctl:description>Returns the current Date/Time</ctl:description>
-        <ctl:java class="net.opengis.sps.getCurrentDateTime" method="getCurrentDateTime" />
+        <ctl:java class="net.opengis.sos.getCurrentDateTime" method="getCurrentDateTime" />
     </ctl:function>
     
     <!--Checks a time value to ensure that it is properly formatted and that it occurs after the compareTime-->
 
-    <ctl:function name="spsFunctions:checkTime">
+    <ctl:function name="sosFunctions:checkTime">
         <ctl:param name="timeToCheck">The time value to check for correctness</ctl:param>
         <ctl:param name="compareTime">The value to compare this time value to</ctl:param>
         <ctl:return>True if the time to check is valid; false otherwise</ctl:return>

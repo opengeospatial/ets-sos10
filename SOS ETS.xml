@@ -13,6 +13,7 @@
 	xmlns:parsers="http://www.occamlab.com/te/parsers"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
 	xmlns:ows="http://www.opengeospatial.net/ows"
+	xmlns:gml="http://www.opengis.net/gml" 
 	
 >
 
@@ -58,7 +59,7 @@
 								<option value="http://mars.uni-muenster.de:8080/52nSOSv2/sos">http://mars.uni-muenster.de:8080/52nSOSv2/sos</option>							  
 								<option value="http://10.2.111.55:8080/52n/sos">http://10.2.111.55:8080/52n/sos</option>
 								<option value="http://10.2.14.100:8080/52nSPS/SPS">http://10.2.14.100:8080/52nSPS/SPS</option>
-								<option value="cow">cow</option>
+								<option value="http://vast.uah.edu:8080/ows-dev/dopplerSos">http://vast.uah.edu:8080/ows-dev/dopplerSos</option>
 								<option value="elephant">elephant</option>
 								<option value="platypus">platypus</option>
 							  </select>
@@ -278,20 +279,63 @@
 					<ctl:with-param name="serviceURL" select="$serviceURL"/>
 					<ctl:with-param name="owsSchemaURL" select="$owsSchemaURL"/>
 				</ctl:call-test>
+												
+				<!--xsl:variable name="getCapabilitiesRequest">
+					<xsl:value-of select="sosFunctions:getCapabilitiesRequest($serviceURL,$sosSchemaURL)"/>
+				</xsl:variable-->	
+
+				<xsl:variable name="getCapabilitiesRequest">
+					<ctl:request>
+						<ctl:url>
+							<xsl:value-of select="$serviceURL"/>							
+						</ctl:url>
+						<ctl:method>get</ctl:method>						
+						<ctl:param name="request">GetCapabilities</ctl:param>
+						<ctl:param name="service">SOS</ctl:param> 							
+
+						<!--
+						<ctl:call-function name="sosFunctions:xmlValidatingParser">					
+							<ctl:with-param name="schemaURL" select="$sosSchemaURL"/>
+							<ctl:with-param name="request" select="'GetCapabilities'"/>
+							<ctl:with-param name="service" select="'sos'"/>
+						</ctl:call-function>		
+						-->
+					</ctl:request>			
+				</xsl:variable>				
+
+				
+				<!--ctl:message>
+				Scoob
+					<xsl:value-of select="$getCapabilitiesRequest/*"/>
+				</ctl:message-->
+								
+				<xsl:choose>
+					<!-- check for valid schema or missing response-->
+					<xsl:when test="not($getCapabilitiesRequest/*)">
+						<ctl:message>GetCapabilites response document failed schema validation.</ctl:message>
+						<ctl:message><xsl:value-of select="concat('Schema: ', $sosSchemaURL, 'sosGetCapabilities.xsd')"/></ctl:message>
+						<ctl:fail/>
+					</xsl:when>
+
+					<xsl:otherwise>
+						<ctl:message>Capabilities response is valid, continuing...</ctl:message>
 						
-				<ctl:call-test name="sos:core-SOS.GetCapabilities-OperationsMetadataMandatoryOperations.1">
-					<ctl:with-param name="serviceURL" select="$serviceURL"/>
-					<ctl:with-param name="sosSchemaURL" select="$sosSchemaURL"/>
-				</ctl:call-test>
-		
-				<ctl:call-test name="sos:core-SOS.GetCapabilities-OperationsMetadaOptionalOperations.1">
-					<ctl:with-param name="serviceURL" select="$serviceURL"/>
-					<ctl:with-param name="sosSchemaURL" select="$sosSchemaURL"/>
-				</ctl:call-test>
+						<ctl:call-test name="sos:core-SOS.GetCapabilities-OperationsMetadataMandatoryOperations.1">
+							<ctl:with-param name="capabilitiesDocument" select="$getCapabilitiesRequest"/>
+						</ctl:call-test>
+				
+						<ctl:call-test name="sos:core-SOS.GetCapabilities-OperationsMetadaOptionalOperations.1">
+							<ctl:with-param name="capabilitiesDocument" select="$getCapabilitiesRequest"/>
+						</ctl:call-test>
+
+						<ctl:call-test name="sos:core-SOS.GetCapabilities-ResponseContentsValidTime.1">
+							<ctl:with-param name="capabilitiesDocument" select="$getCapabilitiesRequest"/>
+						</ctl:call-test>
+				
+					</xsl:otherwise>					
+				</xsl:choose>				
 <!--						
-				<ctl:call-test name="sos:core-SOS.GetCapabilities-ResponseContentsValidTime.1">
-					<ctl:with-param name="serviceURL" select="$serviceURL"/>
-				</ctl:call-test>
+
 				<ctl:call-test name="sos:core-SOS.GetCapabilities-ResponseContentsValidProcedure.1">
 					<ctl:with-param name="serviceURL" select="$serviceURL"/>
 				</ctl:call-test>
@@ -402,15 +446,7 @@
 							<ctl:with-param name="request" select="'ExceptionReport'"/>
 							<ctl:with-param name="service" select="'ows'"/>
 						</ctl:call-function>
-<!--
-            <parsers:XMLValidatingParser ignoreErrors="true">
-                <parsers:schemas>
-                    <parsers:schema type="url">
-						http://mars.uni-muenster.de/swerep/trunk/ows/1.0.30/owsExceptionReport.xsd
-                    </parsers:schema>
-                </parsers:schemas>
-            </parsers:XMLValidatingParser>
--->			
+		
 					</ctl:request>			
 				</xsl:variable>										
 				
@@ -531,94 +567,31 @@
 			</ctl:code>
 		</ctl:test>
 		<ctl:test name="sos:core-SOS.GetCapabilities-OperationsMetadataMandatoryOperations.1">
-			<ctl:param name="serviceURL"/>
-			<ctl:param name="sosSchemaURL"/>
+			<ctl:param name="capabilitiesDocument"/>			
 			<ctl:assertion>The OperationsMetadata section lists the mandatory operations of the SOS.</ctl:assertion>
 			<ctl:comment>Check that the OperationsMetadata section lists the mandatory operations of the SOS.  Pass if assertion holds; fail otherwise.</ctl:comment>
 			<ctl:link title="Verify that the OperationsMetadata section advertises the mandatory operations of the SOS.">ATS_URL#SOS.GetCapabilities-OperationsMetadataMandatoryOperations</ctl:link>
-			<ctl:code>
-				<xsl:variable name="thisRequest">
-					<ctl:request>
-						<ctl:url>
-							<xsl:value-of select="$serviceURL"/>
-						</ctl:url>
-						<ctl:method>get</ctl:method>						
-						<ctl:param name="request">GetCapabilities</ctl:param>
-						<ctl:param name="service">SOS</ctl:param> 
-						<!--
-						<ctl:call-function name="sosFunctions:xmlValidatingParser">					
-							<ctl:with-param name="schemaURL" select="$sosSchemaURL"/>
-							<ctl:with-param name="request" select="'GetCapabilities'"/>
-							<ctl:with-param name="service" select="'sos'"/>
-						</ctl:call-function>		
-						-->
-					</ctl:request>			
-				</xsl:variable>										
+			<ctl:code>	
+			<!--
+				<ctl:message>
+					<xsl:value-of select="$capabilitiesDocument"/>
+				</ctl:message>			
 				
-				<xsl:choose>
-					<!-- check for valid schema or missing response-->
-					<xsl:when test="not($thisRequest/*)">
-						<ctl:message>GetCapabilites response document failed schema validation.</ctl:message>
-						<ctl:message><xsl:value-of select="concat('Schema: ', $sosSchemaURL, 'sosGetCapabilities.xsd')"/></ctl:message>
-						<ctl:fail/>
-					</xsl:when>
+			-->
+					<xsl:choose>
 					<!-- check for missing GetCapabilities -->
-					<xsl:when test="not($thisRequest/sos:Capabilities/ows:OperationsMetadata/ows:Operation[@name='GetCapabilities'])">
-						<ctl:message>Missing required operation 'GetCapabilities'</ctl:message>
+					<xsl:when test="not($capabilitiesDocument//ows:Operation[@name='GetCapabilities'])">
+					<ctl:message>Missing required operation 'GetCapabilities'</ctl:message>
 						<ctl:fail/>
 					</xsl:when>
 					<!-- check for missing DescribeSensor -->
-					<xsl:when test="not($thisRequest/sos:Capabilities/ows:OperationsMetadata/ows:Operation[@name='DescribeSensor'])">
+					<xsl:when test="not($capabilitiesDocument//ows:OperationsMetadata/ows:Operation[@name='DescribeSensor'])">
 						<ctl:message>Missing required operation 'DescribeSensor'</ctl:message>
 						<ctl:fail/>
 					</xsl:when>
 					<!-- check for missing GetObservation -->
-					<xsl:when test="not($thisRequest/sos:Capabilities/ows:OperationsMetadata/ows:Operation[@name='GetObservation'])">
+					<xsl:when test="not($capabilitiesDocument//ows:OperationsMetadata/ows:Operation[@name='GetObservation'])">
 						<ctl:message>Missing required operation 'GetObservation'</ctl:message>
-						<ctl:fail/>
-					</xsl:when>					
-					<!-- looks good -->
-					<xsl:otherwise>
-						<ctl:message>OK</ctl:message>
-					</xsl:otherwise>					
-				</xsl:choose>					
-			</ctl:code>
-		</ctl:test>
-		<ctl:test name="sos:core-SOS.GetCapabilities-OperationsMetadaOptionalOperations.1">
-			<ctl:param name="serviceURL"/>
-			<ctl:param name="sosSchemaURL"/>
-			<ctl:assertion>Any non-mandatory operations advertised in the OperationsMetadata section have valid SOS method names.</ctl:assertion>
-			<ctl:comment>Check that any non-mandatory operations advertised in the OperationsMetadata section have valid SOS method names.  Pass if assertion holds; fail otherwise.</ctl:comment>
-			<ctl:link title="Verify that any non-mandatory operations listed in the OperationsMetadata section are valid SOS operation names.  This is still up for debate and will probably not be part of the final tests.">ATS_URL#SOS.GetCapabilities-OperationsMetadaOptionalOperations</ctl:link>
-			<ctl:code>
-				<xsl:variable name="thisRequest">
-					<ctl:request>
-						<ctl:url>
-							<xsl:value-of select="$serviceURL"/>
-						</ctl:url>
-						<ctl:method>get</ctl:method>						
-						<ctl:param name="request">GetCapabilities</ctl:param>
-						<ctl:param name="service">SOS</ctl:param> 
-						<!--
-						<ctl:call-function name="sosFunctions:xmlValidatingParser">					
-							<ctl:with-param name="schemaURL" select="$sosSchemaURL"/>
-							<ctl:with-param name="request" select="'GetCapabilities'"/>
-							<ctl:with-param name="service" select="'sos'"/>
-						</ctl:call-function>		
-						-->
-					</ctl:request>			
-				</xsl:variable>										
-				
-				<xsl:choose>
-					<!-- check for valid schema or missing response-->
-					<xsl:when test="not($thisRequest/*)">
-						<ctl:message>GetCapabilites response document failed schema validation.</ctl:message>
-						<ctl:message><xsl:value-of select="concat('Schema: ', $sosSchemaURL, 'sosGetCapabilities.xsd')"/></ctl:message>
-						<ctl:fail/>
-					</xsl:when>
-					<!-- check for any non-valid operation names -->
-					<xsl:when test="$thisRequest/sos:Capabilities/ows:OperationsMetadata/ows:Operation[@name!='GetCapabilities' and @name!='DescribeSensor' and @name!='GetObservation' and @name!='GetObservationById' and @name!='GetFeatureOfInterest']">
-						<ctl:message><xsl:value-of select="concat('Invalid operation name: ', $thisRequest/sos:Capabilities/ows:OperationsMetadata/ows:Operation[@name!='GetCapabilities' and @name!='DescribeSensor' and @name!='GetObservation' and @name!='GetObservationById' and @name!='GetFeatureOfInterest']/@name)"/></ctl:message>						
 						<ctl:fail/>
 					</xsl:when>					
 					<!-- looks good -->
@@ -628,15 +601,109 @@
 				</xsl:choose>
 			</ctl:code>
 		</ctl:test>
+		<ctl:test name="sos:core-SOS.GetCapabilities-OperationsMetadaOptionalOperations.1">
+			<ctl:param name="capabilitiesDocument"/>			
+			<ctl:assertion>Any non-mandatory operations advertised in the OperationsMetadata section have valid SOS method names.</ctl:assertion>
+			<ctl:comment>Check that any non-mandatory operations advertised in the OperationsMetadata section have valid SOS method names.  Pass if assertion holds; fail otherwise.</ctl:comment>
+			<ctl:link title="Verify that any non-mandatory operations listed in the OperationsMetadata section are valid SOS operation names.  This is still up for debate and will probably not be part of the final tests.">ATS_URL#SOS.GetCapabilities-OperationsMetadaOptionalOperations</ctl:link>
+			<ctl:code>								
+				
+				<xsl:choose>
+					<!-- check for any non-valid operation names -->
+					<xsl:when test="$capabilitiesDocument//ows:OperationsMetadata/ows:Operation[@name!='Common'
+																							and @name!='GetCapabilities'
+																							and @name!='DescribeFeatureType'
+																							and @name!='DescribeSensor'
+																							and @name!='DescribeObservationType'
+																							and @name!='DescribeResultModel'
+																							and @name!='GetObservation'
+																							and @name!='GetObservationById'
+																							and @name!='GetResult'
+																							and @name!='GetFeatureOfInterest'
+																							and @name!='GetFeatureOfInterestTime'
+																							and @name!='Insert'
+																							and @name!='RegisterSensor']">
+						<ctl:message><xsl:value-of select="concat('Invalid operation name: ', 
+																	$capabilitiesDocument//ows:OperationsMetadata/ows:Operation
+																							   [@name!='Common'
+																							and @name!='GetCapabilities'
+																							and @name!='DescribeFeatureType'
+																							and @name!='DescribeSensor'
+																							and @name!='DescribeObservationType'
+																							and @name!='DescribeResultModel'
+																							and @name!='GetObservation'
+																							and @name!='GetObservationById'
+																							and @name!='GetResult'
+																							and @name!='GetFeatureOfInterest'
+																							and @name!='GetFeatureOfInterestTime'
+																							and @name!='Insert'
+																							and @name!='RegisterSensor']/@name)"/></ctl:message>						
+						<ctl:fail/>
+					</xsl:when>					
+					<!-- looks good -->
+					<xsl:otherwise>
+						<ctl:message>OK</ctl:message>
+					</xsl:otherwise>					
+				</xsl:choose>
+			</ctl:code>
+		</ctl:test>
+		
+		
 		<ctl:test name="sos:core-SOS.GetCapabilities-ResponseContentsValidTime.1">
-			<ctl:param name="serviceURL"/>
+			<ctl:param name="capabilitiesDocument"/>
 			<ctl:assertion>The values in the time element for each ObservationOffering are valid time values (ISO 8601) or are valid named times (i.e. indeterminate, now, etc.).  If a time period is specified, then the beginTime must come before the endTime or be equal to the endTime.</ctl:assertion>
 			<ctl:comment>Check that the values in the time element for each ObservationOffering are valid time values (ISO 8601) or are valid named times (i.e. indeterminate, now, etc.).  If a time period is specified, then the beginTime must come before the endTime or be equal to the endTime.  Pass if time the values in the time element are valid time values; fail otherwise.</ctl:comment>
 			<ctl:link title="Verify that the time values provided for each ObservationOffering are valid.">ATS_URL#SOS.GetCapabilities-ResponseContentsValidTime</ctl:link>
-			<ctl:code>				<!--PUT TEST CODE HERE-->
+			<ctl:code>
+
+<!--			
+				<xsl:variable name="beginPosition" select="$capabilitiesDocument//sos:Contents/sos:ObservationOfferingList/sos:ObservationOffering/sos:time/gml:TimePeriod/gml:beginPosition"/>
+				<xsl:variable name="endPosition" select="$capabilitiesDocument//sos:Contents/sos:ObservationOfferingList/sos:ObservationOffering/sos:time/gml:TimePeriod/gml:endPosition"/>
+-->				
+				<xsl:variable name="beginPosition" select="$capabilitiesDocument//sos:Contents/sos:ObservationOfferingList/sos:ObservationOffering/sos:eventTime/gml:TimePeriod/gml:beginPosition[@indeterminatePosition='unknown']/@indeterminatePosition"/>
+				<xsl:variable name="endPosition" select="$capabilitiesDocument//sos:Contents/sos:ObservationOfferingList/sos:ObservationOffering/sos:eventTime/gml:TimePeriod/gml:endPosition/@indeterminatePosition"/>
+				
+				<ctl:message>
+					hello
+					<xsl:value-of select="$beginPosition"/>	
+					
+					<!--xsl:value-of select="year-from-dateTime(xsd:dateTime(sosFunctions:fixTimeZone($beginPosition)))"/-->					
+				</ctl:message>
+				
+				<xsl:choose>
+					<!-- check for any invalid begin time-->
+					<xsl:when test="sosFunctions:isValidDate($beginPosition)='false'">
+						<ctl:message>Invalid beginPosition for ObservationOffering TimePeriod.</ctl:message>
+						<ctl:fail/>
+					</xsl:when>
+					<!-- check for any invalid end time-->
+					<xsl:when test="sosFunctions:isValidDate($endPosition)='false'">
+						<ctl:message>Invalid endPosition for ObservationOffering TimePeriod.</ctl:message>
+						<ctl:fail/>
+					</xsl:when>					
+					
+					<!-- make sure that beginPosition is not greater than end position -->
+					<xsl:when test="sosFunctions:isTimeIndeterminateValueType($beginPosition) = 'false'
+									and sosFunctions:isTimeIndeterminateValueType($endPosition) = 'false'">
+						<xsl:if test="xsd:dateTime(sosFunctions:fixTimeZone($beginPosition)) &gt; xsd:dateTime(sosFunctions:fixTimeZone($endPosition))">
+							<ctl:message>Begin position is later than end position.</ctl:message>
+							<ctl:fail/>
+						</xsl:if>
+					</xsl:when>
+									
+					<!-- looks good -->
+					<xsl:otherwise>
+						<ctl:message>OK</ctl:message>
+					</xsl:otherwise>					
+				</xsl:choose>
 
 			</ctl:code>
 		</ctl:test>
+
+
+
+
+		
 		<ctl:test name="sos:core-SOS.GetCapabilities-ResponseContentsValidProcedure.1">
 			<ctl:param name="serviceURL"/>
 			<ctl:assertion>The values in the procedure element(s) for each ObservationOffering contain a value and are valid URNs.</ctl:assertion>
@@ -717,7 +784,7 @@
 						<ctl:message>OK</ctl:message>
 					</xsl:otherwise>
 				</xsl:choose>	
-<ctl:message  select="concat('describe sensor ',$thisRequest/ows:ExceptionReport/ows:Exception/@exceptionCode, ' ...describe sensor')"/>					
+<!--<ctl:message  select="concat('describe sensor ',$thisRequest/ows:ExceptionReport/ows:Exception/@exceptionCode, ' ...describe sensor')"/>					-->
 			</ctl:code>
 		</ctl:test>
 		<ctl:test name="sos:core-SOS.DescribeSensor-RequestInvalidProcedure.1">
