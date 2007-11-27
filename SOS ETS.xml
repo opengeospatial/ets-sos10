@@ -655,37 +655,34 @@
 			<ctl:comment>Check that the values in the time element for each ObservationOffering are valid time values (ISO 8601) or are valid named times (i.e. indeterminate, now, etc.).  If a time period is specified, then the beginTime must come before the endTime or be equal to the endTime.  Pass if time the values in the time element are valid time values; fail otherwise.</ctl:comment>
 			<ctl:link title="Verify that the time values provided for each ObservationOffering are valid.">ATS_URL#SOS.GetCapabilities-ResponseContentsValidTime</ctl:link>
 			<ctl:code>
-
-<!--			
+				
 				<xsl:variable name="beginPosition" select="$capabilitiesDocument//sos:Contents/sos:ObservationOfferingList/sos:ObservationOffering/sos:time/gml:TimePeriod/gml:beginPosition"/>
+				<!--xsl:variable name="beginPosition" select="'1997-07-16T19:20:30.4'"/-->
 				<xsl:variable name="endPosition" select="$capabilitiesDocument//sos:Contents/sos:ObservationOfferingList/sos:ObservationOffering/sos:time/gml:TimePeriod/gml:endPosition"/>
--->				
+				
+<!--    for the indeterminate things
 				<xsl:variable name="beginPosition" select="$capabilitiesDocument//sos:Contents/sos:ObservationOfferingList/sos:ObservationOffering/sos:eventTime/gml:TimePeriod/gml:beginPosition[@indeterminatePosition='unknown']/@indeterminatePosition"/>
 				<xsl:variable name="endPosition" select="$capabilitiesDocument//sos:Contents/sos:ObservationOfferingList/sos:ObservationOffering/sos:eventTime/gml:TimePeriod/gml:endPosition/@indeterminatePosition"/>
-				
-				<ctl:message>
-					hello
-					<xsl:value-of select="$beginPosition"/>	
-					
-					<!--xsl:value-of select="year-from-dateTime(xsd:dateTime(sosFunctions:fixTimeZone($beginPosition)))"/-->					
-				</ctl:message>
+-->				
 				
 				<xsl:choose>
 					<!-- check for any invalid begin time-->
 					<xsl:when test="sosFunctions:isValidDate($beginPosition)='false'">
 						<ctl:message>Invalid beginPosition for ObservationOffering TimePeriod.</ctl:message>
+						<ctl:message select="concat('beginPosition is: ', $beginPosition)"/>
 						<ctl:fail/>
 					</xsl:when>
 					<!-- check for any invalid end time-->
 					<xsl:when test="sosFunctions:isValidDate($endPosition)='false'">
 						<ctl:message>Invalid endPosition for ObservationOffering TimePeriod.</ctl:message>
+						<ctl:message select="concat('endPosition is: ', $endPosition)"/>
 						<ctl:fail/>
 					</xsl:when>					
 					
 					<!-- make sure that beginPosition is not greater than end position -->
 					<xsl:when test="sosFunctions:isTimeIndeterminateValueType($beginPosition) = 'false'
 									and sosFunctions:isTimeIndeterminateValueType($endPosition) = 'false'">
-						<xsl:if test="xsd:dateTime(sosFunctions:fixTimeZone($beginPosition)) &gt; xsd:dateTime(sosFunctions:fixTimeZone($endPosition))">
+						<xsl:if test="sosFunctions:dateTimeFromISO($beginPosition) &gt; sosFunctions:dateTimeFromISO($endPosition)">
 							<ctl:message>Begin position is later than end position.</ctl:message>
 							<ctl:fail/>
 						</xsl:if>
@@ -693,7 +690,7 @@
 									
 					<!-- looks good -->
 					<xsl:otherwise>
-						<ctl:message>OK</ctl:message>
+						<ctl:message>OK</ctl:message>						
 					</xsl:otherwise>					
 				</xsl:choose>
 
