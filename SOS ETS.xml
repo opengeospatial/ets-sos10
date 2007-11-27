@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ctl:package 
-	xmlns:sosFunctions="https://cite.opengeospatial.org/wms-1.3.0/src/ctl/functions.xml"
+	xmlns:sosFunctions="https://cite.opengeospatial.org/sos-1.0.0/src/ctl/functions.xml"
 	xmlns:ctl="http://www.occamlab.com/ctl" 
 	xmlns:db5="http://docbook.org/ns/docbook" 
 	xmlns:html="http://www.w3.org/1999/xhtml" 	
 	xmlns:saxon="http://saxon.sf.net/" 
 	xmlns:tep="http://teamengine.sourceforge.net/parsers" 
-	xmlns:sos="http://www.opengis.net/sos/0.0"
 	xmlns:xi="http://www.w3.org/2001/XInclude" 
 	xmlns:xlink="http://www.w3.org/1999/xlink" 
 	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
@@ -14,18 +13,10 @@
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
 	xmlns:ows="http://www.opengeospatial.net/ows"
 	xmlns:gml="http://www.opengis.net/gml" 
-	
+	xmlns:xsos="http://www.opengis.net/sos/0.0"	
+	xmlns:sos="http://www.opengeospatial.net/sos"	
 >
 
-<!-- xmlns:ows="http://www.opengis.net/ows" -->  <!-- this ows namespace will make the XMLValidationParser for the ExceptionReport work, not sure why -->
-<!--
-   <parser name="parsers:XMLValidatingParser">
-      <java class="com.occamlab.te.parsers.XMLValidatingParser" initialized="true"
-            method="parse"/>
-   </parser>
-   http://www.opengis.net/sos/0.0
-   http://www.opengis.net/sos
-   -->
 	<ctl:suite name="sos:suite">		<!--NOTE: Don't forget to update the TARGET_NAMESPACE_URI and ATS_URL placeholder values-->
 
 		<ctl:title>Annex A - Abstract Test Suite for the Sensor Observation Service</ctl:title>
@@ -291,8 +282,8 @@
 						</ctl:url>
 						<ctl:method>get</ctl:method>						
 						<ctl:param name="request">GetCapabilities</ctl:param>
-						<ctl:param name="service">SOS</ctl:param> 							
-
+						<ctl:param name="service">SOS</ctl:param> 
+						<!--ctl:param name="version">1.0</ctl:param-->
 						<!--
 						<ctl:call-function name="sosFunctions:xmlValidatingParser">					
 							<ctl:with-param name="schemaURL" select="$sosSchemaURL"/>
@@ -425,7 +416,8 @@
 				</ctl:call-test>
 				-->
 			</ctl:code>
-		</ctl:test>  <!-- sos:core-main -->
+		</ctl:test> 
+<!--*****************************************************************************************************************************************************************************-->		
 		<ctl:test name="sos:core-SOS.GetCapabilities-KVPRequestParameterHandling.1">
 			<ctl:param name="serviceURL"/>
 			<ctl:param name="owsSchemaURL"/>
@@ -474,6 +466,7 @@
 				
 			</ctl:code>
 		</ctl:test>
+		<!--*****************************************************************************************************************************************************************************-->
 		<ctl:test name="sos:core-SOS.GetCapabilities-KVPRequestServiceParameterHandling.1">
 			<ctl:param name="serviceURL"/>
 			<ctl:param name="owsSchemaURL"/>
@@ -520,6 +513,7 @@
 				</xsl:choose>
 			</ctl:code>
 		</ctl:test>
+<!--*****************************************************************************************************************************************************************************-->		
 		<ctl:test name="sos:core-SOS.GetCapabilities-KVPRequestRequestParameterHandling.1">
 			<ctl:param name="serviceURL"/>
 			<ctl:param name="owsSchemaURL"/>			
@@ -566,6 +560,9 @@
 				</xsl:choose>
 			</ctl:code>
 		</ctl:test>
+		
+<!--*****************************************************************************************************************************************************************************-->		
+
 		<ctl:test name="sos:core-SOS.GetCapabilities-OperationsMetadataMandatoryOperations.1">
 			<ctl:param name="capabilitiesDocument"/>			
 			<ctl:assertion>The OperationsMetadata section lists the mandatory operations of the SOS.</ctl:assertion>
@@ -601,6 +598,9 @@
 				</xsl:choose>
 			</ctl:code>
 		</ctl:test>
+		
+<!--*****************************************************************************************************************************************************************************-->
+		
 		<ctl:test name="sos:core-SOS.GetCapabilities-OperationsMetadaOptionalOperations.1">
 			<ctl:param name="capabilitiesDocument"/>			
 			<ctl:assertion>Any non-mandatory operations advertised in the OperationsMetadata section have valid SOS method names.</ctl:assertion>
@@ -648,51 +648,65 @@
 			</ctl:code>
 		</ctl:test>
 		
-		
+<!--*****************************************************************************************************************************************************************************-->
+
 		<ctl:test name="sos:core-SOS.GetCapabilities-ResponseContentsValidTime.1">
 			<ctl:param name="capabilitiesDocument"/>
 			<ctl:assertion>The values in the time element for each ObservationOffering are valid time values (ISO 8601) or are valid named times (i.e. indeterminate, now, etc.).  If a time period is specified, then the beginTime must come before the endTime or be equal to the endTime.</ctl:assertion>
 			<ctl:comment>Check that the values in the time element for each ObservationOffering are valid time values (ISO 8601) or are valid named times (i.e. indeterminate, now, etc.).  If a time period is specified, then the beginTime must come before the endTime or be equal to the endTime.  Pass if time the values in the time element are valid time values; fail otherwise.</ctl:comment>
 			<ctl:link title="Verify that the time values provided for each ObservationOffering are valid.">ATS_URL#SOS.GetCapabilities-ResponseContentsValidTime</ctl:link>
 			<ctl:code>
-				
-				<xsl:variable name="beginPosition" select="$capabilitiesDocument//sos:Contents/sos:ObservationOfferingList/sos:ObservationOffering/sos:time/gml:TimePeriod/gml:beginPosition"/>
-				<!--xsl:variable name="beginPosition" select="'1997-07-16T19:20:30.4'"/-->
-				<xsl:variable name="endPosition" select="$capabilitiesDocument//sos:Contents/sos:ObservationOfferingList/sos:ObservationOffering/sos:time/gml:TimePeriod/gml:endPosition"/>
-				
-<!--    for the indeterminate things
-				<xsl:variable name="beginPosition" select="$capabilitiesDocument//sos:Contents/sos:ObservationOfferingList/sos:ObservationOffering/sos:eventTime/gml:TimePeriod/gml:beginPosition[@indeterminatePosition='unknown']/@indeterminatePosition"/>
-				<xsl:variable name="endPosition" select="$capabilitiesDocument//sos:Contents/sos:ObservationOfferingList/sos:ObservationOffering/sos:eventTime/gml:TimePeriod/gml:endPosition/@indeterminatePosition"/>
--->				
-				
-				<xsl:choose>
-					<!-- check for any invalid begin time-->
-					<xsl:when test="sosFunctions:isValidDate($beginPosition)='false'">
-						<ctl:message>Invalid beginPosition for ObservationOffering TimePeriod.</ctl:message>
-						<ctl:message select="concat('beginPosition is: ', $beginPosition)"/>
-						<ctl:fail/>
-					</xsl:when>
-					<!-- check for any invalid end time-->
-					<xsl:when test="sosFunctions:isValidDate($endPosition)='false'">
-						<ctl:message>Invalid endPosition for ObservationOffering TimePeriod.</ctl:message>
-						<ctl:message select="concat('endPosition is: ', $endPosition)"/>
-						<ctl:fail/>
-					</xsl:when>					
+	
+				<xsl:for-each select="$capabilitiesDocument//sos:ObservationOffering//gml:TimePeriod">
+										
+					<xsl:variable name="beginPosition" select="gml:beginPosition"/>					
+					<xsl:variable name="endPosition" select="gml:endPosition"/>
 					
+					<!-- test beginPosition -->
+					<xsl:choose>					
+						<xsl:when test="$beginPosition=''"> <!-- check for indeterminate time -->													
+							<xsl:if test="sosFunctions:isValidIndeterminateValue($beginPosition)='false'">
+								<ctl:message>Invalid beginPosition for ObservationOffering TimePeriod.</ctl:message>
+								<ctl:message select="concat('Indeterminate beginPosition: ', $beginPosition/@indeterminatePosition)"/>	
+								<ctl:fail/>								
+							</xsl:if>
+						</xsl:when>
+						<xsl:otherwise>	<!-- check for actual time -->																		
+							<xsl:if test="sosFunctions:isValidDate($beginPosition)='false'">
+								<ctl:message>Invalid beginPosition for ObservationOffering TimePeriod.</ctl:message>
+								<ctl:message select="concat('beginPosition is: ', $beginPosition)"/>
+								<ctl:fail/>
+							</xsl:if>
+						</xsl:otherwise>
+					</xsl:choose>
+					
+					<!-- test endPosition -->
+					<xsl:choose> <!-- check for indeterminate time -->			
+						<xsl:when test="$endPosition=''">
+							<xsl:if test="sosFunctions:isValidIndeterminateValue($endPosition)='false'">
+								<ctl:message>Invalid endPosition for ObservationOffering TimePeriod.</ctl:message>
+								<ctl:message select="concat('Indeterminate endPosition: ', $endPosition/@indeterminatePosition)"/>	
+								<ctl:fail/>								
+							</xsl:if>
+						</xsl:when>
+						<xsl:otherwise> <!-- check for actual time -->
+							<xsl:if test="sosFunctions:isValidDate($endPosition)='false'">
+								<ctl:message>Invalid endPosition for ObservationOffering TimePeriod.</ctl:message>
+								<ctl:message select="concat('endPosition is: ', $endPosition)"/>
+								<ctl:fail/>
+							</xsl:if>
+						</xsl:otherwise>
+					</xsl:choose>					
+						
 					<!-- make sure that beginPosition is not greater than end position -->
-					<xsl:when test="sosFunctions:isTimeIndeterminateValueType($beginPosition) = 'false'
-									and sosFunctions:isTimeIndeterminateValueType($endPosition) = 'false'">
+					<xsl:if test="$beginPosition != '' and $endPosition != ''">
 						<xsl:if test="sosFunctions:dateTimeFromISO($beginPosition) &gt; sosFunctions:dateTimeFromISO($endPosition)">
 							<ctl:message>Begin position is later than end position.</ctl:message>
 							<ctl:fail/>
 						</xsl:if>
-					</xsl:when>
-									
-					<!-- looks good -->
-					<xsl:otherwise>
-						<ctl:message>OK</ctl:message>						
-					</xsl:otherwise>					
-				</xsl:choose>
+					</xsl:if>
+					
+				</xsl:for-each>
 
 			</ctl:code>
 		</ctl:test>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ctl:package
- xmlns:sosFunctions="https://cite.opengeospatial.org/wms-1.3.0/src/ctl/functions.xml"
+ xmlns:sosFunctions="https://cite.opengeospatial.org/sos-1.0.0/src/ctl/functions.xml"
  xmlns:ctl="http://www.occamlab.com/ctl"
  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
  xmlns:wms="http://www.opengis.net/wms"
@@ -46,14 +46,16 @@
     </ctl:function>
 	
 	
-    <ctl:function name="sosFunctions:isTimeIndeterminateValueType">
-        <ctl:param name="dateString">The date to be tested</ctl:param>
-		<ctl:description>Check whether a date is a valid gml:TimeIndeterminateValueType.</ctl:description>
-        <ctl:code>				
-			<xsl:value-of select="$dateString = 'after'
-								or $dateString = 'before'
-								or $dateString = 'now'
-								or $dateString = 'unknown'"/>
+    <ctl:function name="sosFunctions:isValidIndeterminateValue">
+        <ctl:param name="timePosition">The time position to be tested</ctl:param>
+		<ctl:description>Check whether timePosition has a valid gml:TimeIndeterminateValueType.</ctl:description>
+        <ctl:code>			
+			<xsl:variable name="indeterminateValue" select="$timePosition//@indeterminatePosition"/>
+		
+			<xsl:value-of select="$indeterminateValue = 'after'
+								or $indeterminateValue = 'before'
+								or $indeterminateValue = 'now'
+								or $indeterminateValue = 'unknown'"/>
         </ctl:code>
     </ctl:function>
 
