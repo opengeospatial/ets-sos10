@@ -7,7 +7,7 @@
 	xmlns:saxon="http://saxon.sf.net/" 
 	xmlns:tep="http://teamengine.sourceforge.net/parsers" 
 	xmlns:xi="http://www.w3.org/2001/XInclude" 
-	xmlns:xlink="http://www.w3.org/1999/xlink" 
+	xmlns:xlink="http://www.w3.org/1999/xlink"
 	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 	xmlns:parsers="http://www.occamlab.com/te/parsers"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
@@ -284,7 +284,7 @@
 						<ctl:method>get</ctl:method>						
 						<ctl:param name="request">GetCapabilities</ctl:param>
 						<ctl:param name="service">SOS</ctl:param> 
-						<!--ctl:param name="version">1.0</ctl:param-->
+						<ctl:param name="version">1.0</ctl:param>
 						<!--
 						<ctl:call-function name="sosFunctions:xmlValidatingParser">					
 							<ctl:with-param name="schemaURL" select="$sosSchemaURL"/>
@@ -323,22 +323,24 @@
 						<ctl:call-test name="sos:core-SOS.GetCapabilities-ResponseContentsValidTime.1">
 							<ctl:with-param name="capabilitiesDocument" select="$getCapabilitiesRequest"/>
 						</ctl:call-test>
-				
+	
+						<ctl:call-test name="sos:core-SOS.GetCapabilities-ResponseContentsValidProcedure.1">
+							<ctl:with-param name="capabilitiesDocument" select="$getCapabilitiesRequest"/>
+						</ctl:call-test>
+						
+						<ctl:call-test name="sos:core-SOS.GetCapabilities-ResponseContentsValidObservedProperty.1">
+							<ctl:with-param name="capabilitiesDocument" select="$getCapabilitiesRequest"/>
+						</ctl:call-test>
+
+						<ctl:call-test name="sos:core-SOS.GetCapabilities-ResponseContentsValidResponseFormat.1">
+							<ctl:with-param name="capabilitiesDocument" select="$getCapabilitiesRequest"/>
+						</ctl:call-test>
 					</xsl:otherwise>					
 				</xsl:choose>				
 			
 
-				<ctl:call-test name="sos:core-SOS.GetCapabilities-ResponseContentsValidProcedure.1">
-					<ctl:with-param name="capabilitiesDocument" select="$getCapabilitiesRequest"/>
-				</ctl:call-test>
-				
-<!--
-				<ctl:call-test name="sos:core-SOS.GetCapabilities-ResponseContentsValidObservedProperty.1">
-					<ctl:with-param name="serviceURL" select="$serviceURL"/>
-				</ctl:call-test>
-				<ctl:call-test name="sos:core-SOS.GetCapabilities-ResponseContentsValidResponseFormat.1">
-					<ctl:with-param name="serviceURL" select="$serviceURL"/>
-				</ctl:call-test>
+
+<!--				
 				<ctl:call-test name="sos:core-SOS.GetCapabilities-ResponseContentsValidResultModel.1">
 					<ctl:with-param name="serviceURL" select="$serviceURL"/>
 				</ctl:call-test>
@@ -704,28 +706,95 @@
 			<ctl:assertion>The values in the procedure element(s) for each ObservationOffering contain a value and are valid URNs.</ctl:assertion>
 			<ctl:comment>Check that the values in the procedure element(s) for each ObservationOffering contain a value and are valid URNs according to the OGC URN scheme.  Pass if values in the procedure element(s) contain a value and are valid URNs; fail otherwise.</ctl:comment>
 			<ctl:link title="Verify that the procedure values provided for each ObservationOffering are valid.">ATS_URL#SOS.GetCapabilities-ResponseContentsValidProcedure</ctl:link>
-			<ctl:code>				<!--PUT TEST CODE HERE-->
+			<ctl:code>			
+			
+				<xsl:for-each select="$capabilitiesDocument//sos:ObservationOffering//sos:procedure">				
+				
+					<xsl:variable name="thisURN"> 
+						<xsl:value-of select="@xlink:href"/>
+					</xsl:variable>
+
+					<xsl:choose>
+						<xsl:when test="sosFunctions:isValidProcedureURN($thisURN) = 'false'">
+							<ctl:message select="concat('Invalid procedure urn: ', $thisURN)"/>
+							<ctl:fail/>
+						</xsl:when>
+						<xsl:otherwise>
+							<ctl:message>OK</ctl:message>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:for-each>
 
 			</ctl:code>
 		</ctl:test>
+		
+<!--*****************************************************************************************************************************************************************************-->
+		
 		<ctl:test name="sos:core-SOS.GetCapabilities-ResponseContentsValidObservedProperty.1">
-			<ctl:param name="serviceURL"/>
+			<ctl:param name="capabilitiesDocument"/>
 			<ctl:assertion>The values in the observedProperty element(s) for each ObservationOffering contain a value and are valid URNs.</ctl:assertion>
 			<ctl:comment>Check that the values in the observedProperty element(s) for each ObservationOffering contain a value and are valid URNs according to the OGC URN scheme.  Pass if the values in the observedProperty element(s) contain a value and are valid URNs; fail otherwise.</ctl:comment>
 			<ctl:link title="Verify that the observedProperty values provided for each ObservationOffering are valid.">ATS_URL#SOS.GetCapabilities-ResponseContentsValidObservedProperty</ctl:link>
-			<ctl:code>				<!--PUT TEST CODE HERE-->
+			<ctl:code>				
+				<xsl:for-each select="$capabilitiesDocument//sos:ObservationOffering//sos:observedProperty">								
+					<xsl:variable name="thisURN"> 
+						<xsl:value-of select="@xlink:href"/>
+					</xsl:variable>
+					<xsl:choose>
+						<xsl:when test="sosFunctions:isValidDefinitionURN($thisURN) = 'false'">
+							<ctl:message select="concat('Invalid observedProperty urn: ', $thisURN)"/>
+							<ctl:fail/>
+						</xsl:when>
+						<xsl:otherwise>
+							<ctl:message>OK</ctl:message>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:for-each>			
 
 			</ctl:code>
 		</ctl:test>
+		
+<!--*****************************************************************************************************************************************************************************-->
+
 		<ctl:test name="sos:core-SOS.GetCapabilities-ResponseContentsValidResponseFormat.1">
-			<ctl:param name="serviceURL"/>
+			<ctl:param name="capabilitiesDocument"/>
 			<ctl:assertion>The values in the responseFormat element(s) for each ObservationOffering contain a value and are valid MIME types.</ctl:assertion>
 			<ctl:comment>Check that the values in the responseFormat element(s) for each ObservationOffering contain a value and are valid MIME types.  Pass if assertions hold; fail otherwise.</ctl:comment>
 			<ctl:link title="Verify that the responseFormat values provided for each ObservationOffering are valid MIME types.">ATS_URL#SOS.GetCapabilities-ResponseContentsValidResponseFormat</ctl:link>
-			<ctl:code>				<!--PUT TEST CODE HERE-->
+			<ctl:code>		
+				<xsl:choose>
+					<xsl:when test="not($capabilitiesDocument//sos:ObservationOffering//sos:responseFormat)">
+						<ctl:message select="'ObservationOffering is missing responseFormat.'"/>
+						<ctl:fail/>
+					</xsl:when>
+					<xsl:otherwise>
+					
+						<xsl:for-each select="$capabilitiesDocument//sos:ObservationOffering//sos:responseFormat">
 
+							<xsl:variable name="thisResponseFormat"> 
+								<xsl:value-of select="."/>
+							</xsl:variable>
+							<xsl:choose>
+								<xsl:when test="sosFunctions:isValidObservationResponseFormat($thisResponseFormat) = 'false'">
+									<ctl:message select="concat('Invalid repsonseFormat: ', $thisResponseFormat)"/>
+									<ctl:message select="'repsonseFormat must be text/xml with subtype of either OM or TML'"/>
+									<ctl:fail/>
+								</xsl:when>
+								<xsl:otherwise>
+									<ctl:message>OK</ctl:message>
+								</xsl:otherwise>
+							</xsl:choose>
+						</xsl:for-each>
+
+					</xsl:otherwise>
+					
+				</xsl:choose>
 			</ctl:code>
 		</ctl:test>
+
+<!--*****************************************************************************************************************************************************************************-->		
+		
+		
 		<ctl:test name="sos:core-SOS.GetCapabilities-ResponseContentsValidResultModel.1">
 			<ctl:param name="serviceURL"/>
 			<ctl:assertion> If an ObservationOffering provides the resultModel element, then the resultModel element contains a value that is qualified name of a member of the om:AbstractObservation substitution group.</ctl:assertion>
@@ -779,7 +848,7 @@
 						<ctl:message>OK</ctl:message>
 					</xsl:otherwise>
 				</xsl:choose>	
-<!--<ctl:message  select="concat('describe sensor ',$thisRequest/ows:ExceptionReport/ows:Exception/@exceptionCode, ' ...describe sensor')"/>					-->
+
 			</ctl:code>
 		</ctl:test>
 		<ctl:test name="sos:core-SOS.DescribeSensor-RequestInvalidProcedure.1">
