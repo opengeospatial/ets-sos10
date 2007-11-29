@@ -13,8 +13,8 @@
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
 	xmlns:ows="http://www.opengeospatial.net/ows"
 	xmlns:gml="http://www.opengis.net/gml" 
-	xmlns:sos="http://www.opengis.net/sos/0.0"	
-	xmlns:xsos="http://www.opengeospatial.net/sos"	
+	xmlns:xsos="http://www.opengis.net/sos/0.0"	
+	xmlns:sos="http://www.opengeospatial.net/sos"	
 >
 
 	<ctl:suite name="sos:suite">		<!--NOTE: Don't forget to update the TARGET_NAMESPACE_URI and ATS_URL placeholder values-->
@@ -60,12 +60,12 @@
 						Schema URL:
 						</td>
 						<td>
-							<select name="schema-location-ddl">											   
+							<select name="schema-location-ddl">					
+								<option value="http://georepo.net/schemas/sos/1.0.0/">http://georepo.net/schemas/sos/1.0.0/</option>							
 								<option value="http://mars.uni-muenster.de/swerep1.0/swe/trunk/sos/0.0.0/">http://mars.uni-muenster.de/swerep1.0/swe/trunk/sos/0.0.0/</option>			
 								<option value="http://mars.uni-muenster.de/swerep1.0/swe/trunk/sos/0.0.31/">http://mars.uni-muenster.de/swerep1.0/swe/trunk/sos/0.0.31/</option>
 								<option value="http://mars.uni-muenster.de/swerep/trunk/sos/0.0.31/">http://mars.uni-muenster.de/swerep/trunk/sos/0.0.31/</option>																
-								<option value="http://mars.uni-muenster.de/swerep1.0/swe/trunk/sos/current/">http://mars.uni-muenster.de/swerep1.0/swe/trunk/sos/current/</option>
-								<option value="http://georepo.net/schemas/sos/1.0.0/">http://georepo.net/schemas/sos/1.0.0/</option>
+								<option value="http://mars.uni-muenster.de/swerep1.0/swe/trunk/sos/current/">http://mars.uni-muenster.de/swerep1.0/swe/trunk/sos/current/</option>								
 							</select>
 						</td></tr>
                      </table>
@@ -335,15 +335,18 @@
 						<ctl:call-test name="sos:core-SOS.GetCapabilities-ResponseContentsValidResponseFormat.1">
 							<ctl:with-param name="capabilitiesDocument" select="$getCapabilitiesRequest"/>
 						</ctl:call-test>
+
+						<ctl:call-test name="sos:core-SOS.GetCapabilities-ResponseContentsValidResultModel.1">
+							<ctl:with-param name="capabilitiesDocument" select="$getCapabilitiesRequest"/>
+						</ctl:call-test>
+				
 					</xsl:otherwise>					
 				</xsl:choose>				
 			
 
 
 <!--				
-				<ctl:call-test name="sos:core-SOS.GetCapabilities-ResponseContentsValidResultModel.1">
-					<ctl:with-param name="serviceURL" select="$serviceURL"/>
-				</ctl:call-test>
+
 		
 				<ctl:call-test name="sos:core-SOS.DescribeSensor-RequestInvalidMIMEType.1">
 					<ctl:with-param name="serviceURL" select="$serviceURL"/>
@@ -743,6 +746,8 @@
 					<xsl:choose>
 						<xsl:when test="sosFunctions:isValidDefinitionURN($thisURN) = 'false'">
 							<ctl:message select="concat('Invalid observedProperty urn: ', $thisURN)"/>
+							<ctl:message select="'See document OGC 05-010 for correct definition URN formatting.'"/>
+							OGC 05-010
 							<ctl:fail/>
 						</xsl:when>
 						<xsl:otherwise>
@@ -765,6 +770,8 @@
 				<xsl:choose>
 					<xsl:when test="not($capabilitiesDocument//sos:ObservationOffering//sos:responseFormat)">
 						<ctl:message select="'ObservationOffering is missing responseFormat.'"/>
+						<ctl:message select="'repsonseFormat must be ''text/xml'' with subtype of either OM or TML'"/>
+						<ctl:message select="'Example: text/xml;subtype=&quot;om/1.0.0&quot;'"/>
 						<ctl:fail/>
 					</xsl:when>
 					<xsl:otherwise>
@@ -777,7 +784,8 @@
 							<xsl:choose>
 								<xsl:when test="sosFunctions:isValidObservationResponseFormat($thisResponseFormat) = 'false'">
 									<ctl:message select="concat('Invalid repsonseFormat: ', $thisResponseFormat)"/>
-									<ctl:message select="'repsonseFormat must be text/xml with subtype of either OM or TML'"/>
+									<ctl:message select="'repsonseFormat must be ''text/xml'' with subtype of either OM or TML'"/>
+									<ctl:message select="'Example: text/xml;subtype=&quot;om/1.0.0&quot;'"/>
 									<ctl:fail/>
 								</xsl:when>
 								<xsl:otherwise>
@@ -796,14 +804,31 @@
 		
 		
 		<ctl:test name="sos:core-SOS.GetCapabilities-ResponseContentsValidResultModel.1">
-			<ctl:param name="serviceURL"/>
+			<ctl:param name="capabilitiesDocument"/>
 			<ctl:assertion> If an ObservationOffering provides the resultModel element, then the resultModel element contains a value that is qualified name of a member of the om:AbstractObservation substitution group.</ctl:assertion>
 			<ctl:comment>Check If an ObservationOffering provides the resultModel element, then the resultModel element contains a value that is qualified name of a member of the om:AbstractObservation substitution group.  Pass if assertions hold; fail otherwise.</ctl:comment>
 			<ctl:link title="Verify that the resultModel values provided for each ObservationOffering are valid.">ATS_URL#SOS.GetCapabilities-ResponseContentsValidResultModel</ctl:link>
-			<ctl:code>				<!--PUT TEST CODE HERE-->
+			<ctl:code>
 
+				<xsl:for-each select="$capabilitiesDocument//sos:ObservationOffering//sos:resultModel">
+
+					<xsl:variable name="thisresultModel"> 
+						<xsl:value-of select="."/>
+					</xsl:variable>
+					<xsl:choose>
+						<xsl:when test="sosFunctions:isValidResultModel($thisresultModel) = 'false'">
+							<ctl:message select="concat('Invalid resultModel: ', $thisresultModel)"/>							
+							<ctl:fail/>
+						</xsl:when>
+						<xsl:otherwise>
+							<ctl:message>OK</ctl:message>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:for-each>
+						
 			</ctl:code>
 		</ctl:test>
+		<!--*****************************************************************************************************************************************************************************-->		
 		<ctl:test name="sos:core-SOS.DescribeSensor-RequestInvalidMIMEType.1">					
 			<ctl:param name="serviceURL"/>
 			<ctl:param name="owsSchemaURL"/>			

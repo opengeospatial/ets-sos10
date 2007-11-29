@@ -107,6 +107,16 @@
         </ctl:code>
     </ctl:function>	
 
+    <ctl:function name="sosFunctions:isValidResultModel">
+        <ctl:param name="resultModel">The resultModel to validate</ctl:param>
+        <ctl:return>True/False depending on whether the result model is a qualified name of a member of the om:AbstractObservation substitution group.</ctl:return>
+        <ctl:description>Determines whether the result model is valid</ctl:description>
+        <ctl:code>
+			<xsl:value-of select="($resultModel = 'Measurement'
+									or $resultModel = 'Observation'
+									or $resultModel = 'CategoryObservation')"/>							
+        </ctl:code>
+    </ctl:function>	
 	
     <!--Validates response against schema-->
     <ctl:function name="sosFunctions:xmlValidatingParser">
