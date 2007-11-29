@@ -349,6 +349,11 @@
 							<ctl:with-param name="serviceURL" select="$serviceURL"/>
 							<ctl:with-param name="owsSchemaURL" select="$owsSchemaURL"/>
 						</ctl:call-test>
+
+						<ctl:call-test name="sos:core-SOS.DescribeSensor-RequestInvalidProcedure.1">
+							<ctl:with-param name="serviceURL" select="$serviceURL"/>
+							<ctl:with-param name="owsSchemaURL" select="$owsSchemaURL"/>
+						</ctl:call-test>
 				
 					</xsl:otherwise>					
 				</xsl:choose>				
@@ -360,9 +365,7 @@
 		
 
 				
-				<ctl:call-test name="sos:core-SOS.DescribeSensor-RequestInvalidProcedure.1">
-					<ctl:with-param name="serviceURL" select="$serviceURL"/>
-				</ctl:call-test>
+
 				<ctl:call-test name="sos:core-SOS.DescribeSensor-ResponseMatchingResponseFormat.1">
 					<ctl:with-param name="serviceURL" select="$serviceURL"/>
 				</ctl:call-test>
@@ -843,7 +846,7 @@
 			<ctl:comment>Check that supplying an invalid MIME type (not advertised in the capabilities document) or no MIME type for the outputFormat produces a valid error report message.  Pass if an invalid MIME type or no MIME type produces a valid error report; fail otherwise.</ctl:comment>
 			<ctl:link title="Verify that the server handles invalid MIME types in the outputFormat parameter correctly.">ATS_URL#SOS.DescribeSensor-RequestInvalidMIMEType</ctl:link>
 			<ctl:code>	
-				<!--************************************  check for valid exception when outputFormat is missing from request ******************************************-->
+	<!--************************************  check for valid exception when outputFormat is missing from request ******************************************-->
 				<ctl:message select="'Testing Missing outputFormat: '"/>			
 				<xsl:variable name="noOutputFormatRequest">
 					<ctl:request>
@@ -857,8 +860,6 @@
 								version="0.0.0" 
 								service="SOS" 
 								xmlns="http://www.opengis.net/sos/0.0" 
-								xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-								xsi:schemaLocation="http://www.opengis.net/sos/0.0 http://mars.uni-muenster.de/swerep1.0/swe/trunk/sos/0.0.0/sosDescribeSensor.xsd"
 							>
 								<procedure>urn:ogc:object:procedure:CITE:WeatherService:NYC</procedure>
 							</DescribeSensor>
@@ -910,15 +911,13 @@
 							<DescribeSensor 
 								version="0.0.0" 
 								service="SOS" 
-								xmlns="http://www.opengis.net/sos/0.0" 
-								xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-								xsi:schemaLocation="http://www.opengis.net/sos/0.0 http://mars.uni-muenster.de/swerep1.0/swe/trunk/sos/0.0.0/sosDescribeSensor.xsd"
-								outputFormat="text/xml;subtype=&quot;sensormageterML/1.0.0&quot;"
+								xmlns="http://www.opengis.net/sos/0.0"
+								outputFormat="monkey"
 								>
 								<procedure>urn:ogc:object:procedure:CITE:WeatherService:NYC</procedure>
 							</DescribeSensor>
 							
-							<!--  outputFormat="text/xml;subtype=&quot;/1.0.0&quot;" -->
+							<!--  outputFormat="text/xml;subtype=&quot;sensorML/1.0.0&quot;" -->
 						</ctl:body>
 						 	
 							
@@ -930,16 +929,16 @@
 						
 					</ctl:request>			
 				</xsl:variable>										
-
 				<xsl:choose>
 					<!-- check for valid schema or missing response-->
-					<xsl:when test="not($invalidOutputFormatRequest/*)">
+					<xsl:when test="not($invalidOutputFormatRequest/*)">							
 						<ctl:message>Exception report failed schema validation.</ctl:message>
 						<ctl:message><xsl:value-of select="concat('Schema: ', $owsSchemaURL, 'owsExceptionReport.xsd')"/></ctl:message>
 						<ctl:fail/>
 					</xsl:when>
+
 					<!-- check for correct exception code -->					
-					<xsl:when test="not($invalidOutputFormatRequest/ows:ExceptionReport/ows:Exception/@exceptionCode = 'InvalidParameterValue')">
+					<xsl:when test="not($invalidOutputFormatRequest/ows:ExceptionReport/ows:Exception/@exceptionCode = 'InvalidParameterValue')">						
 						<ctl:message>Invalid exception code.</ctl:message>
 						<ctl:message>
 							<xsl:value-of select="concat('Exception code is: ', $invalidOutputFormatRequest/ows:ExceptionReport/ows:Exception/@exceptionCode)"/>
@@ -960,13 +959,121 @@
 		
 		<ctl:test name="sos:core-SOS.DescribeSensor-RequestInvalidProcedure.1">
 			<ctl:param name="serviceURL"/>
+			<ctl:param name="owsSchemaURL"/>
 			<ctl:assertion>Supplying an invalid procedure (not advertised in the capabilities document) or no procedure for the procedure produces a valid error report message.</ctl:assertion>
 			<ctl:comment>Check that supplying an invalid Procedure (not advertised in the capabilities document) or no Procedure for the Procedure produces a valid error report message.  Pass if an invalid Procedure or no Procedure produces a valid error report message; fail otherwise.</ctl:comment>
 			<ctl:link title="Verify that the server handles an invalid procedure in the request correctly.">ATS_URL#SOS.DescribeSensor-RequestInvalidProcedure</ctl:link>
-			<ctl:code>				<!--PUT TEST CODE HERE-->
+			<ctl:code>	
+				<!--************************************  check for valid exception when outputFormat is missing from request ******************************************-->
+				<ctl:message select="'Testing Missing outputFormat: '"/>			
+				<xsl:variable name="noProcedureRequest">
+					<ctl:request>
+						<ctl:url>
+							<xsl:value-of select="$serviceURL"/>
+						</ctl:url>
+						<ctl:method>post</ctl:method>
+
+						<ctl:body>
+							<DescribeSensor 
+								version="0.0.0" 
+								service="SOS" 
+								outputFormat="text/xml;subtype=&quot;sensorML/1.0.0&quot;"
+								xmlns="http://www.opengis.net/sos/0.0" 
+							>								
+							</DescribeSensor>
+														
+						</ctl:body>
+						 							
+						<ctl:call-function name="sosFunctions:xmlValidatingParser">					
+							<ctl:with-param name="schemaURL" select="$owsSchemaURL"/>
+							<ctl:with-param name="request" select="'ExceptionReport'"/>
+							<ctl:with-param name="service" select="'ows'"/>
+						</ctl:call-function>
+				
+					</ctl:request>			
+				</xsl:variable>										
+
+				<xsl:choose>
+					<!-- check for valid schema or missing response-->
+					<xsl:when test="not($noProcedureRequest/*)">
+						<ctl:message>Exception report failed schema validation.</ctl:message>
+						<ctl:message><xsl:value-of select="concat('Schema: ', $owsSchemaURL, 'owsExceptionReport.xsd')"/></ctl:message>
+						<ctl:fail/>
+					</xsl:when>
+					<!-- check for correct exception code -->					
+					<xsl:when test="not($noProcedureRequest/ows:ExceptionReport/ows:Exception/@exceptionCode = 'MissingParameterValue')">
+						<ctl:message>Invalid exception code.</ctl:message>
+						<ctl:message>
+							<xsl:value-of select="concat('Exception code is: ', $noProcedureRequest/ows:ExceptionReport/ows:Exception/@exceptionCode)"/>
+						</ctl:message>
+						<ctl:message>Exception code should be: 'MissingParameterValue'.</ctl:message>
+						<ctl:fail/>
+					</xsl:when>
+					<!-- looks good -->
+					<xsl:otherwise>
+						<ctl:message>OK</ctl:message>
+					</xsl:otherwise>
+				</xsl:choose>	
+
+				<!--************************************  check for valid exception when outputFormat is invalid ******************************************-->
+				<ctl:message select="'Testing Invalid outputFormat: '"/>			
+				<xsl:variable name="invalidProcedureRequest">
+					<ctl:request>
+						<ctl:url>
+							<xsl:value-of select="$serviceURL"/>
+						</ctl:url>
+						<ctl:method>post</ctl:method>
+
+						<ctl:body>
+							<DescribeSensor 
+								version="0.0.0" 
+								service="SOS" 
+								xmlns="http://www.opengis.net/sos/0.0" 
+								xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+								>
+								<procedure>urn:ogc:object:procedure:CITE:NFL:AstroDome</procedure>
+							</DescribeSensor>
+							
+							<!--  outputFormat="text/xml;subtype=&quot;/1.0.0&quot;" -->
+						</ctl:body>
+						 	
+							
+						<ctl:call-function name="sosFunctions:xmlValidatingParser">					
+							<ctl:with-param name="schemaURL" select="$owsSchemaURL"/>
+							<ctl:with-param name="request" select="'ExceptionReport'"/>
+							<ctl:with-param name="service" select="'ows'"/>
+						</ctl:call-function>
+						
+					</ctl:request>			
+				</xsl:variable>										
+
+				<xsl:choose>
+					<!-- check for valid schema or missing response-->
+					<xsl:when test="not($invalidProcedureRequest/*)">
+						<ctl:message>Exception report failed schema validation.</ctl:message>
+						<ctl:message><xsl:value-of select="concat('Schema: ', $owsSchemaURL, 'owsExceptionReport.xsd')"/></ctl:message>
+						<ctl:fail/>
+					</xsl:when>
+					<!-- check for correct exception code -->					
+					<xsl:when test="not($invalidProcedureRequest/ows:ExceptionReport/ows:Exception/@exceptionCode = 'InvalidParameterValue')">
+						<ctl:message>Invalid exception code.</ctl:message>
+						<ctl:message>
+							<xsl:value-of select="concat('Exception code is: ', $invalidProcedureRequest/ows:ExceptionReport/ows:Exception/@exceptionCode)"/>
+						</ctl:message>
+						<ctl:message>Exception code should be: 'InvalidParameterValue'.</ctl:message>
+						<ctl:fail/>
+					</xsl:when>
+					<!-- looks good -->
+					<xsl:otherwise>
+						<ctl:message>OK</ctl:message>
+					</xsl:otherwise>
+				</xsl:choose>					
 
 			</ctl:code>
 		</ctl:test>
+		
+		<!--*****************************************************************************************************************************************************************************-->		
+		
 		<ctl:test name="sos:core-SOS.DescribeSensor-ResponseMatchingResponseFormat.1">
 			<ctl:param name="serviceURL"/>
 			<ctl:assertion>The format of the response document matches the outputFormat specified in the request and is valid according to the outputFormat schema.</ctl:assertion>
