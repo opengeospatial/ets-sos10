@@ -7,16 +7,11 @@
  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
  xmlns:xlink="http://www.w3.org/1999/xlink"
  xmlns:parsers="http://www.occamlab.com/te/parsers"
+ xmlns:ows="http://www.opengeospatial.net/ows"
+ xmlns:xows="http://www.opengis.net/ows"
 
 >
-	<!-- temporary function so that testing may be completed -->
-    <ctl:function name="sosFunctions:fixTimeZone">
-        <ctl:param name="dateString"></ctl:param>
-		<ctl:description>Append ":00" to $dateString.</ctl:description>
-        <ctl:code>				
-			<xsl:value-of select="concat($dateString, ':00')"/>
-        </ctl:code>
-    </ctl:function>
+
 
     <ctl:function name="sosFunctions:dateTimeFromISO">
         <ctl:param name="dateString"></ctl:param>
@@ -76,6 +71,25 @@
 		</ctl:code>
 	</ctl:function>
 
+   <ctl:function name="sosFunctions:isValidOperationName">
+        <ctl:param name="operationName">The name of the SOS operation</ctl:param>
+        <ctl:return>True/False depending on whether the name is one of the valid SOS operations.</ctl:return>
+        <ctl:description>Determines whether the operation name is valid</ctl:description>
+        <ctl:code>
+			<xsl:value-of select="($operationName='GetCapabilities'
+											or $operationName='DescribeFeatureType'
+											or $operationName='DescribeSensor'
+											or $operationName='DescribeObservationType'
+											or $operationName='DescribeResultModel'
+											or $operationName='GetObservation'
+											or $operationName='GetObservationById'
+											or $operationName='GetResult'
+											or $operationName='GetFeatureOfInterest'
+											or $operationName='GetFeatureOfInterestTime'
+											or $operationName='Insert'
+											or $operationName='RegisterSensor')"/>																					
+        </ctl:code>
+    </ctl:function>	
 	
     <ctl:function name="sosFunctions:isValidProcedureURN">
         <ctl:param name="urnString">The URN to validate</ctl:param>
@@ -97,15 +111,16 @@
         </ctl:code>
     </ctl:function>	
 
-
-    <ctl:function name="sosFunctions:isValidObservationResponseFormat">
-        <ctl:param name="responseFormat">The respsonseFormat to validate</ctl:param>
-        <ctl:return>True/False depending on whether the response is a MIME type of 'text/xml' with a subtype of either OM or TML</ctl:return>
-        <ctl:description>Determines if a definition URN is valid</ctl:description>
-        <ctl:code>
-			<xsl:value-of select="(matches($responseFormat,'^text/xml;subtype=.*(OM|TML).*','i'))"/>							
-        </ctl:code>
-    </ctl:function>	
+	<ctl:function name="sosFunctions:isValidMIMETypeFormat">
+		<ctl:param name="responseFormat">The respsonseFormat to validate</ctl:param>
+		<ctl:return>True/False depending on whether the input is a valid MIME type based on ows:owsCommon.xsd</ctl:return>
+		<ctl:description>Determines if a definition URN is valid</ctl:description>
+		<ctl:code>		
+			<xsl:value-of select="(matches($responseFormat,'^(application|audio|image|text|video|message|multipart|model)/.+(;\s*.+=.+)*','i'))"/>
+			<!--xsl:value-of select="(matches($responseFormat,'^text/xml;subtype=.*(OM|TML).*','i'))"/-->
+		</ctl:code>
+	</ctl:function>	
+   
 
     <ctl:function name="sosFunctions:isValidResultModel">
         <ctl:param name="resultModel">The resultModel to validate</ctl:param>
@@ -113,27 +128,91 @@
         <ctl:description>Determines whether the result model is valid</ctl:description>
         <ctl:code>
 			<xsl:value-of select="($resultModel = 'Measurement'
-									or $resultModel = 'Observation'
-									or $resultModel = 'CategoryObservation')"/>							
+									or $resultModel = 'CountObservation'
+									or $resultModel = 'CategoryObservation'
+									or $resultModel = 'TruthObservation'
+									or $resultModel = 'ComplexObservation'
+									or $resultModel = 'DiscreteCoverageObservationType'
+									or $resultModel = 'PointCoverageObservationType'
+									or $resultModel = 'TimeSeriesObservationType'
+									or $resultModel = 'ElementCoverageObservationType'
+									or $resultModel = 'DiscreteCoverageObsType'
+									or $resultModel = 'PointCoverageObsType'
+									or $resultModel = 'TimeSeriesObsType'
+									or $resultModel = 'CommonObservationType')"/>							
+									
         </ctl:code>
     </ctl:function>	
 	
-    <!--Validates response against schema-->
+    <ctl:function name="sosFunctions:operationPostURL">
+		<ctl:param name="capabilitesDocument">The capabilities document</ctl:param>
+        <ctl:param name="operation">The operation for which the URL is reqested</ctl:param>
+        <ctl:return>Post URL of given operation</ctl:return>
+        <ctl:description>Returns post URL of given operation</ctl:description>
+        <ctl:code>
+			<xsl:value-of select="$capabilitesDocument//ows:Operation[@name=$operation]/ows:DCP/ows:HTTP/ows:Post/@xlink:href"/>																
+        </ctl:code>
+    </ctl:function>	
+
+    <ctl:function name="sosFunctions:operationVersion">
+		<ctl:param name="capabilitesDocument">The capabilities document</ctl:param>
+        <ctl:param name="operation">The operation for which the URL is reqested</ctl:param>
+        <ctl:return>Post URL of given operation</ctl:return>
+        <ctl:description>Returns post URL of given operation</ctl:description>
+        <ctl:code>
+			<xsl:value-of select="$capabilitesDocument//ows:Operation[@name=$operation]/ows:Parameter[@name='version']/ows:Value"/>																
+        </ctl:code>
+    </ctl:function>	
+
+    <ctl:function name="sosFunctions:describeSensorValidProcedure">
+		<ctl:param name="capabilitesDocument">The capabilities document</ctl:param>        
+        <ctl:return>The first procedure for DescribeSensor advertised in the capabilities document</ctl:return>
+        <ctl:description>Return a valid procedure for use in calling DescribeSensor</ctl:description>
+        <ctl:code>
+			<xsl:value-of select="$capabilitesDocument//ows:Operation[@name='DescribeSensor']/ows:Parameter[@name='procedure']/ows:Value[1]"/>																
+        </ctl:code>
+    </ctl:function>	
+	
+    <ctl:function name="sosFunctions:describeSensorOutputFormat">
+		<ctl:param name="capabilitesDocument">The capabilities document</ctl:param>        
+        <ctl:return>The outputFormat for DescribeSensor advertised in the capabilities document</ctl:return>
+        <ctl:description>Return a valid outputFormat for use in calling DescribeSensor</ctl:description>
+        <ctl:code>
+			<xsl:value-of select="$capabilitesDocument//ows:Operation[@name='DescribeSensor']/ows:Parameter[@name='outputFormat']/ows:Value[1]"/>																
+        </ctl:code>
+    </ctl:function>	
+	
+	
+	<!--Validates response against schema-->
+
     <ctl:function name="sosFunctions:xmlValidatingParser">
-        <ctl:param name="schemaURL">The location of the schema used to validate response document</ctl:param>
+        <ctl:param name="schemaLocation">The location of the schema used to validate response document</ctl:param>
 		<ctl:param name="request">The name of the request</ctl:param>
 		<ctl:param name="service">The name of the service</ctl:param>
 		<ctl:description>Standard CTL XMLValidatingParser</ctl:description>
         <ctl:code>	
-			<!-- note that the ignoreErrors flag below seems to have the opposite of it's intended effect -->
-            <parsers:XMLValidatingParser ignoreErrors="true">
-                <parsers:schemas>
-                    <parsers:schema type="url">
-						<xsl:value-of select="concat($schemaURL, lower-case($service), $request, '.xsd')"/>
-                    </parsers:schema>
-                </parsers:schemas>
-            </parsers:XMLValidatingParser>
-	
+			<xsl:variable name="schemaFile" select="concat($schemaLocation, lower-case($service), $request, '.xsd')"/>
+			<xsl:choose>
+				<xsl:when test="starts-with($schemaLocation,'http')">
+					<!-- note that the ignoreErrors flag below seems to have the opposite of it's intended effect -->
+					<parsers:XMLValidatingParser ignoreErrors="true">
+						<parsers:schemas>
+							<parsers:schema type="url">
+								<xsl:value-of select="$schemaFile"/>
+							</parsers:schema>
+						</parsers:schemas>
+					</parsers:XMLValidatingParser>	
+				</xsl:when>
+				<xsl:otherwise>
+					<parsers:XMLValidatingParser ignoreErrors="true">
+						<parsers:schemas>
+							<parsers:schema type="file">
+								<xsl:value-of select="$schemaFile"/>
+							</parsers:schema>
+						</parsers:schemas>
+					</parsers:XMLValidatingParser>
+				</xsl:otherwise>
+			</xsl:choose>				
         </ctl:code>
     </ctl:function>
 	
