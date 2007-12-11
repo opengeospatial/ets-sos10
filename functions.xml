@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <ctl:package
  xmlns:sosFunctions="https://cite.opengeospatial.org/sos-1.0.0/src/ctl/functions.xml"
  xmlns:ctl="http://www.occamlab.com/ctl"
@@ -10,9 +11,9 @@
  xmlns:yows="http://www.opengeospatial.net/ows"
  xmlns:ows="http://www.opengis.net/ows/1.1"
  xmlns:xows="http://www.opengis.net/ows"
-
+ xmlns:gml="http://www.opengis.net/gml"
+ xmlns:sos="http://www.opengis.net/sos/1.0"
 >
-
 
     <ctl:function name="sosFunctions:dateTimeFromISO">
         <ctl:param name="dateString"></ctl:param>
@@ -174,16 +175,7 @@
 			<xsl:value-of select="$capabilitesDocument//ows:Operation[@name='DescribeSensor']//ows:Parameter[@name='procedure']//ows:AllowedValues/ows:Value[1]"/>																
         </ctl:code>
     </ctl:function>	
-
-    <ctl:function name="sosFunctions:procedureCollection">
-		<ctl:param name="capabilitesDocument">The capabilities document</ctl:param>        
-        <ctl:return>The first procedure for DescribeSensor advertised in the capabilities document</ctl:return>
-        <ctl:description>Return a valid procedure for use in calling DescribeSensor</ctl:description>
-        <ctl:code>
-			<xsl:value-of select="$capabilitesDocument//ows:Operation[@name='DescribeSensor']/ows:Parameter[@name='procedure']"/>																
-        </ctl:code>
-    </ctl:function>	
-	
+		
     <ctl:function name="sosFunctions:describeSensorOutputFormat">
 		<ctl:param name="capabilitesDocument">The capabilities document</ctl:param>        
         <ctl:return>The outputFormat for DescribeSensor advertised in the capabilities document</ctl:return>
@@ -192,7 +184,46 @@
 			<xsl:value-of select="$capabilitesDocument//ows:Operation[@name='DescribeSensor']//ows:Parameter[@name='outputFormat']//ows:AllowedValues/ows:Value[1]"/>																
         </ctl:code>
     </ctl:function>	
+
 	
+	<ctl:function name="sosFunctions:observationOfferingResponseFormat">
+		<ctl:param name="capabilitesDocument">The capabilities document</ctl:param>
+		<ctl:param name="offeringId">The offering Id</ctl:param>        
+        <ctl:return>The responseFormat for the ObservationOffering</ctl:return>
+        <ctl:description>Return a valid responseFormat for the offering</ctl:description>
+        <ctl:code>
+			<xsl:value-of select="$capabilitesDocument//sos:ObservationOffering[@gml:id=$offeringId]//sos:responseFormat[1]"/>																
+        </ctl:code>
+    </ctl:function>
+
+	<ctl:function name="sosFunctions:observationOfferingObservedProperty">
+		<ctl:param name="capabilitesDocument">The capabilities document</ctl:param>
+		<ctl:param name="offeringId">The offering Id</ctl:param>        
+        <ctl:return>The first observedProperty for the ObservationOffering</ctl:return>
+        <ctl:description>Return a valid responseFormat for the offering</ctl:description>
+        <ctl:code>
+			<xsl:value-of select="$capabilitesDocument//sos:ObservationOffering[@gml:id=$offeringId]//sos:observedProperty[1]/@xlink:href"/>																
+        </ctl:code>
+    </ctl:function>
+	
+	 <ctl:function name="sosFunctions:capabilitiesFirstOfferingId">
+		<ctl:param name="capabilitesDocument">The capabilities document</ctl:param>        
+        <ctl:return>The id of the first offering in the capbilities document</ctl:return>        
+        <ctl:code>
+			<xsl:value-of select="$capabilitesDocument//sos:ObservationOffering/@gml:id[1]"/>
+        </ctl:code>
+    </ctl:function>
+	
+	<!--
+    <ctl:function name="sosFunctions:firstSRSName">
+		<ctl:param name="capabilitesDocument">The capabilities document</ctl:param>        
+        <ctl:return>The first attribute value called srsName in an observation offering</ctl:return>
+        <ctl:description>Return a valid outputFormat for use in calling DescribeSensor</ctl:description>
+        <ctl:code>
+			<xsl:value-of select="$capabilitesDocument//sos:ObservationOffering//@srsName[1]"/>																
+        </ctl:code>
+    </ctl:function>	
+	-->
 	<ctl:function name="sosFunctions:schemaPath">
         <ctl:param name="schemaRoot">The location of the schemas</ctl:param>
 		<ctl:param name="version">The numeric version of the schema</ctl:param>
@@ -202,18 +233,17 @@
 			<xsl:value-of select="concat($schemaRoot, $encoding, '/', $version, '/', $filename)"/>
 		</ctl:code>
 	</ctl:function>
+	
 	<!--Validates response against schema-->
-
-    <ctl:function name="sosFunctions:xmlValidatingParser">
-        <ctl:param name="schemaRoot">The location of the schemas</ctl:param>
-		<ctl:param name="version">The numeric version of the schema</ctl:param>
-		<ctl:param name="encoding">The name of the service or encoding to be used</ctl:param>
-		<ctl:param name="filename">Filenam of schema file</ctl:param>
+	<!-- this function is overloaded, there are two versions -->
+	<!-- one version accepts the full path to the schema file as a parameter -->
+	<!-- the other constructs the path from parts -->
+	<ctl:function name="sosFunctions:xmlValidatingParser">
+        <ctl:param name="schemaFile">schemaFile</ctl:param>
 		<ctl:description>Standard CTL XMLValidatingParser</ctl:description>
-        <ctl:code>			
-			<xsl:variable name="schemaFile" select="sosFunctions:schemaPath($schemaRoot, $version, $encoding, $filename)"/>
+        <ctl:code>						
 			<xsl:choose>
-				<xsl:when test="starts-with($schemaRoot,'http')">
+				<xsl:when test="starts-with($schemaFile,'http')">
 					<!-- note that the ignoreErrors flag below seems to have the opposite of it's intended effect -->
 					<parsers:XMLValidatingParser ignoreErrors="true">
 						<parsers:schemas>
@@ -235,6 +265,73 @@
 			</xsl:choose>				
         </ctl:code>
     </ctl:function>
+
+	
+    <ctl:function name="sosFunctions:xmlValidatingParser">
+        <ctl:param name="schemaRoot">The location of the schemas</ctl:param>
+		<ctl:param name="version">The numeric version of the schema</ctl:param>
+		<ctl:param name="encoding">The name of the service or encoding to be used</ctl:param>
+		<ctl:param name="filename">Filenam of schema file</ctl:param>
+		<ctl:description>Standard CTL XMLValidatingParser</ctl:description>
+        <ctl:code>				
+			<xsl:variable name="schemaFile" select="sosFunctions:schemaPath($schemaRoot, $version, $encoding, $filename)"/>
+			<xsl:choose>
+				<xsl:when test="starts-with($schemaFile,'http')">
+					<!-- note that the ignoreErrors flag below seems to have the opposite of it's intended effect -->
+					<parsers:XMLValidatingParser ignoreErrors="true">
+						<parsers:schemas>
+							<parsers:schema type="url">
+								<xsl:value-of select="$schemaFile"/>
+							</parsers:schema>
+						</parsers:schemas>
+					</parsers:XMLValidatingParser>	
+				</xsl:when>
+				<xsl:otherwise>
+					<parsers:XMLValidatingParser ignoreErrors="true">
+						<parsers:schemas>
+							<parsers:schema type="file">
+								<xsl:value-of select="$schemaFile"/>
+							</parsers:schema>
+						</parsers:schemas>
+					</parsers:XMLValidatingParser>
+				</xsl:otherwise>
+			</xsl:choose>			
+        </ctl:code>
+    </ctl:function>
+
+    <ctl:function name="sosFunctions:exceptionReportValidatingParser">
+        <ctl:param name="schemaRoot">The location of the schemas</ctl:param>
+		<ctl:param name="version">The numeric version of the schema</ctl:param>
+		<ctl:param name="encoding">The name of the service or encoding to be used</ctl:param>
+		<ctl:param name="filename">Filenam of schema file</ctl:param>
+		<ctl:description>Standard CTL XMLValidatingParser</ctl:description>
+        <ctl:code>			
+
+		<xsl:variable name="schemaFile" select="'C:\schemas\owsExceptionReport.xsd'"/>
+			<xsl:choose>
+				<xsl:when test="starts-with($schemaFile,'http')">
+					<!-- note that the ignoreErrors flag below seems to have the opposite of it's intended effect -->
+					<parsers:XMLValidatingParser ignoreErrors="true">
+						<parsers:schemas>
+							<parsers:schema type="url">
+								<xsl:value-of select="$schemaFile"/>
+							</parsers:schema>
+						</parsers:schemas>
+					</parsers:XMLValidatingParser>	
+				</xsl:when>
+				<xsl:otherwise>
+					<parsers:XMLValidatingParser ignoreErrors="true">
+						<parsers:schemas>
+							<parsers:schema type="file">
+								<xsl:value-of select="$schemaFile"/>
+							</parsers:schema>
+						</parsers:schemas>
+					</parsers:XMLValidatingParser>
+				</xsl:otherwise>
+			</xsl:choose>				
+        </ctl:code>
+    </ctl:function>
+
 	
 	<!-- the follwing three functions parse out subtype parts from a mime type -->
 	<ctl:function name="sosFunctions:mimeSubtype">
