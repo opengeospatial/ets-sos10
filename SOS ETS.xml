@@ -68,7 +68,7 @@
 								</td>
 								<td>
 									<select name="schema-location-ddl">																
-										<option value="C:/schemas/">C:/schemas/</option>
+										<option value="C:\schemas\swe\">C:\schemas\swe\</option>
 										<option value="http://mars.uni-muenster.de/swerep1.0/swe/trunk/sos/0.0.0/">http://mars.uni-muenster.de/swerep1.0/swe/trunk/sos/</option>			
 										<option value="http://mars.uni-muenster.de/swerep/trunk/ows/">http://mars.uni-muenster.de/swerep/trunk/ows/</option>
 										<option value="https://svn.opengeospatial.org/ogc-projects/ows/swe/trunk/sos/">https://svn.opengeospatial.org/ogc-projects/ows/swe/trunk/sos/1.0.0/</option>															
@@ -88,7 +88,6 @@
 		
         
 			<!-- set other "global" variables -->
-			<!-- <xsl:variable name="ows.schema.url" select="'http://mars.uni-muenster.de/swerep/trunk/ows/1.0.0/'"/> -->
 				
 			<xsl:variable name="ogc.schema.root" select="'http://schemas.opengis.net/'"/>
 			<xsl:variable name="sos.version" select="'1.0.0'"/>		
@@ -310,10 +309,7 @@ SOS.GetObservation-RequestInvalidResponseMode
 					<ctl:with-param name="ogcSchemaRoot" select="$ogcSchemaRoot"/>
 					<ctl:with-param name="owsVersion" select="$owsVersion"/>
 				</ctl:call-test>
-												
-				<!--xsl:variable name="getCapabilitiesRequest">
-					<xsl:value-of select="sosFunctions:getCapabilitiesRequest($serviceURL,$sosSchemaRoot)"/>
-				</xsl:variable-->					
+																
 				<ctl:message select="'********************************************************'"/>
 				<ctl:message select="''"/>				
 				<ctl:message select="'A request for a valid capabilities document will now be made.'"/>
@@ -681,13 +677,19 @@ SOS.GetObservation-RequestInvalidResponseMode
 					<ctl:message select="'********************************************************'"/>
 					<ctl:message select="''"/>						
 					<ctl:call-test name="getObservation:core-SOS.GetObservation-ResponseMatchingResponseFormatData.1">
-						<ctl:with-param name="serviceURL" select="$serviceURL"/>
+						<ctl:with-param name="capabilitiesDocument" select="$getCapabilitiesRequest"/>
+						<ctl:with-param name="ogcSchemaRoot" select="$ogcSchemaRoot"/>
+						<ctl:with-param name="postURL" select="$getObservationPostURL"/>
+						<ctl:with-param name="getObservationVersion" select="$getObservationVersion"/>
 					</ctl:call-test>
 					
 					<ctl:message select="'********************************************************'"/>
 					<ctl:message select="''"/>						
 					<ctl:call-test name="getObservation:core-SOS.GetObservation-ResponseMatchingResultModel.1">
-						<ctl:with-param name="serviceURL" select="$serviceURL"/>
+						<ctl:with-param name="capabilitiesDocument" select="$getCapabilitiesRequest"/>
+						<ctl:with-param name="ogcSchemaRoot" select="$ogcSchemaRoot"/>
+						<ctl:with-param name="postURL" select="$getObservationPostURL"/>
+						<ctl:with-param name="getObservationVersion" select="$getObservationVersion"/>
 					</ctl:call-test>
 					
 					<ctl:message select="'********************************************************'"/>
