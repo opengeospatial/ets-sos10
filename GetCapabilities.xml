@@ -20,6 +20,7 @@
 	xmlns:sensorML="http://www.opengis.net/sensorML"
 	xmlns:tml="http://www.opengis.net/tml"
 	xmlns:xml="http://www.w3.org/XML/1998/namespace"
+	xmlns:om="http://www.opengis.net/om/1.0.o"
 >
 
 		
@@ -43,8 +44,8 @@
 					<ctl:param name="request">GetCapabilities</ctl:param>
 					<!-- leaving out the "service" parameter -->		
 				
-					<ctl:call-function name="sosFunctions:exceptionReportValidatingParser">											
-						<ctl:with-param name="schemaRoot" select="$ogcSchemaRoot"/>
+					<ctl:call-function name="sosFunctions:xmlValidatingParser">											
+						<ctl:with-param name="schemaRoot" select="'C:\schemas\SCHEMAS_OPENGIS_NET\'"/>
 						<ctl:with-param name="version" select="$owsVersion"/>
 						<ctl:with-param name="encoding" select="'ows'"/>
 						<ctl:with-param name="filename" select="'owsExceptionReport.xsd'"/>									
@@ -56,7 +57,7 @@
 				<!-- check for valid schema or missing response-->
 				<xsl:when test="not($thisRequest/*)">
 					<ctl:message>Exception report failed schema validation, or no exception was produced.</ctl:message>
-					<ctl:message select="concat('Schema file: ', sosFunctions:schemaPath($ogcSchemaRoot, $owsVersion, 'ows', 'owsExceptionReport.xsd'))"/>
+					<ctl:message select="concat('Schema file: ', sosFunctions:schemaPath('C:\schemas\SCHEMAS_OPENGIS_NET\', $owsVersion, 'ows', 'owsExceptionReport.xsd'))"/>
 					<ctl:fail/>
 				</xsl:when>
 				<!-- check for correct exception code -->
@@ -97,8 +98,8 @@
 					<ctl:method>get</ctl:method>						
 					<ctl:param name="request">GetCapabilities</ctl:param>
 					<ctl:param name="service"><xsl:value-of select="$invalidServiceValue"/></ctl:param>  <!-- Invalid service parameter -->					
-						<ctl:call-function name="sosFunctions:exceptionReportValidatingParser">					
-							<ctl:with-param name="schemaRoot" select="$ogcSchemaRoot"/>
+						<ctl:call-function name="sosFunctions:xmlValidatingParser">					
+							<ctl:with-param name="schemaRoot" select="'C:\schemas\SCHEMAS_OPENGIS_NET\'"/>
 							<ctl:with-param name="version" select="$owsVersion"/>
 							<ctl:with-param name="encoding" select="'ows'"/>
 							<ctl:with-param name="filename" select="'owsExceptionReport.xsd'"/>							
@@ -110,7 +111,7 @@
 				<!-- check for valid schema or missing response-->
 				<xsl:when test="not($thisRequest/*)">
 					<ctl:message>Exception report failed schema validation, or no exception was produced.</ctl:message>
-					<ctl:message select="concat('Schema file: ', sosFunctions:schemaPath($ogcSchemaRoot, $owsVersion, 'ows', 'owsExceptionReport.xsd'))"/>
+					<ctl:message select="concat('Schema file: ', sosFunctions:schemaPath('C:\schemas\SCHEMAS_OPENGIS_NET\', $owsVersion, 'ows', 'owsExceptionReport.xsd'))"/>
 					<ctl:fail/>
 				</xsl:when>
 				<!-- check for correct exception code -->
@@ -150,8 +151,8 @@
 					<ctl:param name="request"><xsl:value-of select="$invalidRequestValue"/></ctl:param> <!-- Invalid request parameter -->
 					<ctl:param name="service">SOS</ctl:param>  								
 				
-					<ctl:call-function name="sosFunctions:exceptionReportValidatingParser">					
-						<ctl:with-param name="schemaRoot" select="$ogcSchemaRoot"/>
+					<ctl:call-function name="sosFunctions:xmlValidatingParser">					
+						<ctl:with-param name="schemaRoot" select="'C:\schemas\SCHEMAS_OPENGIS_NET\'"/>
 						<ctl:with-param name="version" select="$owsVersion"/>
 						<ctl:with-param name="encoding" select="'ows'"/>
 						<ctl:with-param name="filename" select="'owsExceptionReport.xsd'"/>							
@@ -162,7 +163,7 @@
 				<!-- check for valid schema or missing response-->
 				<xsl:when test="not($thisRequest/*)">
 					<ctl:message>Exception report failed schema validation, or no exception was produced.</ctl:message>
-					<ctl:message select="concat('Schema file: ', sosFunctions:schemaPath($ogcSchemaRoot, $owsVersion, 'ows', 'owsExceptionReport.xsd'))"/>
+					<ctl:message select="concat('Schema file: ', sosFunctions:schemaPath('C:\schemas\SCHEMAS_OPENGIS_NET\', $owsVersion, 'ows', 'owsExceptionReport.xsd'))"/>
 					<ctl:fail/>
 				</xsl:when>
 				<!-- check for correct exception code -->
@@ -356,7 +357,7 @@
 				</xsl:when>
 				<xsl:otherwise>				
 					<xsl:for-each select="$capabilitiesDocument//sos:ObservationOffering//sos:responseFormat">
-							<xsl:variable name="thisResponseFormat"> 
+						<xsl:variable name="thisResponseFormat"> 
 							<xsl:value-of select="."/>
 						</xsl:variable>
 						<xsl:choose>
@@ -394,7 +395,7 @@
 			</xsl:variable>
 			
 			<ctl:message select="concat('Checking advertised result models against members of the substitution group om:AbstractObservation listed in: ', $observationSpecializationsSchema)"/>
-			<xsl:for-each select="$capabilitiesDocument//sos:ObservationOffering//sos:resultModel">
+			<xsl:for-each select="$capabilitiesDocument//sos:ObservationOffering//sos:resultModel">			
 				<xsl:variable name="thisresultModel"> 
 					<xsl:value-of select="."/>
 				</xsl:variable>				

@@ -215,7 +215,7 @@
         </ctl:code>
     </ctl:function>
 	
-	
+
 	<!--
     <ctl:function name="sosFunctions:firstSRSName">
 		<ctl:param name="capabilitesDocument">The capabilities document</ctl:param>        
@@ -246,8 +246,7 @@
         <ctl:code>						
 			<xsl:choose>
 				<xsl:when test="starts-with($schemaFile,'http')">
-					<!-- note that the ignoreErrors flag below seems to have the opposite of it's intended effect -->
-					<parsers:XMLValidatingParser ignoreErrors="true">
+					<parsers:XMLValidatingParser ignoreErrors="false">
 						<parsers:schemas>
 							<parsers:schema type="url">
 								<xsl:value-of select="$schemaFile"/>
@@ -256,7 +255,7 @@
 					</parsers:XMLValidatingParser>	
 				</xsl:when>
 				<xsl:otherwise>
-					<parsers:XMLValidatingParser ignoreErrors="true">
+					<parsers:XMLValidatingParser ignoreErrors="false">
 						<parsers:schemas>
 							<parsers:schema type="file">
 								<xsl:value-of select="$schemaFile"/>
@@ -277,60 +276,7 @@
 		<ctl:description>Standard CTL XMLValidatingParser</ctl:description>
         <ctl:code>				
 			<xsl:variable name="schemaFile" select="sosFunctions:schemaPath($schemaRoot, $version, $encoding, $filename)"/>
-			<xsl:choose>
-				<xsl:when test="starts-with($schemaFile,'http')">
-					<!-- note that the ignoreErrors flag below seems to have the opposite of it's intended effect -->
-					<parsers:XMLValidatingParser ignoreErrors="true">
-						<parsers:schemas>
-							<parsers:schema type="url">
-								<xsl:value-of select="$schemaFile"/>
-							</parsers:schema>
-						</parsers:schemas>
-					</parsers:XMLValidatingParser>	
-				</xsl:when>
-				<xsl:otherwise>
-					<parsers:XMLValidatingParser ignoreErrors="true">
-						<parsers:schemas>
-							<parsers:schema type="file">
-								<xsl:value-of select="$schemaFile"/>
-							</parsers:schema>
-						</parsers:schemas>
-					</parsers:XMLValidatingParser>
-				</xsl:otherwise>
-			</xsl:choose>			
-        </ctl:code>
-    </ctl:function>
-
-    <ctl:function name="sosFunctions:exceptionReportValidatingParser">
-        <ctl:param name="schemaRoot">The location of the schemas</ctl:param>
-		<ctl:param name="version">The numeric version of the schema</ctl:param>
-		<ctl:param name="encoding">The name of the service or encoding to be used</ctl:param>
-		<ctl:param name="filename">Filenam of schema file</ctl:param>
-		<ctl:description>Standard CTL XMLValidatingParser</ctl:description>
-        <ctl:code>			
-
-		<xsl:variable name="schemaFile" select="'C:\schemas\owsExceptionReport.xsd'"/>
-			<xsl:choose>
-				<xsl:when test="starts-with($schemaFile,'http')">
-					<!-- note that the ignoreErrors flag below seems to have the opposite of it's intended effect -->
-					<parsers:XMLValidatingParser ignoreErrors="true">
-						<parsers:schemas>
-							<parsers:schema type="url">
-								<xsl:value-of select="$schemaFile"/>
-							</parsers:schema>
-						</parsers:schemas>
-					</parsers:XMLValidatingParser>	
-				</xsl:when>
-				<xsl:otherwise>
-					<parsers:XMLValidatingParser ignoreErrors="true">
-						<parsers:schemas>
-							<parsers:schema type="file">
-								<xsl:value-of select="$schemaFile"/>
-							</parsers:schema>
-						</parsers:schemas>
-					</parsers:XMLValidatingParser>
-				</xsl:otherwise>
-			</xsl:choose>				
+			<xsl:copy-of select="sosFunctions:xmlValidatingParser($schemaFile)"/>
         </ctl:code>
     </ctl:function>
 
@@ -357,6 +303,18 @@
 		</ctl:code>
 	</ctl:function>
 	
-
+	<ctl:function name="sosFunctions:schemaPathFromMimeType">
+        <ctl:param name="schemaRoot">The location of the schemas</ctl:param>
+		<ctl:param name="mimeType">The mimeType</ctl:param>
+		<ctl:code>	
+			<xsl:value-of select="sosFunctions:schemaPath($schemaRoot, 
+														  sosFunctions:mimeTypeSubtypeVersion($mimeType),
+														  sosFunctions:mimeTypeSubtypeEncoding($mimeType),
+														  concat(sosFunctions:mimeTypeSubtypeEncoding($mimeType), '.xsd'))"/>
+		</ctl:code>
+	</ctl:function>	
+	
+	<!-- land of broken dreams -->
+	
 	
 </ctl:package>

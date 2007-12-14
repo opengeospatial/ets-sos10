@@ -19,6 +19,7 @@
 	xmlns:xsos="http://www.opengeospatial.net/sos"
 	xmlns:sensorML="http://www.opengis.net/sensorML"
 	xmlns:tml="http://www.opengis.net/tml"
+	xmlns:om="http://www.opengis.net/om/1.0.0"
 	xmlns:xml="http://www.w3.org/XML/1998/namespace"
 >
 
@@ -54,8 +55,8 @@
 							</DescribeSensor>												
 						</ctl:body>
 										 							
-						<ctl:call-function name="sosFunctions:exceptionReportValidatingParser">												
-							<ctl:with-param name="schemaRoot" select="$ogcSchemaRoot"/>
+						<ctl:call-function name="sosFunctions:xmlValidatingParser">												
+							<ctl:with-param name="schemaRoot" select="'C:\schemas\SCHEMAS_OPENGIS_NET\'"/>
 							<ctl:with-param name="version" select="$owsVersion"/>
 							<ctl:with-param name="encoding" select="'ows'"/>
 							<ctl:with-param name="filename" select="'owsExceptionReport.xsd'"/>									
@@ -67,7 +68,7 @@
 					<!-- check for valid schema or missing response-->
 					<xsl:when test="not($noOutputFormatRequest/*)">
 						<ctl:message>Exception report failed schema validation, or no exception was produced.</ctl:message>
-						<ctl:message select="concat('Schema file: ', sosFunctions:schemaPath($ogcSchemaRoot, $owsVersion, 'ows', 'owsExceptionReport.xsd'))"/>
+						<ctl:message select="concat('Schema file: ', sosFunctions:schemaPath('C:\schemas\SCHEMAS_OPENGIS_NET\', $owsVersion, 'ows', 'owsExceptionReport.xsd'))"/>
 						<ctl:fail/>
 					</xsl:when>
 					<!-- check for correct exception code -->					
@@ -112,8 +113,8 @@
 							
 							<!--  outputFormat="text/xml;subtype=&quot;sensorML/1.0.0&quot;" -->
 						</ctl:body>
-						<ctl:call-function name="sosFunctions:exceptionReportValidatingParser">												
-							<ctl:with-param name="schemaRoot" select="$ogcSchemaRoot"/>
+						<ctl:call-function name="sosFunctions:xmlValidatingParser">												
+							<ctl:with-param name="schemaRoot" select="'C:\schemas\SCHEMAS_OPENGIS_NET\'"/>
 							<ctl:with-param name="version" select="$owsVersion"/>
 							<ctl:with-param name="encoding" select="'ows'"/>
 							<ctl:with-param name="filename" select="'owsExceptionReport.xsd'"/>									
@@ -125,7 +126,7 @@
 					<!-- check for valid schema or missing response-->
 					<xsl:when test="not($invalidOutputFormatRequest/*)">							
 						<ctl:message>Exception report failed schema validation, or no exception was produced.</ctl:message>
-						<ctl:message select="concat('Schema file: ', sosFunctions:schemaPath($ogcSchemaRoot, $owsVersion, 'ows', 'owsExceptionReport.xsd'))"/>
+						<ctl:message select="concat('Schema file: ', sosFunctions:schemaPath('C:\schemas\SCHEMAS_OPENGIS_NET\', $owsVersion, 'ows', 'owsExceptionReport.xsd'))"/>
 						<ctl:fail/>
 					</xsl:when>
 
@@ -182,8 +183,8 @@
 							</DescribeSensor>														
 						</ctl:body>
 											 							
-						<ctl:call-function name="sosFunctions:exceptionReportValidatingParser">												
-							<ctl:with-param name="schemaRoot" select="$ogcSchemaRoot"/>
+						<ctl:call-function name="sosFunctions:xmlValidatingParser">												
+							<ctl:with-param name="schemaRoot" select="'C:\schemas\SCHEMAS_OPENGIS_NET\'"/>
 							<ctl:with-param name="version" select="$owsVersion"/>
 							<ctl:with-param name="encoding" select="'ows'"/>
 							<ctl:with-param name="filename" select="'owsExceptionReport.xsd'"/>									
@@ -195,7 +196,7 @@
 					<!-- check for valid schema or missing response-->
 					<xsl:when test="not($noProcedureRequest/*)">
 						<ctl:message>Exception report failed schema validation, or no exception was produced.</ctl:message>
-						<ctl:message select="concat('Schema file: ', sosFunctions:schemaPath($ogcSchemaRoot, $owsVersion, 'ows', 'owsExceptionReport.xsd'))"/>
+						<ctl:message select="concat('Schema file: ', sosFunctions:schemaPath('C:\schemas\SCHEMAS_OPENGIS_NET\', $owsVersion, 'ows', 'owsExceptionReport.xsd'))"/>
 						<ctl:fail/>
 					</xsl:when>
 					<!-- check for correct exception code -->					
@@ -241,8 +242,8 @@
 
 							</DescribeSensor>							
 						</ctl:body>												 							
-						<ctl:call-function name="sosFunctions:exceptionReportValidatingParser">												
-							<ctl:with-param name="schemaRoot" select="$ogcSchemaRoot"/>
+						<ctl:call-function name="sosFunctions:xmlValidatingParser">												
+							<ctl:with-param name="schemaRoot" select="'C:\schemas\SCHEMAS_OPENGIS_NET\'"/>
 							<ctl:with-param name="version" select="$owsVersion"/>
 							<ctl:with-param name="encoding" select="'ows'"/>
 							<ctl:with-param name="filename" select="'owsExceptionReport.xsd'"/>									
@@ -254,7 +255,7 @@
 					<!-- check for valid schema or missing response-->
 					<xsl:when test="not($invalidProcedureRequest/*)">
 						<ctl:message>Exception report failed schema validation, or no exception was produced.</ctl:message>
-						<ctl:message select="concat('Schema file: ', sosFunctions:schemaPath($ogcSchemaRoot, $owsVersion, 'ows', 'owsExceptionReport.xsd'))"/>
+						<ctl:message select="concat('Schema file: ', sosFunctions:schemaPath('C:\schemas\SCHEMAS_OPENGIS_NET\', $owsVersion, 'ows', 'owsExceptionReport.xsd'))"/>
 						<ctl:fail/>
 					</xsl:when>
 					<!-- check for correct exception code -->					
