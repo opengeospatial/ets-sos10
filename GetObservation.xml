@@ -712,11 +712,11 @@
 											</GetObservation>						
 										</ctl:body>	
 									
-									<!--
+									
 									<ctl:call-function name="sosFunctions:xmlValidatingParser">											
 										<ctl:with-param name="schemaFile" select="sosFunctions:schemaPathFromMimeType('C:\schemas\swe\', $responseFormat)"/>
 									</ctl:call-function>						
-									-->
+									
 									
 									</ctl:request>							 														
 							</xsl:variable>		
@@ -810,11 +810,11 @@
 											</responseFormat>										
 										</GetObservation>						
 									</ctl:body>	
-									<!--
+									
 									<ctl:call-function name="sosFunctions:xmlValidatingParser">											
 										<ctl:with-param name="schemaFile" select="sosFunctions:schemaPathFromMimeType('C:\schemas\swe\', $responseFormat)"/>
 									</ctl:call-function>
-									-->
+									
 								</ctl:request>							 														
 							</xsl:variable>			
 					
@@ -903,11 +903,11 @@
 											</responseFormat>										
 										</GetObservation>						
 									</ctl:body>	
-									<!--
+									
 									<ctl:call-function name="sosFunctions:xmlValidatingParser">											
 										<ctl:with-param name="schemaFile" select="sosFunctions:schemaPathFromMimeType('C:\schemas\swe\', $responseFormat)"/>
 									</ctl:call-function>
-									-->
+									
 								</ctl:request>							 														
 							</xsl:variable>			
 					
@@ -1025,11 +1025,11 @@
 											</responseFormat>										
 										</GetObservation>						
 									</ctl:body>	
-								<!--											
+																
 								<ctl:call-function name="sosFunctions:xmlValidatingParser">											
 									<ctl:with-param name="schemaFile" select="sosFunctions:schemaPathFromMimeType('C:\schemas\swe\', $responseFormat)"/>
 								</ctl:call-function>														
-								-->
+								
 							</ctl:request>							 														
 						</xsl:variable>		
 
@@ -1112,7 +1112,7 @@
 									<ctl:call-function name="sosFunctions:xmlValidatingParser">											
 										<ctl:with-param name="schemaFile" select="sosFunctions:schemaPathFromMimeType('C:\schemas\swe\', $responseFormat)"/>
 									</ctl:call-function>
-									
+								
 								</ctl:request>							 														
 							</xsl:variable>			
 
@@ -1123,26 +1123,26 @@
 									<ctl:message select="concat('Schema file: ', sosFunctions:schemaPathFromMimeType('C:\schemas\swe\', $responseFormat))"/>
 									<ctl:fail/>
 								</xsl:when>
-								<!--
+								
 								<xsl:otherwise>
 								
-								<xsl:for-each select="distinct-values($getObservation//om:procedure/@xlink:href)">
-									<xsl:variable name="thisResultModel" select="."/>
-									<xsl:choose>
-										<xsl:when test="not($thisResultModel = $resultModel)">													
-											<ctl:message>
-												<xsl:value-of select="concat('Invalid procedure: ', $thisResultModel)"/>
-											</ctl:message>							
-											<ctl:fail/>
-										</xsl:when>
-										
-										<xsl:otherwise>
-											<xsl:message select="concat('Procedure in response is OK: ', $thisResultModel)"/>
-										</xsl:otherwise>
-									</xsl:choose>
-								</xsl:for-each>
+									<xsl:for-each select="distinct-values($getObservation//om:ObservationCollection//om:member/name(*))">
+										<xsl:variable name="thisResultModel" select="substring-after(string(.), ':')"/>
+										<xsl:choose>
+											<xsl:when test="not($thisResultModel = $resultModel)">													
+												<ctl:message>
+													<xsl:value-of select="concat('Invalid resultModel: ', $thisResultModel)"/>
+												</ctl:message>							
+												<ctl:fail/>
+											</xsl:when>
+											
+											<xsl:otherwise>
+												<xsl:message select="concat('Result model in response is OK: ', $thisResultModel)"/>
+											</xsl:otherwise>
+										</xsl:choose>
+									</xsl:for-each>
 								</xsl:otherwise>
-								-->
+							
 							</xsl:choose>	
 						</xsl:for-each>
 					</xsl:for-each>

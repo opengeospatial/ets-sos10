@@ -400,7 +400,7 @@
 					<xsl:value-of select="."/>
 				</xsl:variable>				
 				<xsl:choose>
-					<xsl:when test="not($observationSpecializations//*[@substitutionGroup='om:AbstractObservation']/@name=$thisresultModel)">
+					<xsl:when test="not($thisresultModel='Observation') and not($observationSpecializations//*[@substitutionGroup='om:AbstractObservation']/@name=$thisresultModel)">
 						<ctl:message select="concat($thisresultModel, '   **INVALID***')"/>							
 						<ctl:fail/>
 					</xsl:when>

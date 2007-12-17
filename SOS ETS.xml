@@ -319,20 +319,20 @@ SOS.GetObservation-RequestInvalidResponseMode
 				<xsl:variable name="getCapabilitiesRequest">
 					<ctl:request>
 						<ctl:url>
-							<xsl:value-of select="$serviceURL"/>							
+							<xsl:value-of select="$serviceURL"/>								
 						</ctl:url>
-						<ctl:method>get</ctl:method>						
+						<ctl:method>get</ctl:method>	
 						<ctl:param name="request">GetCapabilities</ctl:param>
 						<ctl:param name="service">SOS</ctl:param> 
-						<ctl:param name="version">1.0</ctl:param>
-						<!--
+					
+<!--					
 						<ctl:call-function name="sosFunctions:xmlValidatingParser">					
 							<ctl:with-param name="schemaRoot" select="$sosSchemaRoot"/>
 							<ctl:with-param name="version" select="$sosVersion"/>
 							<ctl:with-param name="encoding" select="'sos'"/>
 							<ctl:with-param name="filename" select="'sosGetCapabilities.xsd'"/>								
 						</ctl:call-function>
-						-->
+-->
 					</ctl:request>
 				</xsl:variable>
 				<!--ctl:message>
@@ -401,8 +401,7 @@ SOS.GetObservation-RequestInvalidResponseMode
 						<xsl:variable name="describeSensorVersion" select="sosFunctions:operationVersion($getCapabilitiesRequest, 'DescribeSensor')"/>
 						<xsl:variable name="describeSensorProcedure" select="sosFunctions:describeSensorFirstProcedure($getCapabilitiesRequest)"/>
 						<xsl:variable name="describeSensorOutputFormat" select="sosFunctions:describeSensorOutputFormat($getCapabilitiesRequest)"/>						
-
-<!--					
+			
 						<ctl:message select="'********************************************************'"/>
 						<ctl:message select="''"/>												
 						<ctl:call-test name="describeSensor:core-SOS.DescribeSensor-RequestInvalidMIMEType.1">							
@@ -492,7 +491,7 @@ SOS.GetObservation-RequestInvalidResponseMode
 								</ctl:call-test>
 							</xsl:if>					
 						</xsl:for-each>
--->						
+				
 						<!--********************   Create variables for GetObservation **********************************-->	
 						
 						<xsl:variable name="getObservationPostURL" select="sosFunctions:operationPostURL($getCapabilitiesRequest, 'DescribeSensor')"/>
@@ -500,7 +499,7 @@ SOS.GetObservation-RequestInvalidResponseMode
 						<xsl:variable name="offeringId"	select="sosFunctions:capabilitiesFirstOfferingId($getCapabilitiesRequest)"/>
 						<xsl:variable name="observationOfferingResponseFormat" select="sosFunctions:observationOfferingResponseFormat($getCapabilitiesRequest, $offeringId)"/>
 						<xsl:variable name="observationOfferingObservedProperty" select="sosFunctions:observationOfferingObservedProperty($getCapabilitiesRequest, $offeringId)"/>						
-<!--		
+
 						<ctl:message select="'********************************************************'"/>
 						<ctl:message select="''"/>									
 						<ctl:call-test name="getObservation:core-SOS.GetObservation-RequestInvalidSRSName.1">
@@ -617,7 +616,7 @@ SOS.GetObservation-RequestInvalidResponseMode
 						<ctl:with-param name="observedProperty" select="$observationOfferingObservedProperty"/>	
 						<ctl:with-param name="offeringId" select="$offeringId"/>
 					</ctl:call-test>
--->				
+		
 
 					<ctl:message select="'********************************************************'"/>
 					<ctl:message select="''"/>
