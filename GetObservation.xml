@@ -185,20 +185,96 @@
 		
 <!--*****************************************************************************************************************************************************************************-->				
 		<ctl:test name="getObservation:core-SOS.GetObservation-RequestInvalidEventTime.1">
+			<ctl:param name="capabilitiesDocument"/>
 			<ctl:param name="ogcSchemaRoot"/>
 			<ctl:param name="owsVersion"/>
 			<ctl:param name="postURL"/>
 			<ctl:param name="getObservationVersion"/>
 			<ctl:param name="responseFormat"/>					
 			<ctl:param name="observedProperty"/>
-			<ctl:param name="offeringId"/>					
+			<ctl:param name="offeringId"/>				
 			<ctl:assertion>An invalid eventTime in the request produces a valid error message.</ctl:assertion>
 			<ctl:comment>Check that an invalid eventTime in the request produces a valid error message.  Pass if an invalid eventTime in the request produces a valid error message; fail otherwise.</ctl:comment>
 			<ctl:link title="Verify that an invalid eventTime in the request produces a valid error message.">ATS_URL#SOS.GetObservation-RequestInvalidEventTime</ctl:link>
 			<ctl:code>
-				<ctl:message select="'*********************************'"/>
-				<ctl:message select="'* This test not yet implemented *'"/>
-				<ctl:message select="'*********************************'"/>
+				<xsl:variable name="beginPosition" select="sosFunctions:beginTimePosition($capabilitiesDocument)"/>											
+				<xsl:variable name="endPosition" select="sosFunctions:endTimePosition($capabilitiesDocument)"/>								
+
+				<xsl:variable name="schemaFile" select="sosFunctions:schemaPath('C:\schemas\SCHEMAS_OPENGIS_NET\', $owsVersion,'ows', 'owsExceptionReport.xsd')"/>
+				<xsl:variable name="invalidDate" select="'scooby'"/>
+				<ctl:message select="' '"/>
+				<ctl:message select="concat('Making a GetObservation request with improperly formatted begin date of: &quot;', $invalidDate, '&quot;')"/>				
+				<xsl:variable name="getObservationBadDateFormat">
+					<xsl:copy-of select="sosFunctions:getObservationByTimePeriod
+										($postURL, 
+										$getObservationVersion, 
+										$offeringId, 
+										$invalidDate, 
+										$endPosition, 
+										$observedProperty, 
+										$responseFormat,
+										$schemaFile)"/>
+				</xsl:variable>						
+				<xsl:choose>
+					<xsl:when test="not($getObservationBadDateFormat/*)">							
+						<ctl:message>Exception report failed schema validation, or no exception was produced.</ctl:message>
+						<ctl:message select="concat('Schema file: ', sosFunctions:schemaPath('C:\schemas\SCHEMAS_OPENGIS_NET\', $owsVersion, 'ows', 'owsExceptionReport.xsd'))"/>
+						<ctl:fail/>
+					</xsl:when>
+					<!-- check for correct exception code -->					
+					<xsl:when test="not($getObservationBadDateFormat/ows:ExceptionReport/ows:Exception/@exceptionCode = 'InvalidParameterValue')">						
+						<ctl:message>Invalid exception code.</ctl:message>
+						<ctl:message>
+							<xsl:value-of select="concat('Exception code is: ', $getObservationBadDateFormat/ows:ExceptionReport/ows:Exception/@exceptionCode)"/>
+						</ctl:message>
+						<ctl:message>Exception code should be: 'InvalidParameterValue'.</ctl:message>
+						<ctl:fail/>
+					</xsl:when>
+					<!-- looks good -->
+					<xsl:otherwise>
+						<ctl:message>OK</ctl:message>
+					</xsl:otherwise>
+				</xsl:choose>							
+					
+				<xsl:if test="($beginPosition != '' and $endPosition != '')">
+					<xsl:variable name="invalidBeginPosition" select="beginPosition - xsd:yearMonthDuration('P1Y2M')"/>
+					<xsl:variable name="invalidEndPosition" select="beginPosition - xsd:yearMonthDuration('P1Y0M')"/>
+					<ctl:message select="' '"/>
+					<ctl:message select="'Making a GetObservation request with an eventTime that is before the earliest valid beginPosition'"/>				
+					<ctl:message select="concat('Begin position: ', $invalidBeginPosition)"/>
+					<ctl:message select="concat('End position: ', $invalidEndPosition)"/>
+					<xsl:variable name="getObservationBadInterval">
+						<xsl:copy-of select="sosFunctions:getObservationByTimePeriod
+											($postURL, 
+											$getObservationVersion, 
+											$offeringId, 
+											$invalidBeginPosition, 
+											$invalidEndPosition, 
+											$observedProperty, 
+											$responseFormat,
+											$schemaFile)"/>
+					</xsl:variable>						
+					<xsl:choose>
+						<xsl:when test="not($getObservationBadDateFormat/*)">							
+							<ctl:message>Exception report failed schema validation, or no exception was produced.</ctl:message>
+							<ctl:message select="concat('Schema file: ', sosFunctions:schemaPath('C:\schemas\SCHEMAS_OPENGIS_NET\', $owsVersion, 'ows', 'owsExceptionReport.xsd'))"/>
+							<ctl:fail/>
+						</xsl:when>
+						<!-- check for correct exception code -->					
+						<xsl:when test="not($getObservationBadDateFormat/ows:ExceptionReport/ows:Exception/@exceptionCode = 'InvalidParameterValue')">						
+							<ctl:message>Invalid exception code.</ctl:message>
+							<ctl:message>
+								<xsl:value-of select="concat('Exception code is: ', $getObservationBadDateFormat/ows:ExceptionReport/ows:Exception/@exceptionCode)"/>
+							</ctl:message>
+							<ctl:message>Exception code should be: 'InvalidParameterValue'.</ctl:message>
+							<ctl:fail/>
+						</xsl:when>
+						<!-- looks good -->
+						<xsl:otherwise>
+							<ctl:message>OK</ctl:message>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:if>
 			</ctl:code>
 		</ctl:test>
 		
@@ -236,7 +312,7 @@
 									service="SOS"
 								>
 									<xsl:attribute name="version">
-										<xsl:value-of select="$getObservationVersion"/>
+										<xsl:value-of select="$getObservationVersion"/>										
 									</xsl:attribute>									
 									<offering>
 										<xsl:value-of select="$offeringId"/>
@@ -1151,14 +1227,103 @@
 		</ctl:test>
 <!--*****************************************************************************************************************************************************************************-->				
 		<ctl:test name="getObservation:core-SOS.GetObservation-ResponseMatchingResponseMode.1">
-			<ctl:param name="serviceURL"/>
+			<ctl:param name="capabilitiesDocument"/>
+			<ctl:param name="ogcSchemaRoot"/>
+			<ctl:param name="postURL"/>
+			<ctl:param name="getObservationVersion"/>
 			<ctl:assertion>The format of the response data matches the requested responseMode.</ctl:assertion>
 			<ctl:comment>Check that the format of the response data matches the requested responseMode.  Pass if assertion holds; fail otherwise.</ctl:comment>
 			<ctl:link title="Verify that the format of the response data matches the requested responseMode.">ATS_URL#SOS.GetObservation-ResponseMatchingResponseMode</ctl:link>
 			<ctl:code>				<!-- response mode is per offering -->
-				<ctl:message select="'*********************************'"/>
-				<ctl:message select="'* This test not yet implemented *'"/>
-				<ctl:message select="'*********************************'"/>
+				<ctl:message select="''"/>
+				<ctl:message select="'A GetObservation request will be made for each responseMode advertised in the capabilities document'"/>
+				<ctl:message select="''"/>
+
+				<xsl:for-each select="$capabilitiesDocument//sos:ObservationOffering/@gml:id">
+				<xsl:variable name="offeringId" select="."/>
+					<ctl:message select="concat('Offering: ', $offeringId)"/>
+					<xsl:for-each select="$capabilitiesDocument//sos:ObservationOffering[@gml:id=$offeringId]//sos:responseFormat">
+						<xsl:variable name="responseFormat" select="."/>	
+						<ctl:message select="concat('ResponseFormat: ', $responseFormat)"/>						
+						<xsl:for-each select="$capabilitiesDocument//sos:ObservationOffering[@gml:id=$offeringId]//sos:responseMode">
+							<xsl:variable name="responseMode" select="."/>
+							<ctl:message select="concat('Testing responseMode: ', $responseMode )"/>
+							<xsl:variable name="getObservation">
+								<ctl:request>
+									<ctl:url>
+										<xsl:value-of select="$postURL"/>
+									</ctl:url>
+									<ctl:method>post</ctl:method>
+									<ctl:body>								
+										<GetObservation 
+											xmlns="http://www.opengis.net/sos/1.0" 
+											xmlns:ows="http://www.opengis.net/ows/1.1" 
+											xmlns:gml="http://www.opengis.net/gml" 
+											xmlns:ogc="http://www.opengis.net/ogc" 
+											xmlns:om="http://www.opengis.net/om/1.0" 
+											xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+											xsi:schemaLocation="http://www.opengis.net/sos/1.0
+											C:\Ifgi\OGC_material\schemata_final\svn\swe\trunk\sos\1.0.0/sosGetObservation.xsd" 
+											service="SOS"
+										>
+											<xsl:attribute name="version">
+												<xsl:value-of select="$getObservationVersion"/>
+											</xsl:attribute>									
+											<offering>
+												<xsl:value-of select="$offeringId"/>
+											</offering>
+											<observedProperty>
+												<xsl:value-of select="sosFunctions:observationOfferingObservedProperty($capabilitiesDocument, $offeringId)"/>
+											</observedProperty>
+											<responseFormat>
+												<xsl:value-of select="$responseFormat"/>
+											</responseFormat>	
+											<responseMode>
+												<xsl:value-of select="$responseMode"/>
+											</responseMode>											
+										</GetObservation>						
+									</ctl:body>	
+									
+								
+									<ctl:call-function name="sosFunctions:xmlValidatingParser">											
+										<ctl:with-param name="schemaFile" select="sosFunctions:schemaPathFromMimeType('C:\schemas\swe\', $responseFormat)"/>
+									</ctl:call-function>
+								
+								</ctl:request>							 														
+							</xsl:variable>			
+
+							<xsl:choose>
+								<!-- check for valid schema or missing response-->
+								<xsl:when test="not($getObservation/*)">							
+									<ctl:message>Response failed schema validation.</ctl:message>
+									<ctl:message select="concat('Schema file: ', sosFunctions:schemaPathFromMimeType('C:\schemas\swe\', $responseFormat))"/>
+									<ctl:fail/>
+								</xsl:when>
+								
+								<xsl:otherwise>
+								
+									<xsl:for-each select="distinct-values($getObservation//om:ObservationCollection//om:member/name(*))">
+										<xsl:variable name="thisresponseMode" select="substring-after(string(.), ':')"/>
+										<xsl:choose>
+											<xsl:when test="not($thisresponseMode = $responseMode)">													
+												<ctl:message>
+													<xsl:value-of select="concat('Invalid responseMode: ', $thisresponseMode)"/>
+												</ctl:message>							
+												<ctl:fail/>
+											</xsl:when>
+											
+											<xsl:otherwise>
+												<xsl:message select="concat('Response Mode in response is OK: ', $thisresponseMode)"/>
+											</xsl:otherwise>
+										</xsl:choose>
+									</xsl:for-each>
+								</xsl:otherwise>
+							
+							</xsl:choose>	
+						</xsl:for-each>
+					</xsl:for-each>
+				</xsl:for-each>
 			</ctl:code>
 		</ctl:test>
+		
 </ctl:package>

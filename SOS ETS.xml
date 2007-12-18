@@ -352,7 +352,7 @@ SOS.GetObservation-RequestInvalidResponseMode
 						<ctl:message select="'********************************************************'"/>
 						<ctl:message select="''"/>					
 						<ctl:message>Capabilities response is valid, continuing...</ctl:message>
-				
+<!--		
 						<ctl:message select="'********************************************************'"/>
 						<ctl:message select="''"/>						
 						<ctl:call-test name="getCapabilities:core-SOS.GetCapabilities-OperationsMetadataMandatoryOperations.1">
@@ -376,6 +376,7 @@ SOS.GetObservation-RequestInvalidResponseMode
 						<ctl:call-test name="getCapabilities:core-SOS.GetCapabilities-ResponseContentsValidProcedure.1">
 							<ctl:with-param name="capabilitiesDocument" select="$getCapabilitiesRequest"/>
 						</ctl:call-test>
+
 						
 						<ctl:message select="'********************************************************'"/>
 						<ctl:message select="''"/>												
@@ -394,9 +395,10 @@ SOS.GetObservation-RequestInvalidResponseMode
 						<ctl:call-test name="getCapabilities:core-SOS.GetCapabilities-ResponseContentsValidResultModel.1">
 							<ctl:with-param name="capabilitiesDocument" select="$getCapabilitiesRequest"/>
 						</ctl:call-test>
-										
+-->								
 						<!--********************   Create variables for DescribeSensor **********************************-->		
 						
+<!--				
 						<xsl:variable name="describeSensorPostURL" select="sosFunctions:operationPostURL($getCapabilitiesRequest, 'DescribeSensor')"/>
 						<xsl:variable name="describeSensorVersion" select="sosFunctions:operationVersion($getCapabilitiesRequest, 'DescribeSensor')"/>
 						<xsl:variable name="describeSensorProcedure" select="sosFunctions:describeSensorFirstProcedure($getCapabilitiesRequest)"/>
@@ -491,7 +493,7 @@ SOS.GetObservation-RequestInvalidResponseMode
 								</ctl:call-test>
 							</xsl:if>					
 						</xsl:for-each>
-				
+	-->		
 						<!--********************   Create variables for GetObservation **********************************-->	
 						
 						<xsl:variable name="getObservationPostURL" select="sosFunctions:operationPostURL($getCapabilitiesRequest, 'DescribeSensor')"/>
@@ -500,6 +502,7 @@ SOS.GetObservation-RequestInvalidResponseMode
 						<xsl:variable name="observationOfferingResponseFormat" select="sosFunctions:observationOfferingResponseFormat($getCapabilitiesRequest, $offeringId)"/>
 						<xsl:variable name="observationOfferingObservedProperty" select="sosFunctions:observationOfferingObservedProperty($getCapabilitiesRequest, $offeringId)"/>						
 
+<!--					
 						<ctl:message select="'********************************************************'"/>
 						<ctl:message select="''"/>									
 						<ctl:call-test name="getObservation:core-SOS.GetObservation-RequestInvalidSRSName.1">
@@ -521,10 +524,11 @@ SOS.GetObservation-RequestInvalidResponseMode
 							<ctl:with-param name="responseFormat" select="$observationOfferingResponseFormat"/>					
 							<ctl:with-param name="observedProperty" select="$observationOfferingObservedProperty"/>
 						</ctl:call-test>
-						
+-->				
 						<ctl:message select="'********************************************************'"/>
 						<ctl:message select="''"/>																					
 						<ctl:call-test name="getObservation:core-SOS.GetObservation-RequestInvalidEventTime.1">
+							<ctl:with-param name="capabilitiesDocument" select="$getCapabilitiesRequest"/>
 							<ctl:with-param name="ogcSchemaRoot" select="$ogcSchemaRoot"/>
 							<ctl:with-param name="owsVersion" select="$owsVersion"/>
 							<ctl:with-param name="postURL" select="$getObservationPostURL"/>
@@ -533,7 +537,7 @@ SOS.GetObservation-RequestInvalidResponseMode
 							<ctl:with-param name="observedProperty" select="$observationOfferingObservedProperty"/>	
 							<ctl:with-param name="offeringId" select="$offeringId"/>
 						</ctl:call-test>	
-	
+<!--
 						<ctl:message select="'********************************************************'"/>
 						<ctl:message select="''"/>																					
 						<ctl:call-test name="getObservation:core-SOS.GetObservation-RequestInvalidProcedure.1">						
@@ -626,7 +630,7 @@ SOS.GetObservation-RequestInvalidResponseMode
 						<ctl:with-param name="postURL" select="$getObservationPostURL"/>
 						<ctl:with-param name="getObservationVersion" select="$getObservationVersion"/>
 					</ctl:call-test>
-					<!--/xsl:for-each-->
+					
 					
 					<ctl:message select="'********************************************************'"/>
 					<ctl:message select="''"/>						
@@ -694,9 +698,12 @@ SOS.GetObservation-RequestInvalidResponseMode
 					<ctl:message select="'********************************************************'"/>
 					<ctl:message select="''"/>						
 					<ctl:call-test name="getObservation:core-SOS.GetObservation-ResponseMatchingResponseMode.1">
-						<ctl:with-param name="serviceURL" select="$serviceURL"/>
+						<ctl:with-param name="capabilitiesDocument" select="$getCapabilitiesRequest"/>
+						<ctl:with-param name="ogcSchemaRoot" select="$ogcSchemaRoot"/>
+						<ctl:with-param name="postURL" select="$getObservationPostURL"/>
+						<ctl:with-param name="getObservationVersion" select="$getObservationVersion"/>
 					</ctl:call-test>					
-					
+	-->			
 				<!--
 						<xsl:variable name="getObservation">
 							<ctl:request>

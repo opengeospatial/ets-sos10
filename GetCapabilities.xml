@@ -325,10 +325,13 @@
 		<ctl:comment>Check that the values in the observedProperty element(s) for each ObservationOffering contain a value and are valid URNs according to the OGC URN scheme.  Pass if the values in the observedProperty element(s) contain a value and are valid URNs; fail otherwise.</ctl:comment>
 		<ctl:link title="Verify that the observedProperty values provided for each ObservationOffering are valid.">ATS_URL#SOS.GetCapabilities-ResponseContentsValidObservedProperty</ctl:link>
 		<ctl:code>				
-			<xsl:for-each select="$capabilitiesDocument//sos:ObservationOffering//sos:observedProperty">								
+			<xsl:for-each select="$capabilitiesDocument//sos:ObservationOffering//sos:observedProperty//@xlink:href">
+				<xsl:variable name="thisURN" select="."/>
+			<!--
 				<xsl:variable name="thisURN"> 
 					<xsl:value-of select="@xlink:href"/>
 				</xsl:variable>
+			-->
 				<xsl:choose>
 					<xsl:when test="sosFunctions:isValidDefinitionURN($thisURN) = 'false'">
 						<ctl:message select="concat($thisURN, '  **INVALID**')"/>
