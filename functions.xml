@@ -13,6 +13,7 @@
  xmlns:xows="http://www.opengis.net/ows"
  xmlns:gml="http://www.opengis.net/gml"
  xmlns:sos="http://www.opengis.net/sos/1.0"
+ xmlns:om="http://www.opengis.net/om/1.0.0"
 >
 
     <ctl:function name="sosFunctions:dateTimeFromISO">
@@ -26,7 +27,7 @@
 			<xsl:variable name="newDateString" select="replace($dateString, 'Z', '')"/>			
 			<xsl:choose>
 				<xsl:when test="contains($newDateString, '.')"> <!-- if it passed validation and has a "." in it, it should be fine -->				
-					<xsl:value-of select="$newDateString"/>
+					<xsl:value-of select="xsd:dateTime($newDateString)"/>
 				</xsl:when>
 				<xsl:otherwise>
 					<xsl:variable name="appendString" select="'T00:00:00+00:00'"/>
@@ -249,8 +250,14 @@
 					<parsers:XMLValidatingParser ignoreErrors="false">
 						<parsers:schemas>
 							<parsers:schema type="url">
-								<xsl:value-of select="$schemaFile"/>
+								<xsl:value-of select="$schemaFile"/>								
 							</parsers:schema>
+							<parsers:schema type="url">http://www.w3.org/2001/xml.xsd</parsers:schema>
+<!--							
+							<parsers:schema type="url">http://mars.uni-muenster.de/swerep/trunk/sensorML/1.0.30/base/sensor.xsd</parsers:schema>
+							<parsers:schema type="url">http://mars.uni-muenster.de/swerep/trunk/sensorML/1.0.30/base/coordinateSystem.xsd</parsers:schema>
+							<parsers:schema type="url">http://schemas.opengis.net/gml/3.1.1/base/coordinateReferenceSystems.xsd</parsers:schema>
+-->							
 						</parsers:schemas>
 					</parsers:XMLValidatingParser>	
 				</xsl:when>
@@ -260,6 +267,12 @@
 							<parsers:schema type="file">
 								<xsl:value-of select="$schemaFile"/>
 							</parsers:schema>
+							<parsers:schema type="url">http://www.w3.org/2001/xml.xsd</parsers:schema>
+<!--							
+							<parsers:schema type="url">http://mars.uni-muenster.de/swerep/trunk/sensorML/1.0.30/base/sensor.xsd</parsers:schema>
+							<parsers:schema type="url">http://mars.uni-muenster.de/swerep/trunk/sensorML/1.0.30/base/coordinateSystem.xsd</parsers:schema>
+							<parsers:schema type="url">http://schemas.opengis.net/gml/3.1.1/base/coordinateReferenceSystems.xsd</parsers:schema>
+-->							
 						</parsers:schemas>
 					</parsers:XMLValidatingParser>
 				</xsl:otherwise>
@@ -317,24 +330,90 @@
 	
 	<ctl:function name="sosFunctions:timePeriod">
         <ctl:param name="capabilitiesDocument">The capabilities document</ctl:param>
+		<ctl:param name="offeringId">The offering id</ctl:param>
 		<ctl:code>		
-			<xsl:copy-of select="$capabilitiesDocument//sos:ObservationOffering//gml:TimePeriod[1]"/>
+			<xsl:copy-of select="$capabilitiesDocument//sos:ObservationOffering[@gml:id=$offeringId]//gml:TimePeriod[1]"/>
 		</ctl:code>
 	</ctl:function>
 
 	<ctl:function name="sosFunctions:beginTimePosition">
         <ctl:param name="capabilitiesDocument">The capabilities document</ctl:param>
+		<ctl:param name="offeringId">The offering id</ctl:param>		
 		<ctl:code>		
-			<xsl:variable name="timeInterval" select="sosFunctions:timePeriod($capabilitiesDocument)"/>	
-			<xsl:copy-of select="$timeInterval/gml:beginPosition | $timeInterval/gml:begin/gml:timePosition"/>
+			<xsl:variable name="timePeriod" select="sosFunctions:timePeriod($capabilitiesDocument, $offeringId)"/>	
+			<xsl:value-of select="sosFunctions:beginTimePosition($timePeriod)"/>
 		</ctl:code>
 	</ctl:function>
 
 	<ctl:function name="sosFunctions:endTimePosition">
         <ctl:param name="capabilitiesDocument">The capabilities document</ctl:param>
+		<ctl:param name="offeringId">The offering id</ctl:param>		
 		<ctl:code>		
-			<xsl:variable name="timeInterval" select="sosFunctions:timePeriod($capabilitiesDocument)"/>	
-			<xsl:copy-of select="$timeInterval/gml:endPosition | $timeInterval/gml:end/gml:timePosition"/>
+			<xsl:variable name="timePeriod" select="sosFunctions:timePeriod($capabilitiesDocument, $offeringId)"/>	
+			<xsl:value-of select="sosFunctions:endTimePosition($timePeriod)"/>
+		</ctl:code>
+	</ctl:function>
+
+	<ctl:function name="sosFunctions:beginTimePosition">
+        <ctl:param name="timePeriod">The time period</ctl:param>		
+		<ctl:code>		
+			<xsl:value-of select="$timePeriod/gml:beginPosition | $timePeriod/gml:begin/gml:timePosition"/>
+		</ctl:code>
+	</ctl:function>
+
+	<ctl:function name="sosFunctions:endTimePosition">
+        <ctl:param name="timePeriod">The time period</ctl:param>
+		<ctl:code>		
+			<xsl:value-of select="$timePeriod/gml:endPosition | $timePeriod/gml:end/gml:timePosition"/>
+		</ctl:code>
+	</ctl:function>
+	
+	<ctl:function name="sosFunctions:numberOfObservations">
+        <ctl:param name="getObservationResponse">The GetObservationResponse</ctl:param>		
+		<ctl:code>					
+			<xsl:value-of select="count($getObservationResponse//om:ObservationCollection//om:member)"/>
+		</ctl:code>
+	</ctl:function>
+	
+	
+	<ctl:function name="sosFunctions:total-seconds-from-duration">
+		<ctl:param name="duration"/> 
+		<ctl:code>
+			<xsl:value-of select="$duration div xsd:dayTimeDuration('PT1S')"/>   
+		</ctl:code>
+	</ctl:function>
+
+	<ctl:function name="sosFunctions:dayTimeDurationFromSeconds">
+		<ctl:param name="seconds"/> 
+		<ctl:code>
+			<xsl:value-of select="xsd:dayTimeDuration(concat('PT', string($seconds), 'S'))"/>   
+		</ctl:code>
+	</ctl:function>
+	
+	<ctl:function name="sosFunctions:sampleTimeIsInRange">
+		<ctl:param name="sampleTime"/> 
+		<ctl:param name="time1"/> 
+		<ctl:param name="time2"/> 
+		<ctl:code>
+			<xsl:variable name="beginSampleTime" select="sosFunctions:beginTimePosition($sampleTime)"/>
+			<xsl:variable name="endSampleTime" select="sosFunctions:endTimePosition($sampleTime)"/>
+			<xsl:choose>
+				<xsl:when test="$beginSampleTime != '' and (xsd:dateTime(sosFunctions:dateTimeFromISO($beginSampleTime)) &lt; xsd:dateTime($time1))">					
+					<xsl:value-of select="'false'"/>
+				</xsl:when>
+				<xsl:when test="$beginSampleTime != '' and (xsd:dateTime(sosFunctions:dateTimeFromISO($beginSampleTime)) &gt; xsd:dateTime($time2))">
+					<xsl:value-of select="'false'"/>
+				</xsl:when>
+				<xsl:when test="$endSampleTime != '' and (xsd:dateTime(sosFunctions:dateTimeFromISO($endSampleTime)) &lt; xsd:dateTime($time1))">
+					<xsl:value-of select="'false'"/>
+				</xsl:when>
+				<xsl:when test="$endSampleTime != '' and (xsd:dateTime(sosFunctions:dateTimeFromISO($endSampleTime)) &gt; xsd:dateTime($time2))">
+					<xsl:value-of select="'false'"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="'true'"/>
+				</xsl:otherwise>				
+			</xsl:choose>
 		</ctl:code>
 	</ctl:function>
 
@@ -365,6 +444,7 @@
 							xsi:schemaLocation="http://www.opengis.net/sos/1.0
 								C:\Ifgi\OGC_material\schemata_final\svn\swe\trunk\sos\1.0.0/sosGetObservation.xsd" 
 							service="SOS"
+							srsName="urn:ogc:crs:epsg:4326"
 						>
 							<xsl:attribute name="version">
 								<xsl:value-of select="$getObservationVersion"/>
@@ -387,11 +467,11 @@
 							</responseFormat>										
 						</GetObservation>						
 					</ctl:body>	
-			
+					
 					<ctl:call-function name="sosFunctions:xmlValidatingParser">											
 						<ctl:with-param name="schemaFile" select="$schemaFile"/>
 					</ctl:call-function>					
-			
+					
 				</ctl:request>							 														
 			</xsl:variable>		
 			<xsl:copy-of select="$getObservation"/>
