@@ -14,7 +14,6 @@
 	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 	xmlns:parsers="http://www.occamlab.com/te/parsers"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
-	xmlns:xows="http://www.opengeospatial.net/ows"
 	xmlns:ows="http://www.opengis.net/ows/1.1" 
 	xmlns:gml="http://www.opengis.net/gml" 
 	xmlns:sos="http://www.opengis.net/sos/1.0"	
@@ -25,6 +24,7 @@
 	xmlns:ogc="http://www.opengis.net/ogc"
 	xmlns:om="http://www.opengis.net/om/1.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:owsTests="https://www.cite.opengeospatial.org/ows-1.0/tests"
 >
 
 	<ctl:suite name="sos:suite">		<!--NOTE: Don't forget to update the TARGET_NAMESPACE_URI and ATS_URL placeholder values-->
@@ -96,12 +96,12 @@
 			<ctl:message select="concat('SOS service URL: ',$sos.service.url)"/>		
 
 
-			<!--
+			
 			<ctl:call-test name="sos:ows-main">
 				<ctl:with-param name="serviceURL" select="$sos.service.url" />
 			</ctl:call-test>
-			-->
 			
+<!--			
 			<ctl:call-test name="sos:core-main">
 				<ctl:with-param name="serviceURL" select="$sos.service.url" />
 				<ctl:with-param name="ogcSchemaRoot" select="$ogc.schema.root" />
@@ -109,136 +109,36 @@
 				<ctl:with-param name="sosSchemaRoot" select="$sos.schema.root" />			
 				<ctl:with-param name="sosVersion" select="$sos.version"/>			
 			</ctl:call-test>
-	
+-->	
 
 		</ctl:code>
 	</ctl:test>
 	<ctl:package>
+	
 		<ctl:test name="sos:ows-main">
-			<ctl:param name="serviceURL"/>
-			<ctl:assertion>All assertions for "ows" conformance are satisfied.</ctl:assertion>
-			<ctl:comment>Test driver for the ows module.</ctl:comment>
-			<ctl:link title="1. OWS">ATS_URL#ows</ctl:link>
-			<ctl:code>							
-				<ctl:call-test name="sos:ows-OWS.ClientError.1">
-					<ctl:with-param name="serviceURL" select="$serviceURL"/>
-				</ctl:call-test>
-				<ctl:call-test name="sos:ows-OWS.ContentType.1">
-					<ctl:with-param name="serviceURL" select="$serviceURL"/>
-				</ctl:call-test>
-				<ctl:call-test name="sos:ows-OWS.CaseInsensitiveKvpNames.1">
-					<ctl:with-param name="serviceURL" select="$serviceURL"/>
-				</ctl:call-test>
-				<ctl:call-test name="sos:ows-OWS.GetCapabilities.1">
-					<ctl:with-param name="serviceURL" select="$serviceURL"/>
-				</ctl:call-test>
-				<ctl:call-test name="sos:ows-OWS.GetCapabilities-Exceptions.1">
-					<ctl:with-param name="serviceURL" select="$serviceURL"/>
-				</ctl:call-test>
-				<ctl:call-test name="sos:ows-OWS.GetCapabilities-AcceptVersions.1">
-					<ctl:with-param name="serviceURL" select="$serviceURL"/>
-				</ctl:call-test>
-				<ctl:call-test name="sos:ows-OWS.GetCapabilities-Sections.1">
-					<ctl:with-param name="serviceURL" select="$serviceURL"/>
-				</ctl:call-test>
-				<ctl:call-test name="sos:ows-OWS.GetCapabilities-AcceptFormats.1">
-					<ctl:with-param name="serviceURL" select="$serviceURL"/>
-				</ctl:call-test>
-			</ctl:code>
-		</ctl:test>
-		<ctl:test name="sos:ows-OWS.ClientError.1">
-			<ctl:param name="serviceURL"/>
-			<ctl:assertion>All of the following assertions must hold for the response to an invalid request:
-1) The response entity is a valid exception report having &gt;ows:ExceptionReport&lt; as the document element;
-2) The value of the exceptionCode attribute specifies the appropriate code value.
-</ctl:assertion>
-			<ctl:comment>The following tests in the "core" section below exhaustively test for valid exception reports under 15 different circumstances.
-			They will fulfill the requirements for this test.
-			SOS.GetCapabilities-KVPRequestParameterHandling
-SOS.GetCapabilities-KVPRequestServiceParameterHandling
-SOS.GetCapabilities-KVPRequestRequestParameterHandling
-SOS.DescribeSensor-RequestInvalidMIMEType
-SOS.DescribeSensor-RequestInvalidProcedure
-SOS.GetObservation-RequestInvalidSRSName
-SOS.GetObservation-RequestInvalidOffering
-SOS.GetObservation-Request Invalid EventTime
-SOS.GetObservation-RequestInvalidProcedure
-SOS.GetObservation-Request Invalid Observed Property
-SOS.GetObservation-RequestInvalidFeatureOfInterest
-SOS.GetObservation-RequestInvalidResult
-SOS.GetObservation-RequestInvalidResponseFormat
-SOS.GetObservation-RequestInvalidResultModel
-SOS.GetObservation-RequestInvalidResponseMode
-</ctl:comment>
-			<ctl:link title="Client error">ATS_URL#OWS.ClientError</ctl:link>
-			<ctl:code>				<!--PUT TEST CODE HERE-->
-
-			</ctl:code>
-		</ctl:test>
-		<ctl:test name="sos:ows-OWS.ContentType.1">
-			<ctl:param name="serviceURL"/>
-			<ctl:assertion>Test purpose</ctl:assertion>
-			<ctl:comment>Test method</ctl:comment>
-			<ctl:link title="Content-Type response header">ATS_URL#OWS.ContentType</ctl:link>
-			<ctl:code>				<!--PUT TEST CODE HERE-->
-
-			</ctl:code>
-		</ctl:test>
-		<ctl:test name="sos:ows-OWS.CaseInsensitiveKvpNames.1">
-			<ctl:param name="serviceURL"/>
-			<ctl:assertion>Test purpose</ctl:assertion>
-			<ctl:comment>Test method</ctl:comment>
-			<ctl:link title="KVP parameter names">ATS_URL#OWS.CaseInsensitiveKvpNames</ctl:link>
-			<ctl:code>				<!--PUT TEST CODE HERE-->
-
-			</ctl:code>
-		</ctl:test>
-		<ctl:test name="sos:ows-OWS.GetCapabilities.1">
-			<ctl:param name="serviceURL"/>
-			<ctl:assertion>Test purpose</ctl:assertion>
-			<ctl:comment>Test method</ctl:comment>
-			<ctl:link title="GetCapabilities request">ATS_URL#OWS.GetCapabilities</ctl:link>
-			<ctl:code>				<!--PUT TEST CODE HERE-->
-
-			</ctl:code>
-		</ctl:test>
-		<ctl:test name="sos:ows-OWS.GetCapabilities-Exceptions.1">
-			<ctl:param name="serviceURL"/>
-			<ctl:assertion>Test purpose</ctl:assertion>
-			<ctl:comment>Test method</ctl:comment>
-			<ctl:link title="GetCapabilities - Exceptions">ATS_URL#OWS.GetCapabilities-Exceptions</ctl:link>
-			<ctl:code>				<!--PUT TEST CODE HERE-->
-
-			</ctl:code>
-		</ctl:test>
-		<ctl:test name="sos:ows-OWS.GetCapabilities-AcceptVersions.1">
-			<ctl:param name="serviceURL"/>
-			<ctl:assertion>Test purpose</ctl:assertion>
-			<ctl:comment>Test method</ctl:comment>
-			<ctl:link title="GetCapabilities - AcceptVersions parameter">ATS_URL#OWS.GetCapabilities-AcceptVersions</ctl:link>
-			<ctl:code>				<!--PUT TEST CODE HERE-->
-
-			</ctl:code>
-		</ctl:test>
-		<ctl:test name="sos:ows-OWS.GetCapabilities-Sections.1">
-			<ctl:param name="serviceURL"/>
-			<ctl:assertion>Test purpose</ctl:assertion>
-			<ctl:comment>Test method</ctl:comment>
-			<ctl:link title="GetCapabilities - Sections parameter">ATS_URL#OWS.GetCapabilities-Sections</ctl:link>
-			<ctl:code>				<!--PUT TEST CODE HERE-->
-
-			</ctl:code>
-		</ctl:test>
-		<ctl:test name="sos:ows-OWS.GetCapabilities-AcceptFormats.1">
-			<ctl:param name="serviceURL"/>
-			<ctl:assertion>Test purpose</ctl:assertion>
-			<ctl:comment>Test method</ctl:comment>
-			<ctl:link title="GetCapabilities - AcceptFormats parameter">ATS_URL#OWS.GetCapabilities-AcceptFormats</ctl:link>
-			<ctl:code>				<!--PUT TEST CODE HERE-->
-
-			</ctl:code>
+		<ctl:param name="serviceURL" />
+		<ctl:assertion>All assertions for "ows" conformance are satisfied.</ctl:assertion>
+		<ctl:comment>Test driver for the ows module.</ctl:comment>
+		<ctl:link title="1. OWS">ATS_URL#ows</ctl:link>
+		<ctl:code>
+			<ctl:message>***************************</ctl:message>
+			<ctl:message>Running OWS Common Tests...</ctl:message>
+			<ctl:message>***************************</ctl:message>
+			<ctl:call-test name="owsTests:ows-main">
+				<ctl:with-param name="serviceURL" select="$serviceURL"/>
+				<ctl:with-param name="serviceType" select="string('SOS')"/>
+				<ctl:with-param name="serviceVersion" select="string('1.0.0')" />
+				<ctl:with-param name="capabilitiesRootElementName" select="string('Capabilities')" />
+				<ctl:with-param name="capabilitiesResponseSchemaLocation" select="'C:\schemas\swe\sos\1.0.0\sosGetCapabilities.xsd'"/>
+				<ctl:with-param name="capabilitiesResponseSchemaType" select="string('file')" />
+				<ctl:with-param name="capabilitiesResponseContentType" select="string('text/xml')" />
+				<ctl:with-param name="exceptionReportSchemaLocation" select="string('C:\schemas\SCHEMAS_OPENGIS_NET\ows\1.1.0\owsExceptionReport.xsd')"/>
+				<ctl:with-param name="exceptionReportSchemaType" select="string('file')" />
+			</ctl:call-test>
+		</ctl:code>
 		</ctl:test>
 	</ctl:package>
+	
 	<ctl:package>
 		<ctl:test name="sos:general-main">
 			<ctl:param name="serviceURL"/>
@@ -281,7 +181,7 @@ SOS.GetObservation-RequestInvalidResponseMode
 			<ctl:param name="sosSchemaRoot"/>
 			<ctl:param name="sosVersion"/>
 
-			
+		
 			<ctl:assertion>All assertions for "core" conformance are satisfied.</ctl:assertion>
 			<ctl:comment>Test driver for the core module.</ctl:comment>
 			<ctl:link title="3. Core">ATS_URL#core</ctl:link>
@@ -337,7 +237,7 @@ SOS.GetObservation-RequestInvalidResponseMode
 
 				
 				<xsl:choose>
-					<!-- check for valid schema or missing response-->
+	
 					<xsl:when test="not($getCapabilitiesRequest/*)">
 						<ctl:message>GetCapabilites response document failed schema validation.</ctl:message>
 						<ctl:message><xsl:value-of select="concat('Schema: ', sosFunctions:schemaPath($sosSchemaRoot, $sosVersion,'sos', 'sosGetCapabilities.xsd'))"/></ctl:message>
@@ -394,7 +294,7 @@ SOS.GetObservation-RequestInvalidResponseMode
 
 						<!--********************   Create variables for DescribeSensor **********************************-->		
 						
-				
+
 						<xsl:variable name="describeSensorPostURL" select="sosFunctions:operationPostURL($getCapabilitiesRequest, 'DescribeSensor')"/>
 						<xsl:variable name="describeSensorVersion" select="sosFunctions:operationVersion($getCapabilitiesRequest, 'DescribeSensor')"/>
 						<xsl:variable name="describeSensorProcedure" select="sosFunctions:describeSensorFirstProcedure($getCapabilitiesRequest)"/>
@@ -463,14 +363,14 @@ SOS.GetObservation-RequestInvalidResponseMode
 								
 									</ctl:body>				
 									
-<!--
+
 									<ctl:call-function name="sosFunctions:xmlValidatingParser">												
 										<ctl:with-param name="schemaRoot" select="'http://mars.uni-muenster.de/swerep/trunk/'"/>
 										<ctl:with-param name="version" select="$outputFormatVersion"/>
 										<ctl:with-param name="encoding" select="$outputFormatEncoding"/>
 										<ctl:with-param name="filename" select="concat('base\',$outputFormatEncoding, '.xsd')"/>									
 									</ctl:call-function>
--->	
+	
 								</ctl:request>	
 							</xsl:variable>							
 							
@@ -492,7 +392,6 @@ SOS.GetObservation-RequestInvalidResponseMode
 						</xsl:for-each>
 
 						<!--********************   Create variables for GetObservation **********************************-->	
-						
 						<xsl:variable name="getObservationPostURL" select="sosFunctions:operationPostURL($getCapabilitiesRequest, 'DescribeSensor')"/>
 						<xsl:variable name="getObservationVersion" select="sosFunctions:operationVersion($getCapabilitiesRequest, 'DescribeSensor')"/>
 						<xsl:variable name="offeringId"	select="sosFunctions:capabilitiesFirstOfferingId($getCapabilitiesRequest)"/>
@@ -712,51 +611,6 @@ SOS.GetObservation-RequestInvalidResponseMode
 						<ctl:with-param name="postURL" select="$getObservationPostURL"/>
 						<ctl:with-param name="getObservationVersion" select="$getObservationVersion"/>
 					</ctl:call-test>					
-
-<!--
-					<xsl:variable name="getObservation">
-							<ctl:request>
-								<ctl:url>
-									<xsl:value-of select="$getObservationPostURL"/>
-								</ctl:url>
-								<ctl:method>post</ctl:method>
-			
-								<ctl:body>								
-									<GetObservation 
-										xmlns="http://www.opengis.net/sos/1.0" 
-										xmlns:ows="http://www.opengis.net/ows/1.1" 
-										xmlns:gml="http://www.opengis.net/gml" 
-										xmlns:ogc="http://www.opengis.net/ogc" 
-										xmlns:om="http://www.opengis.net/om/1.0" 
-										xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-										xsi:schemaLocation="http://www.opengis.net/sos/1.0
-											C:\Ifgi\OGC_material\schemata_final\svn\swe\trunk\sos\1.0.0/sosGetObservation.xsd" 
-										service="SOS"
-									>
-										<xsl:attribute name="version">
-											<xsl:value-of select="$getObservationVersion"/>
-										</xsl:attribute>
-										<offering><xsl:value-of select="$offeringId"/></offering>
-										<observedProperty>
-											<xsl:value-of select="$observationOfferingObservedProperty"/>
-										</observedProperty>
-										<responseFormat>
-											<xsl:value-of select="$observationOfferingResponseFormat"/>
-										</responseFormat>	
-									</GetObservation>						
-								</ctl:body>		
-
-								
-								<ctl:call-function name="sosFunctions:xmlValidatingParser">												
-									<ctl:with-param name="schemaRoot" select="$sosSchemaRoot"/>
-									<ctl:with-param name="version" select="$sosVersion"/>
-									<ctl:with-param name="encoding" select="'sos'"/>
-									<ctl:with-param name="filename" select="'sosGetObservation.xsd'"/>									
-								</ctl:call-function>
-															
-							</ctl:request>
-						</xsl:variable>	
-	-->
 													
 					</xsl:otherwise>					
 				</xsl:choose>				

@@ -35,7 +35,8 @@
 		<ctl:link title="Verify that the server handles missing parameters correctly.">ATS_URL#SOS.GetCapabilities-KVPRequestParameterHandling</ctl:link>
 		<ctl:code>				
 			<xsl:variable name="thisRequest">
-				<ctl:message select="'Making GetCapabilities request with no &quot;service&quot; parameter...'"/>				
+				<ctl:message select="'Making GetCapabilities request with no &quot;service&quot; parameter...'"/>
+				<ctl:message>and no version parameter</ctl:message>				
 				<ctl:request>
 					<ctl:url>
 						<xsl:value-of select="$serviceURL"/>
@@ -61,10 +62,10 @@
 					<ctl:fail/>
 				</xsl:when>
 				<!-- check for correct exception code -->
-				<xsl:when test="not($thisRequest/ows:ExceptionReport/ows:Exception/@exceptionCode = 'MissingParameterValue')">
+				<xsl:when test="not(sosFunctions:exceptionCode($thisRequest) = 'MissingParameterValue')">
 					<ctl:message>Invalid exception code.</ctl:message>
 					<ctl:message>
-						<xsl:value-of select="concat('Exception code is: ', $thisRequest/ows:ExceptionReport/ows:Exception/@exceptionCode)"/>
+						<xsl:value-of select="concat('Exception code is: ', sosFunctions:exceptionCode($thisRequest))"/>
 					</ctl:message>
 					<ctl:message>Exception code should be: 'MissingParameterValue'.</ctl:message>
 					<ctl:fail/>
@@ -89,7 +90,7 @@
 			<xsl:variable name="invalidServiceValue" select = "'XYZ'"/>
 			<ctl:message select="concat('Making GetCapabilities request with &quot;service&quot; parameter value of &quot;',
 										$invalidServiceValue, '&quot;...')"/>
-			
+			<ctl:message>and no version parameter</ctl:message>
 			<xsl:variable name="thisRequest">
 				<ctl:request>
 					<ctl:url>
@@ -115,10 +116,10 @@
 					<ctl:fail/>
 				</xsl:when>
 				<!-- check for correct exception code -->
-				<xsl:when test="not($thisRequest/ows:ExceptionReport/ows:Exception/@exceptionCode = 'InvalidParameterValue')">
+				<xsl:when test="not(sosFunctions:exceptionCode($thisRequest) = 'InvalidParameterValue')">
 					<ctl:message>Invalid exception code.</ctl:message>
 					<ctl:message>
-						<xsl:value-of select="concat('Exception code is: ', $thisRequest/ows:ExceptionReport/ows:Exception/@exceptionCode)"/>
+						<xsl:value-of select="concat('Exception code is: ', sosFunctions:exceptionCode($thisRequest))"/>
 					</ctl:message>
 					<ctl:message>Exception code should be: 'InvalidParameterValue'.</ctl:message>
 					<ctl:fail/>
@@ -141,7 +142,8 @@
 		<ctl:code>
 			<xsl:variable name="invalidRequestValue" select="'GetMeASandwich'"/>
 			<ctl:message select="concat('Making GetCapabilities request with &quot;request&quot; parameter value of &quot;',
-										$invalidRequestValue, '&quot;...')"/>				
+										$invalidRequestValue, '&quot;...')"/>	
+			<ctl:message>and no version parameter</ctl:message>
 			<xsl:variable name="thisRequest">
 				<ctl:request>
 					<ctl:url>
@@ -167,14 +169,22 @@
 					<ctl:fail/>
 				</xsl:when>
 				<!-- check for correct exception code -->
-				<xsl:when test="not($thisRequest/ows:ExceptionReport/ows:Exception/@exceptionCode = 'InvalidParameterValue')">
+				<xsl:when test="not(sosFunctions:exceptionCode($thisRequest) = 'InvalidParameterValue')">
 					<ctl:message>Invalid exception code.</ctl:message>
 					<ctl:message>
-						<xsl:value-of select="concat('Exception code is: ', $thisRequest/ows:ExceptionReport/ows:Exception/@exceptionCode)"/>
+						<xsl:value-of select="concat('Exception code is: ', sosFunctions:exceptionCode($thisRequest))"/>
 					</ctl:message>
 					<ctl:message>Exception code should be: 'InvalidParameterValue'.</ctl:message>
 					<ctl:fail/>
 				</xsl:when>
+				<xsl:when test="not(lower-case(sosFunctions:exceptionCodeLocator($thisRequest)) = 'service')">
+					<ctl:message>Invalid exception code.</ctl:message>
+					<ctl:message>
+						<xsl:value-of select="concat('Exception code is: ', sosFunctions:exceptionCodeLocator($thisRequest))"/>
+					</ctl:message>
+					<ctl:message>Exception code should be: 'InvalidParameterValue'.</ctl:message>
+					<ctl:fail/>
+				</xsl:when>				
 				<!-- looks good -->
 				<xsl:otherwise>
 					<ctl:message>OK</ctl:message>

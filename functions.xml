@@ -16,6 +16,30 @@
  xmlns:om="http://www.opengis.net/om/1.0.0"
 >
 
+
+	<ctl:function name="sosFunctions:exceptionElement">
+		<ctl:param name="exceptionResponse">The exception repsonse</ctl:param>
+		<ctl:code>
+			<xsl:copy-of select="$exceptionResponse//ows:ExceptionReport/ows:Exception" />
+		</ctl:code>
+	</ctl:function>
+	
+	<ctl:function name="sosFunctions:exceptionCode">
+		<ctl:param name="exceptionResponse">The exception repsonse</ctl:param>
+		<ctl:code>
+			<xsl:variable name="exceptionElement" select="sosFunctions:exceptionElement($exceptionResponse)"/>
+			<xsl:value-of select="$exceptionElement/@exceptionCode" />
+		</ctl:code>
+	</ctl:function>
+
+	<ctl:function name="sosFunctions:exceptionCodeLocator">
+		<ctl:param name="exceptionResponse">The exception repsonse</ctl:param>
+		<ctl:code>
+			<xsl:variable name="exceptionElement" select="sosFunctions:exceptionElement($exceptionResponse)"/>
+			<xsl:value-of select="$exceptionElement/@locator" />
+		</ctl:code>
+	</ctl:function>
+	
     <ctl:function name="sosFunctions:dateTimeFromISO">
         <ctl:param name="dateString"></ctl:param>
 		<ctl:description>Convert a valid ISO 8601 date time to a valid XSL datetime. 
