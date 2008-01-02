@@ -70,6 +70,15 @@
 					<ctl:message>Exception code should be: 'MissingParameterValue'.</ctl:message>
 					<ctl:fail/>
 				</xsl:when>
+				<xsl:when test="not(lower-case(sosFunctions:exceptionCodeLocator($thisRequest)) = 'service')">
+					<ctl:message>Invalid locator.</ctl:message>
+					<ctl:message>
+						<xsl:value-of select="concat('Locator code is: ', sosFunctions:exceptionCodeLocator($thisRequest))"/>
+					</ctl:message>
+					<ctl:message>Locator value should be: 'service'.</ctl:message>
+					<ctl:fail/>
+				</xsl:when>				
+				
 				<!-- looks good -->
 				<xsl:otherwise>
 					<ctl:message>OK</ctl:message>
@@ -124,6 +133,14 @@
 					<ctl:message>Exception code should be: 'InvalidParameterValue'.</ctl:message>
 					<ctl:fail/>
 				</xsl:when>
+				<xsl:when test="not(lower-case(sosFunctions:exceptionCodeLocator($thisRequest)) = 'service')">
+					<ctl:message>Invalid locator.</ctl:message>
+					<ctl:message>
+						<xsl:value-of select="concat('Locator code is: ', sosFunctions:exceptionCodeLocator($thisRequest))"/>
+					</ctl:message>
+					<ctl:message>Locator value should be: 'service'.</ctl:message>
+					<ctl:fail/>
+				</xsl:when>					
 				<!-- looks good -->
 				<xsl:otherwise>
 					<ctl:message>OK</ctl:message>
@@ -177,12 +194,12 @@
 					<ctl:message>Exception code should be: 'InvalidParameterValue'.</ctl:message>
 					<ctl:fail/>
 				</xsl:when>
-				<xsl:when test="not(lower-case(sosFunctions:exceptionCodeLocator($thisRequest)) = 'service')">
-					<ctl:message>Invalid exception code.</ctl:message>
+				<xsl:when test="not(lower-case(sosFunctions:exceptionCodeLocator($thisRequest)) = 'request')">
+					<ctl:message>Invalid locator.</ctl:message>
 					<ctl:message>
-						<xsl:value-of select="concat('Exception code is: ', sosFunctions:exceptionCodeLocator($thisRequest))"/>
+						<xsl:value-of select="concat('Locator code is: ', sosFunctions:exceptionCodeLocator($thisRequest))"/>
 					</ctl:message>
-					<ctl:message>Exception code should be: 'InvalidParameterValue'.</ctl:message>
+					<ctl:message>Locator value should be: 'request'.</ctl:message>
 					<ctl:fail/>
 				</xsl:when>				
 				<!-- looks good -->
