@@ -74,8 +74,9 @@
 					<param name="service"><xsl:value-of select="$serviceType" /></param>
 					<param name="version"><xsl:value-of select="$serviceVersion" /></param>
 					<param name="request">GetCapabilities</param>
-					<parsers:XMLValidatingParser>
+					<parsers:XMLValidatingParser>						
                         <parsers:schemas>
+							<parsers:schema type="url">http://www.w3.org/2001/xml.xsd</parsers:schema>
                             <parsers:schema>
                                 <xsl:attribute name="type"><xsl:value-of select="$capabilitiesResponseSchemaType" /></xsl:attribute>
                                 <xsl:value-of select="$capabilitiesResponseSchemaLocation" />
@@ -273,6 +274,7 @@
 					<param name="REQUEST">GetCapabilities</param>
 					<parsers:XMLValidatingParser>
                         <parsers:schemas>
+							<parsers:schema type="url">http://www.w3.org/2001/xml.xsd</parsers:schema>
                             <parsers:schema>
                                 <xsl:attribute name="type"><xsl:value-of select="$responseSchemaType" /></xsl:attribute>
                                 <xsl:value-of select="$responseSchemaLocation" />
@@ -295,6 +297,7 @@
 					<param name="RequesT">GetCapabilities</param>
 					<parsers:XMLValidatingParser>
                         <parsers:schemas>
+							<parsers:schema type="url">http://www.w3.org/2001/xml.xsd</parsers:schema>
                             <parsers:schema>
                                 <xsl:attribute name="type"><xsl:value-of select="$responseSchemaType" /></xsl:attribute>
                                 <xsl:value-of select="$responseSchemaLocation" />
@@ -317,6 +320,7 @@
 					<param name="request">GetCapabilities</param>
 					<parsers:XMLValidatingParser>
                         <parsers:schemas>
+							<parsers:schema type="url">http://www.w3.org/2001/xml.xsd</parsers:schema>
                             <parsers:schema>
                                 <xsl:attribute name="type"><xsl:value-of select="$responseSchemaType" /></xsl:attribute>
                                 <xsl:value-of select="$responseSchemaLocation" />
@@ -425,6 +429,7 @@
 					<param name="request">GetCapabilities</param>
 					<parsers:XMLValidatingParser>
                         <parsers:schemas>
+							<parsers:schema type="url">http://www.w3.org/2001/xml.xsd</parsers:schema>
                             <parsers:schema>
                                 <xsl:attribute name="type"><xsl:value-of select="$responseSchemaType" /></xsl:attribute>
                                 <xsl:value-of select="$responseSchemaLocation" />
@@ -476,6 +481,7 @@
 					<param name="version"><xsl:value-of select="$serviceVersion" /></param>
 					<parsers:XMLValidatingParser>
                         <parsers:schemas>
+							<parsers:schema type="url">http://www.w3.org/2001/xml.xsd</parsers:schema>
                             <parsers:schema>
                                 <xsl:attribute name="type"><xsl:value-of select="$responseSchemaType" /></xsl:attribute>
                                 <xsl:value-of select="$responseSchemaLocation" />
@@ -524,6 +530,7 @@
 					<param name="version"><xsl:value-of select="$serviceVersion" /></param>
 					<parsers:XMLValidatingParser>
                         <parsers:schemas>
+							<parsers:schema type="url">http://www.w3.org/2001/xml.xsd</parsers:schema>
                             <parsers:schema>
                                 <xsl:attribute name="type"><xsl:value-of select="$responseSchemaType" /></xsl:attribute>
                                 <xsl:value-of select="$responseSchemaLocation" />
@@ -573,6 +580,7 @@
 				   	<param name="service"><xsl:value-of select="$serviceType" /></param>
 					<parsers:XMLValidatingParser>
                         <parsers:schemas>
+							<parsers:schema type="url">http://www.w3.org/2001/xml.xsd</parsers:schema>
                             <parsers:schema>
                                 <xsl:attribute name="type"><xsl:value-of select="$responseSchemaType" /></xsl:attribute>
                                 <xsl:value-of select="$responseSchemaLocation" />
@@ -630,6 +638,7 @@
 				   	<param name="service"><xsl:value-of select="$serviceType" /></param>
 					<parsers:XMLValidatingParser>
                         <parsers:schemas>
+							<parsers:schema type="url">http://www.w3.org/2001/xml.xsd</parsers:schema>
                             <parsers:schema>
                                 <xsl:attribute name="type"><xsl:value-of select="$responseSchemaType" /></xsl:attribute>
                                 <xsl:value-of select="$responseSchemaLocation" />
@@ -689,6 +698,7 @@
                     <param name="acceptversions"><xsl:value-of select="$acceptVersions" /></param>
 					<parsers:XMLValidatingParser>
                         <parsers:schemas>
+							<parsers:schema type="url">http://www.w3.org/2001/xml.xsd</parsers:schema>
                             <parsers:schema>
                                 <xsl:attribute name="type"><xsl:value-of select="$responseSchemaType" /></xsl:attribute>
                                 <xsl:value-of select="$responseSchemaLocation" />
@@ -746,11 +756,11 @@
                     <param name="acceptversions">2000-01-01</param>
 					<parsers:XMLValidatingParser>
                         <parsers:schemas>
+							<parsers:schema type="url">http://www.w3.org/2001/xml.xsd</parsers:schema>
                             <parsers:schema>
                                 <xsl:attribute name="type"><xsl:value-of select="$exceptionReportSchemaType" /></xsl:attribute>
                                 <xsl:value-of select="$exceptionReportSchemaLocation" />
-                            </parsers:schema>
-							<parsers:schema type="url">http://www.w3.org/2001/xml.xsd</parsers:schema>
+                            </parsers:schema>							
                         </parsers:schemas>
                     </parsers:XMLValidatingParser>
 				</request>
@@ -802,11 +812,11 @@
 					<param name="request">GetCapabilities</param>
 					<parsers:XMLValidatingParser>
                         <parsers:schemas>
+							<parsers:schema type="url">http://www.w3.org/2001/xml.xsd</parsers:schema>
                             <parsers:schema>
                                 <xsl:attribute name="type"><xsl:value-of select="$exceptionReportSchemaType" /></xsl:attribute>
                                 <xsl:value-of select="$exceptionReportSchemaLocation" />
                             </parsers:schema>
-							<parsers:schema type="url">http://www.w3.org/2001/xml.xsd</parsers:schema>
                         </parsers:schemas>
                     </parsers:XMLValidatingParser>
 				</request>
@@ -861,11 +871,11 @@
 					<param name="request">GetCapabilities</param>
 					<parsers:XMLValidatingParser>
                         <parsers:schemas>
+							<parsers:schema type="url">http://www.w3.org/2001/xml.xsd</parsers:schema>
                             <parsers:schema>
                                 <xsl:attribute name="type"><xsl:value-of select="$exceptionReportSchemaType" /></xsl:attribute>
                                 <xsl:value-of select="$exceptionReportSchemaLocation" />
                             </parsers:schema>
-							<parsers:schema type="url">http://www.w3.org/2001/xml.xsd</parsers:schema>
                         </parsers:schemas>
                     </parsers:XMLValidatingParser>
 				</request>
@@ -923,11 +933,11 @@
 					<param name="acceptversions">2000-01-01</param>
 					<parsers:XMLValidatingParser>
                         <parsers:schemas>
+							<parsers:schema type="url">http://www.w3.org/2001/xml.xsd</parsers:schema>
                             <parsers:schema>
                                 <xsl:attribute name="type"><xsl:value-of select="$exceptionReportSchemaType" /></xsl:attribute>
                                 <xsl:value-of select="$exceptionReportSchemaLocation" />
                             </parsers:schema>
-							<parsers:schema type="url">http://www.w3.org/2001/xml.xsd</parsers:schema>
                         </parsers:schemas>
                     </parsers:XMLValidatingParser>
 				</request>
@@ -984,11 +994,11 @@
 					<param name="updatesequence">9999999999</param>
 					<parsers:XMLValidatingParser>
                         <parsers:schemas>
+							<parsers:schema type="url">http://www.w3.org/2001/xml.xsd</parsers:schema>
                             <parsers:schema>
                                 <xsl:attribute name="type"><xsl:value-of select="$exceptionReportSchemaType" /></xsl:attribute>
                                 <xsl:value-of select="$exceptionReportSchemaLocation" />
                             </parsers:schema>
-							<parsers:schema type="url">http://www.w3.org/2001/xml.xsd</parsers:schema>
                         </parsers:schemas>
                     </parsers:XMLValidatingParser>
 				</request>
@@ -1040,11 +1050,11 @@
 					<method>get</method>
 					<parsers:XMLValidatingParser>
                         <parsers:schemas>
+							<parsers:schema type="url">http://www.w3.org/2001/xml.xsd</parsers:schema>
                             <parsers:schema>
                                 <xsl:attribute name="type"><xsl:value-of select="$exceptionReportSchemaType" /></xsl:attribute>
                                 <xsl:value-of select="$exceptionReportSchemaLocation" />
                             </parsers:schema>
-							<parsers:schema type="url">http://www.w3.org/2001/xml.xsd</parsers:schema>
                         </parsers:schemas>
                     </parsers:XMLValidatingParser>
 				</request>
@@ -1108,6 +1118,7 @@
 					<param name="request">GetCapabilities</param>
 					<parsers:XMLValidatingParser>
                         <parsers:schemas>
+							<parsers:schema type="url">http://www.w3.org/2001/xml.xsd</parsers:schema>
                             <parsers:schema>
                                 <xsl:attribute name="type"><xsl:value-of select="$responseSchemaType" /></xsl:attribute>
                                 <xsl:value-of select="$responseSchemaLocation" />
@@ -1162,6 +1173,7 @@
 					<param name="request">GetCapabilities</param>
 					<parsers:XMLValidatingParser>
                         <parsers:schemas>
+							<parsers:schema type="url">http://www.w3.org/2001/xml.xsd</parsers:schema>
                             <parsers:schema>
                                 <xsl:attribute name="type"><xsl:value-of select="$responseSchemaType" /></xsl:attribute>
                                 <xsl:value-of select="$responseSchemaLocation" />
@@ -1213,6 +1225,7 @@
                     <param name="sections"></param>
 					<parsers:XMLValidatingParser>
                         <parsers:schemas>
+							<parsers:schema type="url">http://www.w3.org/2001/xml.xsd</parsers:schema>
                             <parsers:schema>
                                 <xsl:attribute name="type"><xsl:value-of select="$responseSchemaType" /></xsl:attribute>
                                 <xsl:value-of select="$responseSchemaLocation" />
@@ -1275,6 +1288,7 @@
                     <param name="sections">ServiceIdentification,OperationsMetadata</param>
 					<parsers:XMLValidatingParser>
                         <parsers:schemas>
+							<parsers:schema type="url">http://www.w3.org/2001/xml.xsd</parsers:schema>
                             <parsers:schema>
                                 <xsl:attribute name="type"><xsl:value-of select="$responseSchemaType" /></xsl:attribute>
                                 <xsl:value-of select="$responseSchemaLocation" />
@@ -1397,11 +1411,7 @@
             <xsl:variable name="exceptionElement" select="owsFunctions:exceptionElement($exceptionReport)" />
             <xsl:variable name="exceptionCodeValue" select="owsFunctions:exceptionCode($exceptionReport)" />
             <xsl:variable name="locatorValue" select="owsFunctions:exceptionCodeLocator($exceptionReport)" />		
-<!--
-			<xsl:variable name="exceptionElement" select="$exceptionReport//ows:ExceptionReport/ows:Exception" />
-			<xsl:variable name="exceptionCodeValue" select="$exceptionElement/@exceptionCode" />
-			<xsl:variable name="locatorValue" select="$exceptionElement/@locator" />
--->
+
             <xsl:choose>
                 <xsl:when test="$locatorToCheck='*'">
                     <xsl:value-of select="($exceptionCodeToCheck=string($exceptionCodeValue))" />

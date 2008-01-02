@@ -28,8 +28,7 @@
 <!--*****************************************************************************************************************************************************************************-->		
 	<ctl:test name="getCapabilities:core-SOS.GetCapabilities-KVPRequestParameterHandling.1">
 		<ctl:param name="serviceURL"/>
-		<ctl:param name="ogcSchemaRoot"/>
-		<ctl:param name="owsVersion"/>
+		<ctl:param name="exceptionReportSchema"/>
 		<ctl:assertion>The server returns a valid error report message with an exceptionCode of MissingParameterValue when mandatory parameters are missing from the request. </ctl:assertion>
 		<ctl:comment>Check that the server returns a valid error report message with an exception code of MissingParameterValue when mandatory parameters are missing from the request.  Pass if the server returns a valid error report message with an exception code of MissingParameterValue; fail otherwise.</ctl:comment>
 		<ctl:link title="Verify that the server handles missing parameters correctly.">ATS_URL#SOS.GetCapabilities-KVPRequestParameterHandling</ctl:link>
@@ -46,10 +45,7 @@
 					<!-- leaving out the "service" parameter -->		
 				
 					<ctl:call-function name="sosFunctions:xmlValidatingParser">											
-						<ctl:with-param name="schemaRoot" select="'C:\schemas\SCHEMAS_OPENGIS_NET\'"/>
-						<ctl:with-param name="version" select="$owsVersion"/>
-						<ctl:with-param name="encoding" select="'ows'"/>
-						<ctl:with-param name="filename" select="'owsExceptionReport.xsd'"/>									
+						<ctl:with-param name="schemaFile" select="$exceptionReportSchema"/>
 					</ctl:call-function>
 				
 				</ctl:request>	
@@ -58,7 +54,7 @@
 				<!-- check for valid schema or missing response-->
 				<xsl:when test="not($thisRequest/*)">
 					<ctl:message>Exception report failed schema validation, or no exception was produced.</ctl:message>
-					<ctl:message select="concat('Schema file: ', sosFunctions:schemaPath('C:\schemas\SCHEMAS_OPENGIS_NET\', $owsVersion, 'ows', 'owsExceptionReport.xsd'))"/>
+					<ctl:message select="concat('Schema file: ', $exceptionReportSchema)"/>
 					<ctl:fail/>
 				</xsl:when>
 				<!-- check for correct exception code -->
@@ -73,7 +69,7 @@
 				<xsl:when test="not(lower-case(sosFunctions:exceptionCodeLocator($thisRequest)) = 'service')">
 					<ctl:message>Invalid locator.</ctl:message>
 					<ctl:message>
-						<xsl:value-of select="concat('Locator code is: ', sosFunctions:exceptionCodeLocator($thisRequest))"/>
+						<xsl:value-of select="concat('Locator is: ', sosFunctions:exceptionCodeLocator($thisRequest))"/>
 					</ctl:message>
 					<ctl:message>Locator value should be: 'service'.</ctl:message>
 					<ctl:fail/>
@@ -89,9 +85,8 @@
 	</ctl:test>
 	<!--*****************************************************************************************************************************************************************************-->
 	<ctl:test name="getCapabilities:core-SOS.GetCapabilities-KVPRequestServiceParameterHandling.1">
-			<ctl:param name="serviceURL"/>
-		<ctl:param name="ogcSchemaRoot"/>
-		<ctl:param name="owsVersion"/>
+		<ctl:param name="serviceURL"/>
+		<ctl:param name="exceptionReportSchema"/>
 		<ctl:assertion>The server returns a valid error report message with an exceptionCode of InvalidParameterValue when the service key value is not SOS. </ctl:assertion>
 		<ctl:comment>Check the server returns a valid error report message with an exception code of InvalidParameterValue when the service key value is not SOS.  Pass if the server returns a valid error report message with an exception code of InvalideParameterValue; fail otherwise.</ctl:comment>
 		<ctl:link title="Verify that the server handles invalid service key values correctly.">ATS_URL#SOS.GetCapabilities-KVPRequestServiceParameterHandling</ctl:link>
@@ -108,11 +103,8 @@
 					<ctl:method>get</ctl:method>						
 					<ctl:param name="request">GetCapabilities</ctl:param>
 					<ctl:param name="service"><xsl:value-of select="$invalidServiceValue"/></ctl:param>  <!-- Invalid service parameter -->					
-						<ctl:call-function name="sosFunctions:xmlValidatingParser">					
-							<ctl:with-param name="schemaRoot" select="'C:\schemas\SCHEMAS_OPENGIS_NET\'"/>
-							<ctl:with-param name="version" select="$owsVersion"/>
-							<ctl:with-param name="encoding" select="'ows'"/>
-							<ctl:with-param name="filename" select="'owsExceptionReport.xsd'"/>							
+						<ctl:call-function name="sosFunctions:xmlValidatingParser">		
+							<ctl:with-param name="schemaFile" select="$exceptionReportSchema"/>
 						</ctl:call-function>
 					</ctl:request>							
 			</xsl:variable>										
@@ -121,7 +113,7 @@
 				<!-- check for valid schema or missing response-->
 				<xsl:when test="not($thisRequest/*)">
 					<ctl:message>Exception report failed schema validation, or no exception was produced.</ctl:message>
-					<ctl:message select="concat('Schema file: ', sosFunctions:schemaPath('C:\schemas\SCHEMAS_OPENGIS_NET\', $owsVersion, 'ows', 'owsExceptionReport.xsd'))"/>
+					<ctl:message select="concat('Schema file: ', $exceptionReportSchema)"/>
 					<ctl:fail/>
 				</xsl:when>
 				<!-- check for correct exception code -->
@@ -136,7 +128,7 @@
 				<xsl:when test="not(lower-case(sosFunctions:exceptionCodeLocator($thisRequest)) = 'service')">
 					<ctl:message>Invalid locator.</ctl:message>
 					<ctl:message>
-						<xsl:value-of select="concat('Locator code is: ', sosFunctions:exceptionCodeLocator($thisRequest))"/>
+						<xsl:value-of select="concat('Locator is: ', sosFunctions:exceptionCodeLocator($thisRequest))"/>
 					</ctl:message>
 					<ctl:message>Locator value should be: 'service'.</ctl:message>
 					<ctl:fail/>
@@ -151,8 +143,7 @@
 	<!--*****************************************************************************************************************************************************************************-->		
 	<ctl:test name="getCapabilities:core-SOS.GetCapabilities-KVPRequestRequestParameterHandling.1">
 		<ctl:param name="serviceURL"/>
-		<ctl:param name="ogcSchemaRoot"/>
-		<ctl:param name="owsVersion"/>			
+		<ctl:param name="exceptionReportSchema"/>			
 		<ctl:assertion>The server returns a valid error report message with an exceptionCode of InvalidRequest when the request key value is not GetCapabilities.</ctl:assertion>
 		<ctl:comment>Check the server returns a valid error report message with an exceptionCode of InvalidRequest when the request key value is not GetCapabilities.  Pass if the server returns a valid error report message with an exception code of InvalideParameterValue; fail otherwise.</ctl:comment>
 		<ctl:link title="Verify that the server handles invalid request key values correctly.">ATS_URL#SOS.GetCapabilities-KVPRequestRequestParameterHandling</ctl:link>
@@ -170,11 +161,8 @@
 					<ctl:param name="request"><xsl:value-of select="$invalidRequestValue"/></ctl:param> <!-- Invalid request parameter -->
 					<ctl:param name="service">SOS</ctl:param>  								
 				
-					<ctl:call-function name="sosFunctions:xmlValidatingParser">					
-						<ctl:with-param name="schemaRoot" select="'C:\schemas\SCHEMAS_OPENGIS_NET\'"/>
-						<ctl:with-param name="version" select="$owsVersion"/>
-						<ctl:with-param name="encoding" select="'ows'"/>
-						<ctl:with-param name="filename" select="'owsExceptionReport.xsd'"/>							
+					<ctl:call-function name="sosFunctions:xmlValidatingParser">		
+						<ctl:with-param name="schemaFile" select="$exceptionReportSchema"/>
 					</ctl:call-function>		
 				</ctl:request>
 			</xsl:variable>										
@@ -182,7 +170,7 @@
 				<!-- check for valid schema or missing response-->
 				<xsl:when test="not($thisRequest/*)">
 					<ctl:message>Exception report failed schema validation, or no exception was produced.</ctl:message>
-					<ctl:message select="concat('Schema file: ', sosFunctions:schemaPath('C:\schemas\SCHEMAS_OPENGIS_NET\', $owsVersion, 'ows', 'owsExceptionReport.xsd'))"/>
+					<ctl:message select="concat('Schema file: ', $exceptionReportSchema)"/>
 					<ctl:fail/>
 				</xsl:when>
 				<!-- check for correct exception code -->
@@ -197,7 +185,7 @@
 				<xsl:when test="not(lower-case(sosFunctions:exceptionCodeLocator($thisRequest)) = 'request')">
 					<ctl:message>Invalid locator.</ctl:message>
 					<ctl:message>
-						<xsl:value-of select="concat('Locator code is: ', sosFunctions:exceptionCodeLocator($thisRequest))"/>
+						<xsl:value-of select="concat('Locator is: ', sosFunctions:exceptionCodeLocator($thisRequest))"/>
 					</ctl:message>
 					<ctl:message>Locator value should be: 'request'.</ctl:message>
 					<ctl:fail/>

@@ -294,6 +294,14 @@
 			<xsl:value-of select="concat($schemaRoot, $encoding, '/', $version, '/', $filename)"/>
 		</ctl:code>
 	</ctl:function>
+
+	<ctl:function name="sosFunctions:exceptionReportSchemaPath">
+        <ctl:param name="schemaRoot">The location of the schemas</ctl:param>
+		<ctl:param name="owsVersion">The numeric version of the schema</ctl:param>
+		<ctl:code>			
+			<xsl:value-of select="sosFunctions:schemaPath($schemaRoot, $owsVersion, 'ows', 'owsExceptionReport.xsd')"/>
+		</ctl:code>
+	</ctl:function>
 	
 	<!--Validates response against schema-->
 	<!-- this function is overloaded, there are two versions -->
@@ -306,11 +314,11 @@
 			<xsl:choose>
 				<xsl:when test="starts-with($schemaFile,'http')">
 					<parsers:XMLValidatingParser ignoreErrors="false">
+					<parsers:schema type="url">http://www.w3.org/2001/xml.xsd</parsers:schema>
 						<parsers:schemas>
 							<parsers:schema type="url">
 								<xsl:value-of select="$schemaFile"/>								
 							</parsers:schema>
-							<parsers:schema type="url">http://www.w3.org/2001/xml.xsd</parsers:schema>
 <!--							
 							<parsers:schema type="url">http://mars.uni-muenster.de/swerep/trunk/sensorML/1.0.30/base/sensor.xsd</parsers:schema>
 							<parsers:schema type="url">http://mars.uni-muenster.de/swerep/trunk/sensorML/1.0.30/base/coordinateSystem.xsd</parsers:schema>
@@ -322,10 +330,10 @@
 				<xsl:otherwise>
 					<parsers:XMLValidatingParser ignoreErrors="false">
 						<parsers:schemas>
+							<parsers:schema type="url">http://www.w3.org/2001/xml.xsd</parsers:schema>						
 							<parsers:schema type="file">
 								<xsl:value-of select="$schemaFile"/>
 							</parsers:schema>
-							<parsers:schema type="url">http://www.w3.org/2001/xml.xsd</parsers:schema>
 <!--							
 							<parsers:schema type="url">http://mars.uni-muenster.de/swerep/trunk/sensorML/1.0.30/base/sensor.xsd</parsers:schema>
 							<parsers:schema type="url">http://mars.uni-muenster.de/swerep/trunk/sensorML/1.0.30/base/coordinateSystem.xsd</parsers:schema>

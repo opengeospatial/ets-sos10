@@ -92,32 +92,29 @@
 			<xsl:variable name="ogc.schema.root" select="'http://schemas.opengis.net/'"/>
 			<xsl:variable name="sos.version" select="'1.0.0'"/>		
 			<xsl:variable name="ows.version" select="'1.1.0'"/>
-												 
+			<xsl:variable name="exceptionReportSchema" select="sosFunctions:exceptionReportSchemaPath($ogc.schema.root, $ows.version)"/>
 			<ctl:message select="concat('SOS service URL: ',$sos.service.url)"/>		
 
-
-<!--			
+<!--
 			<ctl:call-test name="sos:ows-main">
 				<ctl:with-param name="serviceURL" select="$sos.service.url" />
+				<ctl:with-param name="exceptionReportSchema" select="$exceptionReportSchema" />
 			</ctl:call-test>
 -->
-
 <!--
 			<ctl:call-test name="sos:general-main">
 				<ctl:with-param name="serviceURL" select="$sos.service.url" />
-				<ctl:with-param name="owsVersion" select="$ows.version" />
+				<ctl:with-param name="exceptionReportSchema" select="$exceptionReportSchema" />
 			</ctl:call-test>			
 -->
-			
-			
+
 			<ctl:call-test name="sos:core-main">
 				<ctl:with-param name="serviceURL" select="$sos.service.url" />
 				<ctl:with-param name="ogcSchemaRoot" select="$ogc.schema.root" />
-				<ctl:with-param name="owsVersion" select="$ows.version" />
+				<ctl:with-param name="exceptionReportSchema" select="$exceptionReportSchema" />
 				<ctl:with-param name="sosSchemaRoot" select="$sos.schema.root" />			
 				<ctl:with-param name="sosVersion" select="$sos.version"/>			
 			</ctl:call-test>
-
 
 		</ctl:code>
 	</ctl:test>
@@ -125,6 +122,7 @@
 	
 		<ctl:test name="sos:ows-main">
 		<ctl:param name="serviceURL" />
+		<ctl:param name="exceptionReportSchema" />
 		<ctl:assertion>All assertions for "ows" conformance are satisfied.</ctl:assertion>
 		<ctl:comment>Test driver for the ows module.</ctl:comment>
 		<ctl:link title="1. OWS">ATS_URL#ows</ctl:link>
@@ -140,8 +138,8 @@
 				<ctl:with-param name="capabilitiesResponseSchemaLocation" select="'C:\schemas\swe\sos\1.0.0\sosGetCapabilities.xsd'"/>
 				<ctl:with-param name="capabilitiesResponseSchemaType" select="string('file')" />
 				<ctl:with-param name="capabilitiesResponseContentType" select="string('text/xml')" />
-				<ctl:with-param name="exceptionReportSchemaLocation" select="string('C:\schemas\SCHEMAS_OPENGIS_NET\ows\1.1.0\owsExceptionReport.xsd')"/>
-				<ctl:with-param name="exceptionReportSchemaType" select="string('file')" />
+				<ctl:with-param name="exceptionReportSchemaLocation" select="$exceptionReportSchema"/>
+				<ctl:with-param name="exceptionReportSchemaType" select="string('url')" />
 			</ctl:call-test>
 		</ctl:code>
 		</ctl:test>
@@ -150,7 +148,7 @@
   <ctl:package>
     <ctl:test name="sos:general-main">
       <ctl:param name="serviceURL" />
-	  <ctl:param name="owsVersion" />
+	  <ctl:param name="exceptionReportSchema" />
       <ctl:assertion>All assertions for "general" conformance are satisfied.</ctl:assertion>
       <ctl:comment>Test driver for the general module.</ctl:comment>
       <ctl:link title="2. General">ATS_URL#general</ctl:link>
@@ -160,7 +158,7 @@
         <ctl:message>****************************</ctl:message>
         <ctl:call-test name="sos:general-SOS.General-InvalidRequest.1">
           <ctl:with-param name="serviceURL" select="$serviceURL" />
-		  <ctl:with-param name="owsVersion" select="$owsVersion" />
+		  <ctl:with-param name="exceptionReportSchema" select="$exceptionReportSchema" />
         </ctl:call-test>
         <ctl:message>**********************************************************************</ctl:message>
         <ctl:call-test name="sos:general-SOS.General-ValidResponse.1">
@@ -170,12 +168,11 @@
     </ctl:test>
     <ctl:test name="sos:general-SOS.General-InvalidRequest.1">
       <ctl:param name="serviceURL" />
-	  <ctl:param name="owsVersion" />
+	  <ctl:param name="exceptionReportSchema" />
       <ctl:assertion>Sending a request that is non-conformant to a schema associated with an SOS operation causes the server to return a valid error report message with an exceptionCode value of InvalidRequest.</ctl:assertion>
       <ctl:comment>Send several test documents that are invalid according to the schemas associated with some of the SOS operations (i.e. the mandatory operations). Pass if the service returns a valid exception message with an exceptionCode value of InvalidRequest; fail otherwise.</ctl:comment>
       <ctl:link title="Verify that an invalid request produces an appropriate response from the server.">ATS_URL#SOS.General-InvalidRequest</ctl:link>
       <ctl:code>
-        <!--PUT TEST CODE HERE-->
         <!--
                     1.)  Issue several invalid request documents to the service.
                     2.)  Validate the response against the ExceptionReport schema.
@@ -193,17 +190,15 @@
                     <ctl:body>
                         <xsl:value-of select="$body" />
                     </ctl:body>
-					<ctl:call-function name="sosFunctions:xmlValidatingParser">											
-						<ctl:with-param name="schemaRoot" select="'C:\schemas\SCHEMAS_OPENGIS_NET\'"/>
-						<ctl:with-param name="version" select="$owsVersion"/>
-						<ctl:with-param name="encoding" select="'ows'"/>
-						<ctl:with-param name="filename" select="'owsExceptionReport.xsd'"/>									
+					<ctl:call-function name="sosFunctions:xmlValidatingParser">	
+						<ctl:with-param name="schemaFile" select="$exceptionReportSchema"/>
 					</ctl:call-function>
                 </ctl:request>
         </xsl:variable>        
         <xsl:choose>
             <xsl:when test="not($invalidRequestResponse/*)">
                 <ctl:message>FAILURE:  The server did not return a response to an invalid request or the response from the server was not a valid exception report.  The response from the server was:  "<xsl:copy-of select="$invalidRequestResponse/*" />"</ctl:message>
+				<ctl:message select="concat('Schema file: ', $exceptionReportSchema)"/>
                 <ctl:fail />
             </xsl:when>
             <xsl:otherwise>
@@ -243,7 +238,7 @@
 		<ctl:test name="sos:core-main">
 			<ctl:param name="serviceURL"/>
 			<ctl:param name="ogcSchemaRoot"/>
-			<ctl:param name="owsVersion"/>
+			<ctl:param name="exceptionReportSchema"/>
 			<ctl:param name="sosSchemaRoot"/>
 			<ctl:param name="sosVersion"/>
 
@@ -256,24 +251,21 @@
 				<ctl:message select="''"/>
 				<ctl:call-test name="getCapabilities:core-SOS.GetCapabilities-KVPRequestParameterHandling.1">
 					<ctl:with-param name="serviceURL" select="$serviceURL"/>
-					<ctl:with-param name="ogcSchemaRoot" select="$ogcSchemaRoot"/>
-					<ctl:with-param name="owsVersion" select="$owsVersion"/>
+					<ctl:with-param name="exceptionReportSchema" select="$exceptionReportSchema"/>
 				</ctl:call-test>
  				
 				<ctl:message select="'********************************************************'"/>
 				<ctl:message select="''"/>
 				<ctl:call-test name="getCapabilities:core-SOS.GetCapabilities-KVPRequestServiceParameterHandling.1">
 					<ctl:with-param name="serviceURL" select="$serviceURL"/>
-					<ctl:with-param name="ogcSchemaRoot" select="$ogcSchemaRoot"/>
-					<ctl:with-param name="owsVersion" select="$owsVersion"/>
+					<ctl:with-param name="exceptionReportSchema" select="$exceptionReportSchema"/>
 				</ctl:call-test>
 				
 				<ctl:message select="'********************************************************'"/>
 				<ctl:message select="''"/>		
 				<ctl:call-test name="getCapabilities:core-SOS.GetCapabilities-KVPRequestRequestParameterHandling.1">
 					<ctl:with-param name="serviceURL" select="$serviceURL"/>
-					<ctl:with-param name="ogcSchemaRoot" select="$ogcSchemaRoot"/>
-					<ctl:with-param name="owsVersion" select="$owsVersion"/>
+					<ctl:with-param name="exceptionReportSchema" select="$exceptionReportSchema"/>
 				</ctl:call-test>
 																
 				<ctl:message select="'********************************************************'"/>
@@ -314,7 +306,7 @@
 						<ctl:message select="'********************************************************'"/>
 						<ctl:message select="''"/>					
 						<ctl:message>Capabilities response is valid, continuing...</ctl:message>
-
+<!--
 						<ctl:message select="'********************************************************'"/>
 						<ctl:message select="''"/>						
 						<ctl:call-test name="getCapabilities:core-SOS.GetCapabilities-OperationsMetadataMandatoryOperations.1">
@@ -357,20 +349,18 @@
 						<ctl:call-test name="getCapabilities:core-SOS.GetCapabilities-ResponseContentsValidResultModel.1">
 							<ctl:with-param name="capabilitiesDocument" select="$getCapabilitiesRequest"/>
 						</ctl:call-test>
-
+-->
 						<!--********************   Create variables for DescribeSensor **********************************-->		
-						
-<!--
+
 						<xsl:variable name="describeSensorPostURL" select="sosFunctions:operationPostURL($getCapabilitiesRequest, 'DescribeSensor')"/>
 						<xsl:variable name="describeSensorVersion" select="sosFunctions:operationVersion($getCapabilitiesRequest, 'DescribeSensor')"/>
 						<xsl:variable name="describeSensorProcedure" select="sosFunctions:describeSensorFirstProcedure($getCapabilitiesRequest)"/>
 						<xsl:variable name="describeSensorOutputFormat" select="sosFunctions:describeSensorOutputFormat($getCapabilitiesRequest)"/>						
-
+<!--
 						<ctl:message select="'********************************************************'"/>
 						<ctl:message select="''"/>												
 						<ctl:call-test name="describeSensor:core-SOS.DescribeSensor-RequestInvalidMIMEType.1">							
-							<ctl:with-param name="ogcSchemaRoot" select="$ogcSchemaRoot"/>
-							<ctl:with-param name="owsVersion" select="$owsVersion"/>
+							<ctl:with-param name="exceptionReportSchema" select="$exceptionReportSchema"/>
 							<ctl:with-param name="postURL" select="$describeSensorPostURL"/>
 							<ctl:with-param name="describeSensorVersion" select="$describeSensorVersion"/>
 							<ctl:with-param name="procedure" select="$describeSensorProcedure"/>						
@@ -379,8 +369,7 @@
 						<ctl:message select="'********************************************************'"/>
 						<ctl:message select="''"/>						
 						<ctl:call-test name="describeSensor:core-SOS.DescribeSensor-RequestInvalidProcedure.1">
-							<ctl:with-param name="ogcSchemaRoot" select="$ogcSchemaRoot"/>
-							<ctl:with-param name="owsVersion" select="$owsVersion"/>
+							<ctl:with-param name="exceptionReportSchema" select="$exceptionReportSchema"/>
 							<ctl:with-param name="postURL" select="$describeSensorPostURL"/>
 							<ctl:with-param name="describeSensorVersion" select="$describeSensorVersion"/>
 							<ctl:with-param name="outputFormat" select="$describeSensorOutputFormat"/>
@@ -428,15 +417,17 @@
 										</DescribeSensor>
 								
 									</ctl:body>				
-									
-
+-->	
+									<!--
 									<ctl:call-function name="sosFunctions:xmlValidatingParser">												
 										<ctl:with-param name="schemaRoot" select="'http://mars.uni-muenster.de/swerep/trunk/'"/>
 										<ctl:with-param name="version" select="$outputFormatVersion"/>
 										<ctl:with-param name="encoding" select="$outputFormatEncoding"/>
 										<ctl:with-param name="filename" select="concat('base\',$outputFormatEncoding, '.xsd')"/>									
 									</ctl:call-function>
-	
+									-->
+<!--
+
 								</ctl:request>	
 							</xsl:variable>							
 							
@@ -458,7 +449,7 @@
 						</xsl:for-each>
 -->
 						<!--********************   Create variables for GetObservation **********************************-->	
-<!--						
+
 						<xsl:variable name="getObservationPostURL" select="sosFunctions:operationPostURL($getCapabilitiesRequest, 'DescribeSensor')"/>
 						<xsl:variable name="getObservationVersion" select="sosFunctions:operationVersion($getCapabilitiesRequest, 'DescribeSensor')"/>
 						<xsl:variable name="offeringId"	select="sosFunctions:capabilitiesFirstOfferingId($getCapabilitiesRequest)"/>
@@ -470,7 +461,7 @@
 						<ctl:message select="''"/>									
 						<ctl:call-test name="getObservation:core-SOS.GetObservation-RequestInvalidSRSName.1">
 							<ctl:with-param name="ogcSchemaRoot" select="$ogcSchemaRoot"/>
-							<ctl:with-param name="owsVersion" select="$owsVersion"/>
+							<ctl:with-param name="exceptionReportSchema" select="$exceptionReportSchema"/>
 							<ctl:with-param name="postURL" select="$getObservationPostURL"/>
 							<ctl:with-param name="getObservationVersion" select="$getObservationVersion"/>
 							<ctl:with-param name="responseFormat" select="$observationOfferingResponseFormat"/>					
@@ -481,7 +472,7 @@
 						<ctl:message select="''"/>															
 						<ctl:call-test name="getObservation:core-SOS.GetObservation-RequestInvalidOffering.1">
 							<ctl:with-param name="ogcSchemaRoot" select="$ogcSchemaRoot"/>
-							<ctl:with-param name="owsVersion" select="$owsVersion"/>
+							<ctl:with-param name="exceptionReportSchema" select="$exceptionReportSchema"/>
 							<ctl:with-param name="postURL" select="$getObservationPostURL"/>
 							<ctl:with-param name="getObservationVersion" select="$getObservationVersion"/>
 							<ctl:with-param name="responseFormat" select="$observationOfferingResponseFormat"/>					
@@ -494,7 +485,7 @@
 						<ctl:call-test name="getObservation:core-SOS.GetObservation-RequestInvalidEventTime.1">
 							<ctl:with-param name="capabilitiesDocument" select="$getCapabilitiesRequest"/>
 							<ctl:with-param name="ogcSchemaRoot" select="$ogcSchemaRoot"/>
-							<ctl:with-param name="owsVersion" select="$owsVersion"/>
+							<ctl:with-param name="exceptionReportSchema" select="$exceptionReportSchema"/>
 							<ctl:with-param name="postURL" select="$getObservationPostURL"/>
 							<ctl:with-param name="getObservationVersion" select="$getObservationVersion"/>
 							<ctl:with-param name="responseFormat" select="$observationOfferingResponseFormat"/>					
@@ -506,7 +497,7 @@
 						<ctl:message select="''"/>																					
 						<ctl:call-test name="getObservation:core-SOS.GetObservation-RequestInvalidProcedure.1">						
 						<ctl:with-param name="ogcSchemaRoot" select="$ogcSchemaRoot"/>
-						<ctl:with-param name="owsVersion" select="$owsVersion"/>
+						<ctl:with-param name="exceptionReportSchema" select="$exceptionReportSchema"/>
 						<ctl:with-param name="postURL" select="$getObservationPostURL"/>
 						<ctl:with-param name="getObservationVersion" select="$getObservationVersion"/>
 						<ctl:with-param name="responseFormat" select="$observationOfferingResponseFormat"/>					
@@ -518,7 +509,7 @@
 					<ctl:message select="''"/>																					
 					<ctl:call-test name="getObservation:core-SOS.GetObservation-RequestInvalidFeatureOfInterest.1">
 						<ctl:with-param name="ogcSchemaRoot" select="$ogcSchemaRoot"/>
-						<ctl:with-param name="owsVersion" select="$owsVersion"/>
+						<ctl:with-param name="exceptionReportSchema" select="$exceptionReportSchema"/>
 						<ctl:with-param name="postURL" select="$getObservationPostURL"/>
 						<ctl:with-param name="getObservationVersion" select="$getObservationVersion"/>
 						<ctl:with-param name="responseFormat" select="$observationOfferingResponseFormat"/>					
@@ -530,7 +521,7 @@
 					<ctl:message select="''"/>																					
 					<ctl:call-test name="getObservation:core-SOS.GetObservation-RequestInvalidObservedProperty.1">
 						<ctl:with-param name="ogcSchemaRoot" select="$ogcSchemaRoot"/>
-						<ctl:with-param name="owsVersion" select="$owsVersion"/>
+						<ctl:with-param name="exceptionReportSchema" select="$exceptionReportSchema"/>
 						<ctl:with-param name="postURL" select="$getObservationPostURL"/>
 						<ctl:with-param name="getObservationVersion" select="$getObservationVersion"/>
 						<ctl:with-param name="responseFormat" select="$observationOfferingResponseFormat"/>					
@@ -542,7 +533,7 @@
 					<ctl:message select="''"/>							
 					<ctl:call-test name="getObservation:core-SOS.GetObservation-RequestInvalidResult.1">
 						<ctl:with-param name="ogcSchemaRoot" select="$ogcSchemaRoot"/>
-						<ctl:with-param name="owsVersion" select="$owsVersion"/>
+						<ctl:with-param name="exceptionReportSchema" select="$exceptionReportSchema"/>
 						<ctl:with-param name="postURL" select="$getObservationPostURL"/>
 						<ctl:with-param name="getObservationVersion" select="$getObservationVersion"/>
 						<ctl:with-param name="responseFormat" select="$observationOfferingResponseFormat"/>					
@@ -554,7 +545,7 @@
 					<ctl:message select="''"/>						
 					<ctl:call-test name="getObservation:core-SOS.GetObservation-RequestInvalidResponseFormat.1">
 						<ctl:with-param name="ogcSchemaRoot" select="$ogcSchemaRoot"/>
-						<ctl:with-param name="owsVersion" select="$owsVersion"/>
+						<ctl:with-param name="exceptionReportSchema" select="$exceptionReportSchema"/>
 						<ctl:with-param name="postURL" select="$getObservationPostURL"/>
 						<ctl:with-param name="getObservationVersion" select="$getObservationVersion"/>
 						<ctl:with-param name="observedProperty" select="$observationOfferingObservedProperty"/>	
@@ -565,7 +556,7 @@
 					<ctl:message select="''"/>						
 					<ctl:call-test name="getObservation:core-SOS.GetObservation-RequestInvalidResultModel.1">
 						<ctl:with-param name="ogcSchemaRoot" select="$ogcSchemaRoot"/>
-						<ctl:with-param name="owsVersion" select="$owsVersion"/>
+						<ctl:with-param name="exceptionReportSchema" select="$exceptionReportSchema"/>
 						<ctl:with-param name="postURL" select="$getObservationPostURL"/>
 						<ctl:with-param name="getObservationVersion" select="$getObservationVersion"/>
 						<ctl:with-param name="responseFormat" select="$observationOfferingResponseFormat"/>					
@@ -577,7 +568,7 @@
 					<ctl:message select="''"/>						
 					<ctl:call-test name="getObservation:core-SOS.GetObservation-RequestInvalidResponseMode.1">
 						<ctl:with-param name="ogcSchemaRoot" select="$ogcSchemaRoot"/>
-						<ctl:with-param name="owsVersion" select="$owsVersion"/>
+						<ctl:with-param name="exceptionReportSchema" select="$exceptionReportSchema"/>
 						<ctl:with-param name="postURL" select="$getObservationPostURL"/>
 						<ctl:with-param name="getObservationVersion" select="$getObservationVersion"/>
 						<ctl:with-param name="responseFormat" select="$observationOfferingResponseFormat"/>					
@@ -611,7 +602,7 @@
 					<ctl:call-test name="getObservation:core-SOS.GetObservation-ResponseMatchingObservedPropertyData.1">
 						<ctl:with-param name="capabilitiesDocument" select="$getCapabilitiesRequest"/>
 						<ctl:with-param name="ogcSchemaRoot" select="$ogcSchemaRoot"/>
-						<ctl:with-param name="owsVersion" select="$owsVersion"/>
+						<ctl:with-param name="exceptionReportSchema" select="$exceptionReportSchema"/>
 						<ctl:with-param name="postURL" select="$getObservationPostURL"/>
 						<ctl:with-param name="getObservationVersion" select="$getObservationVersion"/>
 						<ctl:with-param name="responseFormat" select="$observationOfferingResponseFormat"/>											
@@ -677,9 +668,8 @@
 						<ctl:with-param name="ogcSchemaRoot" select="$ogcSchemaRoot"/>
 						<ctl:with-param name="postURL" select="$getObservationPostURL"/>
 						<ctl:with-param name="getObservationVersion" select="$getObservationVersion"/>
-					</ctl:call-test>					
--->				
-													
+					</ctl:call-test>									
+
 					</xsl:otherwise>					
 				</xsl:choose>		
 
