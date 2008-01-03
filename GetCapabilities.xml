@@ -3,7 +3,6 @@
 	xmlns:getCapabilities="https://cite.opengeospatial.org/sos-1.0.0/src/ctl/GetCapabilities.xml"
 	xmlns:sosFunctions="https://cite.opengeospatial.org/sos-1.0.0/src/ctl/functions.xml"
 	xmlns:ctl="http://www.occamlab.com/ctl" 
-	xmlns:db5="http://docbook.org/ns/docbook" 
 	xmlns:html="http://www.w3.org/1999/xhtml" 	
 	xmlns:saxon="http://saxon.sf.net/" 
 	xmlns:tep="http://teamengine.sourceforge.net/parsers" 
@@ -16,11 +15,9 @@
 	xmlns:ows="http://www.opengis.net/ows/1.1" 
 	xmlns:gml="http://www.opengis.net/gml" 
 	xmlns:sos="http://www.opengis.net/sos/1.0"	
-	xmlns:xsos="http://www.opengeospatial.net/sos"
-	xmlns:sensorML="http://www.opengis.net/sensorML"
 	xmlns:tml="http://www.opengis.net/tml"
 	xmlns:xml="http://www.w3.org/XML/1998/namespace"
-	xmlns:om="http://www.opengis.net/om/1.0.o"
+	xmlns:om="http://www.opengis.net/om/1.0.0"
 >
 
 		
@@ -43,11 +40,9 @@
 					<ctl:method>get</ctl:method>						
 					<ctl:param name="request">GetCapabilities</ctl:param>
 					<!-- leaving out the "service" parameter -->		
-				
-					<ctl:call-function name="sosFunctions:xmlValidatingParser">											
+					<ctl:call-function name="sosFunctions:xmlValidatingParser">							
 						<ctl:with-param name="schemaFile" select="$exceptionReportSchema"/>
 					</ctl:call-function>
-				
 				</ctl:request>	
 			</xsl:variable>										
 				<xsl:choose>

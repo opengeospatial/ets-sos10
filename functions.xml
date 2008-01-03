@@ -8,9 +8,7 @@
  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
  xmlns:xlink="http://www.w3.org/1999/xlink"
  xmlns:parsers="http://www.occamlab.com/te/parsers"
- xmlns:yows="http://www.opengeospatial.net/ows"
  xmlns:ows="http://www.opengis.net/ows/1.1"
- xmlns:xows="http://www.opengis.net/ows"
  xmlns:gml="http://www.opengis.net/gml"
  xmlns:sos="http://www.opengis.net/sos/1.0"
  xmlns:om="http://www.opengis.net/om/1.0.0"
@@ -19,6 +17,7 @@
 
 	<ctl:function name="sosFunctions:exceptionElement">
 		<ctl:param name="exceptionResponse">The exception repsonse</ctl:param>
+		<ctl:description>Return the Exception element of an ows:ExceptionReport </ctl:description>
 		<ctl:code>
 			<xsl:copy-of select="$exceptionResponse//ows:ExceptionReport/ows:Exception" />
 		</ctl:code>
@@ -26,6 +25,7 @@
 	
 	<ctl:function name="sosFunctions:exceptionCode">
 		<ctl:param name="exceptionResponse">The exception repsonse</ctl:param>
+		<ctl:description>Return the @exceptionCode attribute of an ows:ExceptionReport </ctl:description>
 		<ctl:code>
 			<xsl:variable name="exceptionElement" select="sosFunctions:exceptionElement($exceptionResponse)"/>
 			<xsl:value-of select="$exceptionElement/@exceptionCode" />
@@ -34,6 +34,7 @@
 
 	<ctl:function name="sosFunctions:exceptionCodeLocator">
 		<ctl:param name="exceptionResponse">The exception repsonse</ctl:param>
+		<ctl:description>Return the @locator attribute of an ows:ExceptionReport </ctl:description>
 		<ctl:code>
 			<xsl:variable name="exceptionElement" select="sosFunctions:exceptionElement($exceptionResponse)"/>
 			<xsl:value-of select="$exceptionElement/@locator" />
@@ -105,7 +106,6 @@
     <ctl:function name="sosFunctions:isValidDate">
         <ctl:param name="dateString">The date to be tested</ctl:param>
 		<ctl:description>Check whether a date is a valid ISO 8601 date with at least a day included, or one of the valid constants.</ctl:description>
-		<!--ctl:return>Boolean</ctl:return-->
         <ctl:code>	
 			<xsl:variable name="isoDateFormatRegex" select="'^([0-9]{4})(-([0-9]{2})(-([0-9]{2})(T([0-9]{2}):([0-9]{2})(:([0-9]{2})(\.([0-9]+))?)?(Z|(([-+])([0-9]{2})(:([0-9]{2}))?))?)?))$'"/>
 			<xsl:variable name="validDateRegex" select="'^[0-9]{4}-(((0[13578]|(10|12))-(0[1-9]|[1-2][0-9]|3[0-1]))|(02-(0[1-9]|[1-2][0-9]))|((0[469]|11)-(0[1-9]|[1-2][0-9]|30)))$'"/>
@@ -117,6 +117,7 @@
 	
 	<ctl:function name="sosFunctions:isValidTimePeriodPosition">
 		<ctl:param name="timePosition">The time position to be tested</ctl:param>
+		<ctl:description>Determine whether a time position is valid</ctl:description>
 		<ctl:code>
 			<xsl:variable name="indeterminateValue" select="$timePosition//@indeterminatePosition"/>
 				<xsl:choose>
@@ -132,6 +133,7 @@
 		</ctl:code>
 	</ctl:function>
 
+	<!-- perhaps this could use the sos schema to instead of hard coded values -->
    <ctl:function name="sosFunctions:isValidOperationName">
         <ctl:param name="operationName">The name of the SOS operation</ctl:param>
         <ctl:return>True/False depending on whether the name is one of the valid SOS operations.</ctl:return>
@@ -183,7 +185,7 @@
 		</ctl:code>
 	</ctl:function>	
    
-
+<!--
     <ctl:function name="sosFunctions:isValidResultModel">
         <ctl:param name="resultModel">The resultModel to validate</ctl:param>
         <ctl:return>True/False depending on whether the result model is a qualified name of a member of the om:AbstractObservation substitution group.</ctl:return>
@@ -206,6 +208,7 @@
 									
         </ctl:code>
     </ctl:function>	
+-->
 	
     <ctl:function name="sosFunctions:operationPostURL">
 		<ctl:param name="capabilitesDocument">The capabilities document</ctl:param>
@@ -274,17 +277,6 @@
         </ctl:code>
     </ctl:function>
 	
-
-	<!--
-    <ctl:function name="sosFunctions:firstSRSName">
-		<ctl:param name="capabilitesDocument">The capabilities document</ctl:param>        
-        <ctl:return>The first attribute value called srsName in an observation offering</ctl:return>
-        <ctl:description>Return a valid outputFormat for use in calling DescribeSensor</ctl:description>
-        <ctl:code>
-			<xsl:value-of select="$capabilitesDocument//sos:ObservationOffering//@srsName[1]"/>																
-        </ctl:code>
-    </ctl:function>	
-	-->
 	<ctl:function name="sosFunctions:schemaPath">
         <ctl:param name="schemaRoot">The location of the schemas</ctl:param>
 		<ctl:param name="version">The numeric version of the schema</ctl:param>
@@ -302,7 +294,7 @@
 			<xsl:value-of select="sosFunctions:schemaPath($schemaRoot, $owsVersion, 'ows', 'owsExceptionReport.xsd')"/>
 		</ctl:code>
 	</ctl:function>
-	
+
 	<!--Validates response against schema-->
 	<!-- this function is overloaded, there are two versions -->
 	<!-- one version accepts the full path to the schema file as a parameter -->
@@ -318,12 +310,7 @@
 						<parsers:schemas>
 							<parsers:schema type="url">
 								<xsl:value-of select="$schemaFile"/>								
-							</parsers:schema>
-<!--							
-							<parsers:schema type="url">http://mars.uni-muenster.de/swerep/trunk/sensorML/1.0.30/base/sensor.xsd</parsers:schema>
-							<parsers:schema type="url">http://mars.uni-muenster.de/swerep/trunk/sensorML/1.0.30/base/coordinateSystem.xsd</parsers:schema>
-							<parsers:schema type="url">http://schemas.opengis.net/gml/3.1.1/base/coordinateReferenceSystems.xsd</parsers:schema>
--->							
+							</parsers:schema>							
 						</parsers:schemas>
 					</parsers:XMLValidatingParser>	
 				</xsl:when>
@@ -333,12 +320,7 @@
 							<parsers:schema type="url">http://www.w3.org/2001/xml.xsd</parsers:schema>						
 							<parsers:schema type="file">
 								<xsl:value-of select="$schemaFile"/>
-							</parsers:schema>
-<!--							
-							<parsers:schema type="url">http://mars.uni-muenster.de/swerep/trunk/sensorML/1.0.30/base/sensor.xsd</parsers:schema>
-							<parsers:schema type="url">http://mars.uni-muenster.de/swerep/trunk/sensorML/1.0.30/base/coordinateSystem.xsd</parsers:schema>
-							<parsers:schema type="url">http://schemas.opengis.net/gml/3.1.1/base/coordinateReferenceSystems.xsd</parsers:schema>
--->							
+							</parsers:schema>						
 						</parsers:schemas>
 					</parsers:XMLValidatingParser>
 				</xsl:otherwise>
@@ -381,6 +363,7 @@
 			<xsl:value-of select="substring-after(sosFunctions:mimeSubtype($mimeType), '/')"/>
 		</ctl:code>
 	</ctl:function>
+
 	
 	<ctl:function name="sosFunctions:schemaPathFromMimeType">
         <ctl:param name="schemaRoot">The location of the schemas</ctl:param>
@@ -509,8 +492,7 @@
 							xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 							xsi:schemaLocation="http://www.opengis.net/sos/1.0
 								C:\Ifgi\OGC_material\schemata_final\svn\swe\trunk\sos\1.0.0/sosGetObservation.xsd" 
-							service="SOS"
-							srsName="urn:ogc:crs:epsg:4326"
+							service="SOS"							
 						>
 							<xsl:attribute name="version">
 								<xsl:value-of select="$getObservationVersion"/>

@@ -4,8 +4,8 @@
 	xmlns:getCapabilities="https://cite.opengeospatial.org/sos-1.0.0/src/ctl/GetCapabilities.xml"
 	xmlns:describeSensor="https://cite.opengeospatial.org/sos-1.0.0/src/ctl/DescribeSensor.xml"
 	xmlns:getObservation="https://cite.opengeospatial.org/sos-1.0.0/src/ctl/GetObservation.xml"
+	xmlns:owsTests="https://www.cite.opengeospatial.org/ows-1.0/tests"
 	xmlns:ctl="http://www.occamlab.com/ctl" 
-	xmlns:db5="http://docbook.org/ns/docbook" 
 	xmlns:html="http://www.w3.org/1999/xhtml" 	
 	xmlns:saxon="http://saxon.sf.net/" 
 	xmlns:tep="http://teamengine.sourceforge.net/parsers" 
@@ -17,14 +17,12 @@
 	xmlns:ows="http://www.opengis.net/ows/1.1" 
 	xmlns:gml="http://www.opengis.net/gml" 
 	xmlns:sos="http://www.opengis.net/sos/1.0"	
-	xmlns:xsos="http://www.opengeospatial.net/sos"
-	xmlns:sensorML="http://www.opengis.net/sensorML"
+	xmlns:sml="http://www.opengis.net/sensorML/1.0.1"
 	xmlns:tml="http://www.opengis.net/tml"
 	xmlns:xml="http://www.w3.org/XML/1998/namespace"
 	xmlns:ogc="http://www.opengis.net/ogc"
 	xmlns:om="http://www.opengis.net/om/1.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:owsTests="https://www.cite.opengeospatial.org/ows-1.0/tests"
 >
 
 	<ctl:suite name="sos:suite">		<!--NOTE: Don't forget to update the TARGET_NAMESPACE_URI and ATS_URL placeholder values-->
@@ -84,29 +82,29 @@
 		 
 			<!-- Get user input: -->	
 			<xsl:variable name="sos.service.url" select="$form-values/values/value[@key='service-url-ddl']"/>
-			<xsl:variable name="sos.schema.root" select="$form-values/values/value[@key='schema-location-ddl']"/>
+			
 		
         
-			<!-- set other "global" variables -->
-				
+			<!-- set other "global" variables -->			
 			<xsl:variable name="ogc.schema.root" select="'http://schemas.opengis.net/'"/>
+			<xsl:variable name="sos.schema.root" select="'C:\schemas\swe\'"/>
 			<xsl:variable name="sos.version" select="'1.0.0'"/>		
 			<xsl:variable name="ows.version" select="'1.1.0'"/>
 			<xsl:variable name="exceptionReportSchema" select="sosFunctions:exceptionReportSchemaPath($ogc.schema.root, $ows.version)"/>
 			<ctl:message select="concat('SOS service URL: ',$sos.service.url)"/>		
 
-<!--
+
 			<ctl:call-test name="sos:ows-main">
 				<ctl:with-param name="serviceURL" select="$sos.service.url" />
 				<ctl:with-param name="exceptionReportSchema" select="$exceptionReportSchema" />
 			</ctl:call-test>
--->
-<!--
+
+
 			<ctl:call-test name="sos:general-main">
 				<ctl:with-param name="serviceURL" select="$sos.service.url" />
 				<ctl:with-param name="exceptionReportSchema" select="$exceptionReportSchema" />
 			</ctl:call-test>			
--->
+
 
 			<ctl:call-test name="sos:core-main">
 				<ctl:with-param name="serviceURL" select="$sos.service.url" />
@@ -282,18 +280,14 @@
 						<ctl:method>get</ctl:method>	
 						<ctl:param name="request">GetCapabilities</ctl:param>
 						<ctl:param name="service">SOS</ctl:param> 
-
+			
 						<ctl:call-function name="sosFunctions:xmlValidatingParser">					
-							<ctl:with-param name="schemaRoot" select="$sosSchemaRoot"/>
-							<ctl:with-param name="version" select="$sosVersion"/>
-							<ctl:with-param name="encoding" select="'sos'"/>
-							<ctl:with-param name="filename" select="'sosGetCapabilities.xsd'"/>								
+							<ctl:with-param name="schemaFile" select="sosFunctions:schemaPath($sosSchemaRoot, $sosVersion,'sos', 'sosGetCapabilities.xsd')"/>
 						</ctl:call-function>
-
+					  
 					</ctl:request>
 				</xsl:variable>
 
-				
 				<xsl:choose>
 	
 					<xsl:when test="not($getCapabilitiesRequest/*)">
@@ -352,11 +346,20 @@
 -->
 						<!--********************   Create variables for DescribeSensor **********************************-->		
 
-						<xsl:variable name="describeSensorPostURL" select="sosFunctions:operationPostURL($getCapabilitiesRequest, 'DescribeSensor')"/>
+						<!--xsl:variable name="describeSensorPostURL" select="sosFunctions:operationPostURL($getCapabilitiesRequest, 'DescribeSensor')"/-->
+						
+						<xsl:variable name="describeSensorPostURL" select="'http://mars.uni-muenster.de:8080/OWS5SOS/sos'"/>
 						<xsl:variable name="describeSensorVersion" select="sosFunctions:operationVersion($getCapabilitiesRequest, 'DescribeSensor')"/>
 						<xsl:variable name="describeSensorProcedure" select="sosFunctions:describeSensorFirstProcedure($getCapabilitiesRequest)"/>
 						<xsl:variable name="describeSensorOutputFormat" select="sosFunctions:describeSensorOutputFormat($getCapabilitiesRequest)"/>						
-<!--
+
+						<ctl:message select="'*********************************'"/>	
+						<ctl:message select="'*     Describe Sensor Tests 	  *'"/>
+						<ctl:message select="'*********************************'"/>
+						<ctl:message select="concat('All DescribeSensor tests will use the &quot;Post&quot; method at the following url: ', $describeSensorPostURL)"/>
+						<ctl:message select="'This url was obtained from the GetCapabilities response'"/>
+						<ctl:message select="''"/>												
+						
 						<ctl:message select="'********************************************************'"/>
 						<ctl:message select="''"/>												
 						<ctl:call-test name="describeSensor:core-SOS.DescribeSensor-RequestInvalidMIMEType.1">							
@@ -382,7 +385,8 @@
 						<xsl:variable name="outputFormatEncoding" select="sosFunctions:mimeTypeSubtypeEncoding($describeSensorOutputFormat)"/>
 						<xsl:variable name="outputFormatVersion" select="sosFunctions:mimeTypeSubtypeVersion($describeSensorOutputFormat)"/>
 
-					
+												
+
 						<xsl:for-each select="$getCapabilitiesRequest//ows:Operation[@name='DescribeSensor']//ows:Parameter[@name='procedure']//ows:AllowedValues/ows:Value">
 							<ctl:message select="'********************************************************'"/>
 							<ctl:message select="''"/>
@@ -417,27 +421,21 @@
 										</DescribeSensor>
 								
 									</ctl:body>				
--->	
-									<!--
-									<ctl:call-function name="sosFunctions:xmlValidatingParser">												
-										<ctl:with-param name="schemaRoot" select="'http://mars.uni-muenster.de/swerep/trunk/'"/>
-										<ctl:with-param name="version" select="$outputFormatVersion"/>
-										<ctl:with-param name="encoding" select="$outputFormatEncoding"/>
-										<ctl:with-param name="filename" select="concat('base\',$outputFormatEncoding, '.xsd')"/>									
-									</ctl:call-function>
-									-->
-<!--
-
+	
+									<ctl:call-function name="sosFunctions:xmlValidatingParser">
+										<ctl:with-param name="schemaFile" select="sosFunctions:schemaPath($ogcSchemaRoot, $outputFormatVersion, $outputFormatEncoding, concat($outputFormatEncoding, '.xsd'))"/>										
+									</ctl:call-function>									
+	
 								</ctl:request>	
 							</xsl:variable>							
-							
+
 							<ctl:message select="''"/>					
 							<ctl:call-test name="describeSensor:core-SOS.DescribeSensor-ResponseMatchingResponseFormat.1">
 								<ctl:with-param name="response" select="$describeSensor"/>
 								<ctl:with-param name="outputFormat" select="$describeSensorOutputFormat"/>
 								<ctl:with-param name="procedure" select="."/>
 							</ctl:call-test>
-				
+
 							<xsl:if test="$describeSensor/*">
 								<ctl:message select="'********************************************************'"/>
 								<ctl:message select="''"/>									
@@ -447,15 +445,25 @@
 								</ctl:call-test>
 							</xsl:if>					
 						</xsl:for-each>
--->
+
 						<!--********************   Create variables for GetObservation **********************************-->	
 
-						<xsl:variable name="getObservationPostURL" select="sosFunctions:operationPostURL($getCapabilitiesRequest, 'DescribeSensor')"/>
-						<xsl:variable name="getObservationVersion" select="sosFunctions:operationVersion($getCapabilitiesRequest, 'DescribeSensor')"/>
+						<!--xsl:variable name="getObservationPostURL" select="sosFunctions:operationPostURL($getCapabilitiesRequest, 'GetObservation')"/-->
+						
+						<xsl:variable name="getObservationPostURL" select="'http://mars.uni-muenster.de:8080/OWS5SOS/sos'"/>
+						
+						
+						<xsl:variable name="getObservationVersion" select="sosFunctions:operationVersion($getCapabilitiesRequest, 'GetObservation')"/>
 						<xsl:variable name="offeringId"	select="sosFunctions:capabilitiesFirstOfferingId($getCapabilitiesRequest)"/>
 						<xsl:variable name="observationOfferingResponseFormat" select="sosFunctions:observationOfferingResponseFormat($getCapabilitiesRequest, $offeringId)"/>
 						<xsl:variable name="observationOfferingObservedProperty" select="sosFunctions:observationOfferingObservedProperty($getCapabilitiesRequest, $offeringId)"/>						
-
+					
+						<ctl:message select="'*********************************'"/>	
+						<ctl:message select="'*     GetObservation Tests 	  *'"/>
+						<ctl:message select="'*********************************'"/>
+						<ctl:message select="concat('All GetObservation tests will use the &quot;Post&quot; method at the following url: ', $getObservationPostURL)"/>
+						<ctl:message select="'This url was obtained from the GetCapabilities response'"/>
+						<ctl:message select="''"/>
 				
 						<ctl:message select="'********************************************************'"/>
 						<ctl:message select="''"/>									

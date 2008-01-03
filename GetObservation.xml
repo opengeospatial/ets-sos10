@@ -2,8 +2,7 @@
 <ctl:package 
 	xmlns:getObservation="https://cite.opengeospatial.org/sos-1.0.0/src/ctl/GetObservation.xml"
 	xmlns:sosFunctions="https://cite.opengeospatial.org/sos-1.0.0/src/ctl/functions.xml"
-	xmlns:ctl="http://www.occamlab.com/ctl" 
-	xmlns:db5="http://docbook.org/ns/docbook" 
+	xmlns:ctl="http://www.occamlab.com/ctl"  
 	xmlns:html="http://www.w3.org/1999/xhtml" 	
 	xmlns:saxon="http://saxon.sf.net/" 
 	xmlns:tep="http://teamengine.sourceforge.net/parsers" 
@@ -16,8 +15,7 @@
 	xmlns:ows="http://www.opengis.net/ows/1.1" 
 	xmlns:gml="http://www.opengis.net/gml" 
 	xmlns:sos="http://www.opengis.net/sos/1.0"	
-	xmlns:xsos="http://www.opengeospatial.net/sos"
-	xmlns:sensorML="http://www.opengis.net/sensorML"
+	xmlns:sml="http://www.opengis.net/sensorML/1.0.1"
 	xmlns:tml="http://www.opengis.net/tml"
 	xmlns:om="http://www.opengis.net/om/1.0.0"
 	xmlns:xml="http://www.w3.org/XML/1998/namespace"
@@ -175,12 +173,12 @@
 						<ctl:message>Exception code should be: 'InvalidParameterValue'.</ctl:message>
 						<ctl:fail/>
 					</xsl:when>
-					<xsl:when test="not(lower-case(sosFunctions:exceptionCodeLocator($getObservation)) = 'offeringid')">
+					<xsl:when test="not(lower-case(sosFunctions:exceptionCodeLocator($getObservation)) = 'offering')">
 						<ctl:message>Invalid locator.</ctl:message>
 						<ctl:message>
 							<xsl:value-of select="concat('Locator is: ', sosFunctions:exceptionCodeLocator($getObservation))"/>
 						</ctl:message>
-						<ctl:message>Locator value should be: 'offeringId'.</ctl:message>
+						<ctl:message>Locator value should be: 'offering'.</ctl:message>
 						<ctl:fail/>
 					</xsl:when>						
 					<!-- looks good -->
@@ -867,7 +865,7 @@
 						<xsl:for-each select="distinct-values($capabilitiesDocument//sos:ObservationOffering[@gml:id=$offeringId]//@srsName)">
 							<xsl:variable name="srsName" select="."/>		
 							<ctl:message select="'****'"/>
-							<ctl:message select="concat('Making GetObservation request with an valid &quot;srsName&quot; parameter of: ', $srsName, '   ...')"/>									
+							<ctl:message select="concat('Making GetObservation request with a valid &quot;srsName&quot; parameter of: ', $srsName, '   ...')"/>									
 							<xsl:variable name="getObservation">
 								<ctl:request>
 									<ctl:url>
@@ -904,7 +902,7 @@
 									
 									
 									<ctl:call-function name="sosFunctions:xmlValidatingParser">											
-										<ctl:with-param name="schemaFile" select="sosFunctions:schemaPathFromMimeType('C:\schemas\swe\', $responseFormat)"/>
+										<ctl:with-param name="schemaFile" select="sosFunctions:schemaPathFromMimeType($ogcSchemaRoot, $responseFormat)"/>
 									</ctl:call-function>						
 									
 									
@@ -915,7 +913,7 @@
 								<!-- check for valid schema or missing response-->
 								<xsl:when test="not($getObservation/*)">							
 									<ctl:message>Response failed schema validation.</ctl:message>
-									<ctl:message select="concat('Schema file: ', sosFunctions:schemaPathFromMimeType('C:\schemas\swe\', $responseFormat))"/>
+									<ctl:message select="concat('Schema file: ', sosFunctions:schemaPathFromMimeType($ogcSchemaRoot, $responseFormat))"/>
 									<ctl:fail/>
 								</xsl:when>
 								<xsl:otherwise>
@@ -1002,7 +1000,7 @@
 									</ctl:body>	
 									
 									<ctl:call-function name="sosFunctions:xmlValidatingParser">											
-										<ctl:with-param name="schemaFile" select="sosFunctions:schemaPathFromMimeType('C:\schemas\swe\', $responseFormat)"/>
+										<ctl:with-param name="schemaFile" select="sosFunctions:schemaPathFromMimeType($ogcSchemaRoot, $responseFormat)"/>
 									</ctl:call-function>
 									
 								</ctl:request>							 														
@@ -1012,7 +1010,7 @@
 								<!-- check for valid schema or missing response-->
 								<xsl:when test="not($getObservation/*)">							
 									<ctl:message>Response failed schema validation.</ctl:message>
-									<ctl:message select="concat('Schema file: ', sosFunctions:schemaPathFromMimeType('C:\schemas\swe\', $responseFormat))"/>
+									<ctl:message select="concat('Schema file: ', sosFunctions:schemaPathFromMimeType($ogcSchemaRoot, $responseFormat))"/>
 									<ctl:fail/>
 								</xsl:when>
 								<xsl:otherwise>
@@ -1095,7 +1093,7 @@
 									</ctl:body>	
 									
 									<ctl:call-function name="sosFunctions:xmlValidatingParser">											
-										<ctl:with-param name="schemaFile" select="sosFunctions:schemaPathFromMimeType('C:\schemas\swe\', $responseFormat)"/>
+										<ctl:with-param name="schemaFile" select="sosFunctions:schemaPathFromMimeType($ogcSchemaRoot, $responseFormat)"/>
 									</ctl:call-function>
 									
 								</ctl:request>							 														
@@ -1105,7 +1103,7 @@
 								<!-- check for valid schema or missing response-->
 								<xsl:when test="not($getObservation/*)">							
 									<ctl:message>Response failed schema validation.</ctl:message>
-									<ctl:message select="concat('Schema file: ', sosFunctions:schemaPathFromMimeType('C:\schemas\swe\', $responseFormat))"/>
+									<ctl:message select="concat('Schema file: ', sosFunctions:schemaPathFromMimeType($ogcSchemaRoot, $responseFormat))"/>
 									<ctl:fail/>
 								</xsl:when>									
 								<xsl:when test="not($getObservation//om:observedProperty//*[@xlink:href=$observedProperty])">
@@ -1187,7 +1185,7 @@
 									</ctl:body>	
 									
 									<ctl:call-function name="sosFunctions:xmlValidatingParser">											
-										<ctl:with-param name="schemaFile" select="sosFunctions:schemaPathFromMimeType('C:\schemas\swe\', $responseFormat)"/>
+										<ctl:with-param name="schemaFile" select="sosFunctions:schemaPathFromMimeType($ogcSchemaRoot, $responseFormat)"/>
 									</ctl:call-function>
 									
 								</ctl:request>							 																					
@@ -1195,7 +1193,7 @@
 							<xsl:choose>								
 								<xsl:when test="not($getObservation/*)">							
 									<ctl:message>Response failed schema validation.</ctl:message>
-									<ctl:message select="concat('Schema file: ', sosFunctions:schemaPathFromMimeType('C:\schemas\swe\', $responseFormat))"/>
+									<ctl:message select="concat('Schema file: ', sosFunctions:schemaPathFromMimeType($ogcSchemaRoot, $responseFormat))"/>
 									<ctl:fail/>
 								</xsl:when>									
 								<xsl:when test="xsd:integer(sosFunctions:numberOfObservations($getObservation)) = 0">
@@ -1262,12 +1260,12 @@
 																	$firsdThirdPosition, 
 																	$observedProperty, 
 																	$responseFormat,
-																	sosFunctions:schemaPathFromMimeType('C:\schemas\swe\', $responseFormat))"/>
+																	sosFunctions:schemaPathFromMimeType($ogcSchemaRoot, $responseFormat))"/>
 									</xsl:variable>						
 									<xsl:choose>								
 										<xsl:when test="not($getObservation1/*)">							
 											<ctl:message>Response failed schema validation.</ctl:message>
-											<ctl:message select="concat('Schema file: ', sosFunctions:schemaPathFromMimeType('C:\schemas\swe\', $responseFormat))"/>
+											<ctl:message select="concat('Schema file: ', sosFunctions:schemaPathFromMimeType($ogcSchemaRoot, $responseFormat))"/>
 											<ctl:fail/>
 										</xsl:when>																							
 										<xsl:otherwise>		
@@ -1293,12 +1291,12 @@
 																	$secondThirdPosition, 
 																	$observedProperty, 
 																	$responseFormat,
-																	sosFunctions:schemaPathFromMimeType('C:\schemas\swe\', $responseFormat))"/>
+																	sosFunctions:schemaPathFromMimeType($ogcSchemaRoot, $responseFormat))"/>
 									</xsl:variable>						
 									<xsl:choose>								
 										<xsl:when test="not($getObservation2/*)">							
 											<ctl:message>Response failed schema validation.</ctl:message>
-											<ctl:message select="concat('Schema file: ', sosFunctions:schemaPathFromMimeType('C:\schemas\swe\', $responseFormat))"/>
+											<ctl:message select="concat('Schema file: ', sosFunctions:schemaPathFromMimeType($ogcSchemaRoot, $responseFormat))"/>
 											<ctl:fail/>
 										</xsl:when>																							
 										<xsl:otherwise>		
@@ -1324,12 +1322,12 @@
 																	$lastEndPosition, 
 																	$observedProperty, 
 																	$responseFormat,
-																	sosFunctions:schemaPathFromMimeType('C:\schemas\swe\', $responseFormat))"/>
+																	sosFunctions:schemaPathFromMimeType($ogcSchemaRoot, $responseFormat))"/>
 									</xsl:variable>						
 									<xsl:choose>								
 										<xsl:when test="not($getObservation3/*)">							
 											<ctl:message>Response failed schema validation.</ctl:message>
-											<ctl:message select="concat('Schema file: ', sosFunctions:schemaPathFromMimeType('C:\schemas\swe\', $responseFormat))"/>
+											<ctl:message select="concat('Schema file: ', sosFunctions:schemaPathFromMimeType($ogcSchemaRoot, $responseFormat))"/>
 											<ctl:fail/>
 										</xsl:when>																							
 										<xsl:otherwise>		
@@ -1413,7 +1411,7 @@
 									</ctl:body>	
 									
 									<ctl:call-function name="sosFunctions:xmlValidatingParser">											
-										<ctl:with-param name="schemaFile" select="sosFunctions:schemaPathFromMimeType('C:\schemas\swe\', $responseFormat)"/>
+										<ctl:with-param name="schemaFile" select="sosFunctions:schemaPathFromMimeType($ogcSchemaRoot, $responseFormat)"/>
 									</ctl:call-function>
 								
 								</ctl:request>							 														
@@ -1423,7 +1421,7 @@
 								<!-- check for valid schema or missing response-->
 								<xsl:when test="not($getObservation/*)">							
 									<ctl:message>Response failed schema validation.</ctl:message>
-									<ctl:message select="concat('Schema file: ', sosFunctions:schemaPathFromMimeType('C:\schemas\swe\', $responseFormat))"/>
+									<ctl:message select="concat('Schema file: ', sosFunctions:schemaPathFromMimeType($ogcSchemaRoot, $responseFormat))"/>
 									<ctl:fail/>
 								</xsl:when>
 								
@@ -1479,7 +1477,7 @@
 					<xsl:for-each select="$capabilitiesDocument//sos:ObservationOffering[@gml:id=$offeringId]//sos:responseFormat">
 						<xsl:variable name="responseFormat" select="."/>	
 						<ctl:message select="'****'"/>
-						<ctl:message select="concat('Making GetObservation request with a valid &quot;repsonseFormat&quot; parameter of: ', $responseFormat, '   ...')"/>
+						<ctl:message select="concat('Making GetObservation request with a valid &quot;responseFormat&quot; parameter of: ', $responseFormat, '   ...')"/>
 						<xsl:variable name="getObservation">
 							<ctl:request>
 								<ctl:url>
@@ -1512,7 +1510,7 @@
 									</ctl:body>	
 																
 								<ctl:call-function name="sosFunctions:xmlValidatingParser">											
-									<ctl:with-param name="schemaFile" select="sosFunctions:schemaPathFromMimeType('C:\schemas\swe\', $responseFormat)"/>
+									<ctl:with-param name="schemaFile" select="sosFunctions:schemaPathFromMimeType($ogcSchemaRoot, $responseFormat)"/>
 								</ctl:call-function>														
 								
 							</ctl:request>							 														
@@ -1522,7 +1520,7 @@
 							<!-- check for valid schema or missing response-->
 							<xsl:when test="not($getObservation/*)">							
 								<ctl:message>Response failed schema validation.</ctl:message>
-								<ctl:message select="concat('Schema file: ', sosFunctions:schemaPathFromMimeType('C:\schemas\swe\', $responseFormat))"/>
+								<ctl:message select="concat('Schema file: ', sosFunctions:schemaPathFromMimeType($ogcSchemaRoot, $responseFormat))"/>
 								<ctl:message select="concat('Response is NOT a valid ', $responseFormat, ' document.')"/>
 								<ctl:fail/>
 							</xsl:when>
@@ -1595,7 +1593,7 @@
 									</ctl:body>	
 									
 									<ctl:call-function name="sosFunctions:xmlValidatingParser">											
-										<ctl:with-param name="schemaFile" select="sosFunctions:schemaPathFromMimeType('C:\schemas\swe\', $responseFormat)"/>
+										<ctl:with-param name="schemaFile" select="sosFunctions:schemaPathFromMimeType($ogcSchemaRoot, $responseFormat)"/>
 									</ctl:call-function>
 								
 								</ctl:request>							 														
@@ -1605,7 +1603,7 @@
 								<!-- check for valid schema or missing response-->
 								<xsl:when test="not($getObservation/*)">							
 									<ctl:message>Response failed schema validation.</ctl:message>
-									<ctl:message select="concat('Schema file: ', sosFunctions:schemaPathFromMimeType('C:\schemas\swe\', $responseFormat))"/>
+									<ctl:message select="concat('Schema file: ', sosFunctions:schemaPathFromMimeType($ogcSchemaRoot, $responseFormat))"/>
 									<ctl:fail/>
 								</xsl:when>
 								
@@ -1695,7 +1693,7 @@
 									
 								
 									<ctl:call-function name="sosFunctions:xmlValidatingParser">											
-										<ctl:with-param name="schemaFile" select="sosFunctions:schemaPathFromMimeType('C:\schemas\swe\', $responseFormat)"/>
+										<ctl:with-param name="schemaFile" select="sosFunctions:schemaPathFromMimeType($ogcSchemaRoot, $responseFormat)"/>
 									</ctl:call-function>
 								
 								</ctl:request>							 														
@@ -1705,7 +1703,7 @@
 								<!-- check for valid schema or missing response-->
 								<xsl:when test="not($getObservation/*)">							
 									<ctl:message>Response failed schema validation.</ctl:message>
-									<ctl:message select="concat('Schema file: ', sosFunctions:schemaPathFromMimeType('C:\schemas\swe\', $responseFormat))"/>
+									<ctl:message select="concat('Schema file: ', sosFunctions:schemaPathFromMimeType($ogcSchemaRoot, $responseFormat))"/>
 									<ctl:fail/>
 								</xsl:when>
 								

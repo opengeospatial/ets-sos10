@@ -2,8 +2,7 @@
 <ctl:package 
 	xmlns:describeSensor="https://cite.opengeospatial.org/sos-1.0.0/src/ctl/DescribeSensor.xml"
 	xmlns:sosFunctions="https://cite.opengeospatial.org/sos-1.0.0/src/ctl/functions.xml"
-	xmlns:ctl="http://www.occamlab.com/ctl" 
-	xmlns:db5="http://docbook.org/ns/docbook" 
+	xmlns:ctl="http://www.occamlab.com/ctl"
 	xmlns:html="http://www.w3.org/1999/xhtml" 	
 	xmlns:saxon="http://saxon.sf.net/" 
 	xmlns:tep="http://teamengine.sourceforge.net/parsers" 
@@ -12,12 +11,10 @@
 	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 	xmlns:parsers="http://www.occamlab.com/te/parsers"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
-	xmlns:xows="http://www.opengeospatial.net/ows"
 	xmlns:ows="http://www.opengis.net/ows/1.1" 
 	xmlns:gml="http://www.opengis.net/gml" 
-	xmlns:sos="http://www.opengis.net/sos/1.0"	
-	xmlns:xsos="http://www.opengeospatial.net/sos"
-	xmlns:sensorML="http://www.opengis.net/sensorML"
+	xmlns:sos="http://www.opengis.net/sos/1.0"		
+	xmlns:sml="http://www.opengis.net/sensorML/1.0.1"
 	xmlns:tml="http://www.opengis.net/tml"
 	xmlns:om="http://www.opengis.net/om/1.0.0"
 	xmlns:xml="http://www.w3.org/XML/1998/namespace"
@@ -33,7 +30,8 @@
 			<ctl:link title="Verify that the server handles invalid MIME types in the outputFormat parameter correctly.">ATS_URL#SOS.DescribeSensor-RequestInvalidMIMEType</ctl:link>
 			<ctl:code>	
 				<!--**********************  check for valid exception when outputFormat is missing from request ******************************-->
-				<ctl:message select="'Making DescribeSensor request with no &quot;outputFormat&quot; parameter...'"/>	
+				<ctl:message select="'Making DescribeSensor request with no &quot;outputFormat&quot; parameter...'"/>
+				<ctl:message select="$postURL"/>
 				<xsl:variable name="noOutputFormatRequest">
 					<ctl:request>
 						<ctl:url>
@@ -327,7 +325,9 @@
 			<ctl:comment>Check that the unique identifier in the response document matches the Procedure specified in the request.  Pass if assertion holds; fail otherwise.</ctl:comment>
 			<ctl:link title="Verify that the unique identifier for the sensor in the returned document matches the Procedure in the request">ATS_URL#SOS.DescribeSensor-ResponseMatchingProcedure</ctl:link>
 			<ctl:code>				
-				<xsl:variable name="responseId" select="string($response//sensorML:System/@id | $response//sensorML:Senor/@id | $response//tml:system/@uid  | $response//tml:transducer/@uid)"/>
+				<!--xsl:variable name="responseId" select="string($response//sml:System/@gml:id | $response//sml:Sensor/@gml:id | $response//sml:System/@id | $response//sml:Sensor/@id | $response//tml:system/@uid  | $response//tml:transducer/@uid)"/-->
+				<!--<xsl:variable name="responseId" select="string($response//sml:System/@gml:id | $response//sml:Sensor/@gml:id | $response//sml:System/@id | $response//sml:Sensor/@id)"/>-->
+				<xsl:variable name="responseId" select="string($response//sml:System/@gml:id | $response//sml:Sensor/@gml:id | $response//sml:System/@id | $response//sml:Sensor/@id  | $response//tml:system/@uid  | $response//tml:transducer/@uid)"/>
 				<xsl:choose>
 					<xsl:when test="$responseId = $procedure">
 						<ctl:message>OK</ctl:message>
