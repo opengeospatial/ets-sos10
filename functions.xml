@@ -68,7 +68,7 @@
                     <xsl:value-of select="($exceptionCodeToCheck=$exceptionCodeValue)" />
                 </xsl:when>
                 <xsl:otherwise>
-                    <xsl:value-of select="($exceptionCodeToCheck=$exceptionCodeValue) and (lower-case($locatorToCheck)=lower-case($locatorValue))" />
+                    <xsl:value-of select="($exceptionCodeToCheck=$exceptionCodeValue) and (contains(lower-case(string($locatorValue)), lower-case($locatorToCheck)))" />
                 </xsl:otherwise>
             </xsl:choose>
         </ctl:code>

@@ -75,7 +75,7 @@
 						<ctl:fail/>
 					</xsl:when>
 					
-					<xsl:when test="not(lower-case(sosFunctions:exceptionCodeLocator($noOutputFormatRequest)) = 'outputformat')">
+					<xsl:when test="not(contains(lower-case(sosFunctions:exceptionCodeLocator($noOutputFormatRequest)), 'outputformat'))">					
 						<ctl:message>Invalid locator.</ctl:message>
 						<ctl:message>
 							<xsl:value-of select="concat('Locator is: ', sosFunctions:exceptionCodeLocator($noOutputFormatRequest))"/>
@@ -139,7 +139,7 @@
 						<ctl:message>Exception code should be: 'InvalidParameterValue'.</ctl:message>
 						<ctl:fail/>
 					</xsl:when>
-					<xsl:when test="not(lower-case(sosFunctions:exceptionCodeLocator($invalidOutputFormatRequest)) = 'outputformat')">
+					<xsl:when test="not(contains(lower-case(sosFunctions:exceptionCodeLocator($invalidOutputFormatRequest)), 'outputformat'))">
 						<ctl:message>Invalid locator.</ctl:message>
 						<ctl:message>
 							<xsl:value-of select="concat('Locator is: ', sosFunctions:exceptionCodeLocator($invalidOutputFormatRequest))"/>
@@ -212,7 +212,7 @@
 						<ctl:message>Exception code should be: 'MissingParameterValue'.</ctl:message>
 						<ctl:fail/>
 					</xsl:when>
-					<xsl:when test="not(lower-case(sosFunctions:exceptionCodeLocator($noProcedureRequest)) = 'procedure')">
+					<xsl:when test="not(contains(lower-case(sosFunctions:exceptionCodeLocator($noProcedureRequest)), 'procedure'))">
 						<ctl:message>Invalid locator.</ctl:message>
 						<ctl:message>
 							<xsl:value-of select="concat('Locator is: ', sosFunctions:exceptionCodeLocator($noProcedureRequest))"/>
@@ -277,7 +277,7 @@
 						<ctl:message>Exception code should be: 'InvalidParameterValue'.</ctl:message>
 						<ctl:fail/>
 					</xsl:when>
-					<xsl:when test="not(lower-case(sosFunctions:exceptionCodeLocator($invalidProcedureRequest)) = 'procedure')">
+					<xsl:when test="not(contains(lower-case(sosFunctions:exceptionCodeLocator($invalidProcedureRequest)), 'procedure'))">										
 						<ctl:message>Invalid locator.</ctl:message>
 						<ctl:message>
 							<xsl:value-of select="concat('Locator is: ', sosFunctions:exceptionCodeLocator($invalidProcedureRequest))"/>

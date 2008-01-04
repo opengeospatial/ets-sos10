@@ -1417,7 +1417,7 @@
                     <xsl:value-of select="($exceptionCodeToCheck=string($exceptionCodeValue))" />
                 </xsl:when>
                 <xsl:otherwise>
-                    <xsl:value-of select="($exceptionCodeToCheck=string($exceptionCodeValue)) and (lower-case($locatorToCheck)=lower-case(string($locatorValue)))" />
+                    <xsl:value-of select="($exceptionCodeToCheck=string($exceptionCodeValue)) and (contains(lower-case(string($locatorToCheck)), lower-case($locatorValue)))" />
                 </xsl:otherwise>
             </xsl:choose>
         </ctl:code>

@@ -90,7 +90,7 @@
 						<ctl:message>Exception code should be: 'InvalidParameterValue'.</ctl:message>
 						<ctl:fail/>
 					</xsl:when>
-					<xsl:when test="not(lower-case(sosFunctions:exceptionCodeLocator($getObservation)) = 'srsname')">
+					<xsl:when test="not(contains(lower-case(sosFunctions:exceptionCodeLocator($getObservation)), 'srsname'))">
 						<ctl:message>Invalid locator.</ctl:message>
 						<ctl:message>
 							<xsl:value-of select="concat('Locator is: ', sosFunctions:exceptionCodeLocator($getObservation))"/>
@@ -173,7 +173,7 @@
 						<ctl:message>Exception code should be: 'InvalidParameterValue'.</ctl:message>
 						<ctl:fail/>
 					</xsl:when>
-					<xsl:when test="not(lower-case(sosFunctions:exceptionCodeLocator($getObservation)) = 'offering')">
+					<xsl:when test="not(contains(lower-case(sosFunctions:exceptionCodeLocator($getObservation)), 'offering'))">
 						<ctl:message>Invalid locator.</ctl:message>
 						<ctl:message>
 							<xsl:value-of select="concat('Locator is: ', sosFunctions:exceptionCodeLocator($getObservation))"/>
@@ -233,7 +233,7 @@
 						<ctl:message>Exception code should be: 'InvalidParameterValue'.</ctl:message>
 						<ctl:fail/>
 					</xsl:when>
-					<xsl:when test="not(lower-case(sosFunctions:exceptionCodeLocator($getObservationBadDateFormat)) = 'eventtime')">
+					<xsl:when test="not(contains(lower-case(sosFunctions:exceptionCodeLocator($getObservationBadDateFormat)), 'eventtime'))">
 						<ctl:message>Invalid locator.</ctl:message>
 						<ctl:message>
 							<xsl:value-of select="concat('Locator is: ', sosFunctions:exceptionCodeLocator($getObservationBadDateFormat))"/>
@@ -282,7 +282,7 @@
 							<ctl:message>Exception code should be: 'InvalidParameterValue'.</ctl:message>
 							<ctl:fail/>
 						</xsl:when>
-						<xsl:when test="not(lower-case(sosFunctions:exceptionCodeLocator($getObservationBadInterval)) = 'eventtime')">
+						<xsl:when test="not(contains(lower-case(sosFunctions:exceptionCodeLocator($getObservationBadInterval)), 'eventtime'))">
 							<ctl:message>Invalid locator.</ctl:message>
 							<ctl:message>
 								<xsl:value-of select="concat('Locator is: ', sosFunctions:exceptionCodeLocator($getObservationBadInterval))"/>
@@ -372,7 +372,7 @@
 						<ctl:message>Exception code should be: 'InvalidParameterValue'.</ctl:message>
 						<ctl:fail/>
 					</xsl:when>
-					<xsl:when test="not(lower-case(sosFunctions:exceptionCodeLocator($getObservation)) = 'procedure')">
+					<xsl:when test="not(contains(lower-case(sosFunctions:exceptionCodeLocator($getObservation)), 'procedure'))">
 						<ctl:message>Invalid locator.</ctl:message>
 						<ctl:message>
 							<xsl:value-of select="concat('Locator is: ', sosFunctions:exceptionCodeLocator($getObservation))"/>
@@ -457,7 +457,7 @@
 						<ctl:message>Exception code should be: 'InvalidParameterValue'.</ctl:message>
 						<ctl:fail/>
 					</xsl:when>
-					<xsl:when test="not(lower-case(sosFunctions:exceptionCodeLocator($getObservation)) = 'observedproperty')">
+					<xsl:when test="not(contains(lower-case(sosFunctions:exceptionCodeLocator($getObservation)), 'observedproperty'))">
 						<ctl:message>Invalid locator.</ctl:message>
 						<ctl:message>
 							<xsl:value-of select="concat('Locator is: ', sosFunctions:exceptionCodeLocator($getObservation))"/>
@@ -548,7 +548,7 @@
 						<ctl:message>Exception code should be: 'InvalidParameterValue'.</ctl:message>
 						<ctl:fail/>
 					</xsl:when>
-					<xsl:when test="not(lower-case(sosFunctions:exceptionCodeLocator($getObservation)) = 'featureofinterest')">
+					<xsl:when test="not(contains(lower-case(sosFunctions:exceptionCodeLocator($getObservation)), 'featureofinterest'))">
 						<ctl:message>Invalid locator.</ctl:message>
 						<ctl:message>
 							<xsl:value-of select="concat('Locator is: ', sosFunctions:exceptionCodeLocator($getObservation))"/>
@@ -653,7 +653,7 @@
 						<ctl:message>Exception code should be: 'InvalidParameterValue'.</ctl:message>
 						<ctl:fail/>
 					</xsl:when>
-					<xsl:when test="not(lower-case(sosFunctions:exceptionCodeLocator($getObservation)) = 'responseformat')">
+					<xsl:when test="not(contains(lower-case(sosFunctions:exceptionCodeLocator($getObservation)), 'responseformat'))">
 						<ctl:message>Invalid locator.</ctl:message>
 						<ctl:message>
 							<xsl:value-of select="concat('Locator is: ', sosFunctions:exceptionCodeLocator($getObservation))"/>
@@ -743,7 +743,7 @@
 						<ctl:message>Exception code should be: 'InvalidParameterValue'.</ctl:message>
 						<ctl:fail/>
 					</xsl:when>
-					<xsl:when test="not(lower-case(sosFunctions:exceptionCodeLocator($getObservation)) = 'resultmodel')">
+					<xsl:when test="not(contains(lower-case(sosFunctions:exceptionCodeLocator($getObservation)), 'resultmodel'))">
 						<ctl:message>Invalid locator.</ctl:message>
 						<ctl:message>
 							<xsl:value-of select="concat('Locator is: ', sosFunctions:exceptionCodeLocator($getObservation))"/>
@@ -833,7 +833,7 @@
 						<ctl:message>Exception code should be: 'InvalidParameterValue'.</ctl:message>
 						<ctl:fail/>
 					</xsl:when>
-					<xsl:when test="not(lower-case(sosFunctions:exceptionCodeLocator($getObservation)) = 'responsemode')">
+					<xsl:when test="not(contains(lower-case(sosFunctions:exceptionCodeLocator($getObservation)), 'responsemode'))">
 						<ctl:message>Invalid locator.</ctl:message>
 						<ctl:message>
 							<xsl:value-of select="concat('Locator is: ', sosFunctions:exceptionCodeLocator($getObservation))"/>
