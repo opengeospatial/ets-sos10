@@ -12,6 +12,7 @@
  xmlns:gml="http://www.opengis.net/gml"
  xmlns:sos="http://www.opengis.net/sos/1.0"
  xmlns:om="http://www.opengis.net/om/1.0.0"
+ xmlns:ogc="http://www.opengis.net/ogc" 
 >
 
 
@@ -466,6 +467,29 @@
 		</ctl:code>
 	</ctl:function>
 
+	<ctl:function name="sosFunctions:resultComparisonOperator">
+        <ctl:param name="capabilitiesDocument">The capabilities document</ctl:param>
+		<ctl:description>Return a comparison operator from the capabilities response that is not Between or NullCheck</ctl:description>
+		<ctl:code>		
+		<xsl:value-of select="($capabilitiesDocument//sos:Filter_Capabilities/ogc:Scalar_Capabilities/ogc:ComparisonOperators/ogc:ComparisonOperator [text()!='Between'  and text()!='NullCheck'])[1]"/>			
+		</ctl:code>
+	</ctl:function>
+	
+	<ctl:function name="sosFunctions:resultComparisonOperatorElement">
+        <ctl:param name="capabilitiesDocument">The capabilities document</ctl:param>
+		<ctl:code>	
+			<xsl:variable name="comparisonOperator" select="sosFunctions:resultComparisonOperator($capabilitiesDocument)"/>
+			<xsl:choose>
+				<xsl:when test="string($comparisonOperator)=''">
+					<xsl:value-of select="string('')"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="concat('ogc:PropertyIs', $comparisonOperator)"/>			
+				</xsl:otherwise>
+			</xsl:choose>
+		</ctl:code>
+	</ctl:function>
+	
 	<ctl:function name="sosFunctions:getObservationByTimePeriod">
 	    <ctl:param name="postURL"></ctl:param>
 		<ctl:param name="getObservationVersion"></ctl:param>

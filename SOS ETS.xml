@@ -93,6 +93,7 @@
 			<xsl:variable name="exceptionReportSchema" select="sosFunctions:exceptionReportSchemaPath($ogc.schema.root, $ows.version)"/>
 			<ctl:message select="concat('SOS service URL: ',$sos.service.url)"/>		
 
+<!--			
 			<ctl:call-test name="sos:ows-main">
 				<ctl:with-param name="serviceURL" select="$sos.service.url" />
 				<ctl:with-param name="exceptionReportSchema" select="$exceptionReportSchema" />
@@ -103,7 +104,7 @@
 				<ctl:with-param name="serviceURL" select="$sos.service.url" />
 				<ctl:with-param name="exceptionReportSchema" select="$exceptionReportSchema" />
 			</ctl:call-test>			
-
+-->
 			<ctl:call-test name="sos:core-main">
 				<ctl:with-param name="serviceURL" select="$sos.service.url" />
 				<ctl:with-param name="ogcSchemaRoot" select="$ogc.schema.root" />
@@ -239,7 +240,7 @@
 			<ctl:param name="sosSchemaRoot"/>
 			<ctl:param name="sosVersion"/>
 
-		
+	
 			<ctl:assertion>All assertions for "core" conformance are satisfied.</ctl:assertion>
 			<ctl:comment>Test driver for the core module.</ctl:comment>
 			<ctl:link title="3. Core">ATS_URL#core</ctl:link>
@@ -247,6 +248,7 @@
 				<ctl:message></ctl:message>
 				<ctl:message select="'********************************************************'"/>
 				<ctl:message select="''"/>
+<!--				
 				<ctl:call-test name="getCapabilities:core-SOS.GetCapabilities-KVPRequestParameterHandling.1">
 					<ctl:with-param name="serviceURL" select="$serviceURL"/>
 					<ctl:with-param name="exceptionReportSchema" select="$exceptionReportSchema"/>
@@ -265,7 +267,7 @@
 					<ctl:with-param name="serviceURL" select="$serviceURL"/>
 					<ctl:with-param name="exceptionReportSchema" select="$exceptionReportSchema"/>
 				</ctl:call-test>
-																
+-->
 				<ctl:message select="'********************************************************'"/>
 				<ctl:message select="''"/>				
 				<ctl:message select="'A request for a valid capabilities document will now be made.'"/>
@@ -305,6 +307,7 @@
 						<ctl:message select="''"/>					
 						<ctl:message>Capabilities response is valid, continuing...</ctl:message>
 
+<!--						
 						<ctl:message select="'********************************************************'"/>
 						<ctl:message select="''"/>						
 						<ctl:call-test name="getCapabilities:core-SOS.GetCapabilities-OperationsMetadataMandatoryOperations.1">
@@ -347,7 +350,7 @@
 						<ctl:call-test name="getCapabilities:core-SOS.GetCapabilities-ResponseContentsValidResultModel.1">
 							<ctl:with-param name="capabilitiesDocument" select="$getCapabilitiesRequest"/>
 						</ctl:call-test>
-
+-->
 						<!--********************   Create variables for DescribeSensor **********************************-->		
 
 						<xsl:variable name="describeSensorPostURL" select="sosFunctions:operationPostURL($getCapabilitiesRequest, 'DescribeSensor')"/>
@@ -356,7 +359,7 @@
 						<xsl:variable name="describeSensorVersion" select="sosFunctions:operationVersion($getCapabilitiesRequest, 'DescribeSensor')"/>
 						<xsl:variable name="describeSensorProcedure" select="sosFunctions:describeSensorFirstProcedure($getCapabilitiesRequest)"/>
 						<xsl:variable name="describeSensorOutputFormat" select="sosFunctions:describeSensorOutputFormat($getCapabilitiesRequest)"/>						
-
+<!--
 						<ctl:message></ctl:message>
 						<ctl:message select="'*********************************'"/>	
 						<ctl:message select="'*     Describe Sensor Tests 	  *'"/>
@@ -450,7 +453,7 @@
 								</ctl:call-test>
 							</xsl:if>					
 						</xsl:for-each>
-
+-->
 						<!--********************   Create variables for GetObservation **********************************-->	
 
 						<xsl:variable name="getObservationPostURL" select="sosFunctions:operationPostURL($getCapabilitiesRequest, 'GetObservation')"/>
@@ -470,7 +473,7 @@
 						<ctl:message select="concat('All GetObservation tests will use the &quot;Post&quot; method at the following url: ', $getObservationPostURL)"/>
 						<ctl:message select="'This url was obtained from the GetCapabilities response'"/>
 						<ctl:message select="''"/>
-				
+<!--				
 						<ctl:message select="'********************************************************'"/>
 						<ctl:message select="''"/>									
 						<ctl:call-test name="getObservation:core-SOS.GetObservation-RequestInvalidSRSName.1">
@@ -542,19 +545,22 @@
 						<ctl:with-param name="observedProperty" select="$observationOfferingObservedProperty"/>	
 						<ctl:with-param name="offeringId" select="$offeringId"/>
 					</ctl:call-test>	
+-->
 
 					<ctl:message select="'********************************************************'"/>
 					<ctl:message select="''"/>							
 					<ctl:call-test name="getObservation:core-SOS.GetObservation-RequestInvalidResult.1">
+						<ctl:with-param name="capabilitiesDocument" select="$getCapabilitiesRequest"/>
 						<ctl:with-param name="ogcSchemaRoot" select="$ogcSchemaRoot"/>
 						<ctl:with-param name="exceptionReportSchema" select="$exceptionReportSchema"/>
 						<ctl:with-param name="postURL" select="$getObservationPostURL"/>
 						<ctl:with-param name="getObservationVersion" select="$getObservationVersion"/>
 						<ctl:with-param name="responseFormat" select="$observationOfferingResponseFormat"/>					
 						<ctl:with-param name="observedProperty" select="$observationOfferingObservedProperty"/>	
-						<ctl:with-param name="offeringId" select="$offeringId"/>
+						<ctl:with-param name="offeringId" select="$offeringId"/>						
 					</ctl:call-test>
 
+<!--
 					<ctl:message select="'********************************************************'"/>
 					<ctl:message select="''"/>						
 					<ctl:call-test name="getObservation:core-SOS.GetObservation-RequestInvalidResponseFormat.1">
@@ -683,7 +689,7 @@
 						<ctl:with-param name="postURL" select="$getObservationPostURL"/>
 						<ctl:with-param name="getObservationVersion" select="$getObservationVersion"/>
 					</ctl:call-test>									
-
+-->
 					</xsl:otherwise>					
 				</xsl:choose>		
 
