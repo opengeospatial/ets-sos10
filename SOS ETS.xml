@@ -53,12 +53,14 @@
 									<input name="service-url" size="128" 
 									type="text" 
 									value="http://hostname:port/path"/>
+									<!--
 									<select name="service-url-ddl">
 										<option value="http://mars.uni-muenster.de:8080/OWS5SOS/sos">http://mars.uni-muenster.de:8080/OWS5SOS/sos</option>							  
 										<option value="http://mars.uni-muenster.de:8080/52nSOSv2/sos">http://mars.uni-muenster.de:8080/52nSOSv2/sos</option>							  
 										<option value="http://10.2.111.55:8080/52n/sos">http://10.2.111.55:8080/52n/sos</option>
 										<option value="http://vast.uah.edu:8080/ows-dev/dopplerSos">http://vast.uah.edu:8080/ows-dev/dopplerSos</option>
 									</select>
+									-->
 								</td>
 								</tr>				
 							</table>
@@ -70,7 +72,7 @@
 		 
 		 
 			<!-- Get user input: -->	
-			<xsl:variable name="sos.service.url" select="$form-values/values/value[@key='service-url-ddl']"/>
+			<xsl:variable name="sos.service.url" select="$form-values/values/value[@key='service-url']"/>
 			
 		
         
