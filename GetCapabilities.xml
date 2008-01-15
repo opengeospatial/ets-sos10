@@ -17,7 +17,7 @@
 	xmlns:sos="http://www.opengis.net/sos/1.0"	
 	xmlns:tml="http://www.opengis.net/tml"
 	xmlns:xml="http://www.w3.org/XML/1998/namespace"
-	xmlns:om="http://www.opengis.net/om/1.0.0"
+	xmlns:om="http://www.opengis.net/om/1.0"
 >
 
 		
@@ -333,7 +333,7 @@
 		<ctl:param name="capabilitiesDocument"/>
 		<ctl:assertion>The values in the observedProperty element(s) for each ObservationOffering contain a value and are valid URNs. See document OGC 05-010 for correct formatting of definition URN.</ctl:assertion>
 		<ctl:comment>Check that the values in the observedProperty element(s) for each ObservationOffering contain a value and are valid URNs according to the OGC URN scheme.  Pass if the values in the observedProperty element(s) contain a value and are valid URNs; fail otherwise.</ctl:comment>
-		<ctl:link title="Verify that the observedProperty values provided for each ObservationOffering are valid.">ATS_URL#SOS.GetCapabilities-ResponseContentsValidObservedProperty</ctl:link>
+		<ctl:link title="Verify that the observedProperty values provided for each ObservationOffering are valid.">../ATS/SOS 1.0 ATS.html#SOS.GetCapabilities-ResponseContentsValidObservedProperty</ctl:link>
 		<ctl:code>				
 			<xsl:for-each select="$capabilitiesDocument//sos:ObservationOffering//sos:observedProperty//@xlink:href">
 				<xsl:variable name="thisURN" select="."/>

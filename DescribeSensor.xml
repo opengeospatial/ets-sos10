@@ -16,7 +16,7 @@
 	xmlns:sos="http://www.opengis.net/sos/1.0"		
 	xmlns:sml="http://www.opengis.net/sensorML/1.0.1"
 	xmlns:tml="http://www.opengis.net/tml"
-	xmlns:om="http://www.opengis.net/om/1.0.0"
+	xmlns:om="http://www.opengis.net/om/1.0"
 	xmlns:xml="http://www.w3.org/XML/1998/namespace"
 >
 
