@@ -308,6 +308,9 @@
 				<xsl:when test="starts-with($schemaFile,'http')">
 					<parsers:XMLValidatingParser ignoreErrors="false">
 					<parsers:schema type="url">http://www.w3.org/2001/xml.xsd</parsers:schema>
+					<xsl:if test="$schemaFile='http://schemas.opengis.net/om/1.0.0/om.xsd'">
+							<parsers:schema type="url">http://schemas.opengis.net/sampling/1.0.0/sampling.xsd</parsers:schema>						
+					</xsl:if>
 						<parsers:schemas>
 							<parsers:schema type="url">
 								<xsl:value-of select="$schemaFile"/>								
@@ -524,13 +527,13 @@
 							</xsl:attribute>									
 							<offering><xsl:value-of select="$offeringId"/></offering>
 							<eventTime>
-								<ogc:T_During>
+								<ogc:TM_During>
 									<ogc:PropertyName>urn:ogc:data:time:iso8601</ogc:PropertyName>
 									<gml:TimePeriod>
 										<gml:beginPosition><xsl:value-of select="$beginPosition"/></gml:beginPosition>
 										<gml:endPosition><xsl:value-of select="$endPosition"/></gml:endPosition>
 									</gml:TimePeriod>
-								</ogc:T_During>
+								</ogc:TM_During>
 							</eventTime>											
 							<observedProperty>
 								<xsl:value-of select="$observedProperty"/>
