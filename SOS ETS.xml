@@ -52,7 +52,8 @@
 								<td align="center">
 									<input name="service-url" size="128" 
 									type="text" 
-									value="http://hostname:port/path"/>
+									value="http://mars.uni-muenster.de:8080/OWS5SOS/sos"/>
+								<!--value="http://hostname:port/path"-->
 									<!--
 									<select name="service-url-ddl">
 										<option value="http://mars.uni-muenster.de:8080/OWS5SOS/sos">http://mars.uni-muenster.de:8080/OWS5SOS/sos</option>							  
