@@ -1250,10 +1250,10 @@
 											</offering>		
 									
 											<eventTime>
-												<ogc:T_During>
+												<ogc:TM_During>
 													<ogc:PropertyName>urn:ogc:data:time:iso8601</ogc:PropertyName>
 													<xsl:copy-of select="$eventTime"/>
-												</ogc:T_During>
+												</ogc:TM_During>
 											</eventTime>	
 
 											<observedProperty>
