@@ -97,7 +97,7 @@
 				<ctl:with-param name="serviceURL" select="$sos.service.url" />
 				<ctl:with-param name="exceptionReportSchema" select="$exceptionReportSchema" />
 			</ctl:call-test>			
-		
+
 			<ctl:call-test name="sos:core-main">
 				<ctl:with-param name="serviceURL" select="$sos.service.url" />
 				<ctl:with-param name="ogcSchemaRoot" select="$ogc.schema.root" />
@@ -326,7 +326,6 @@
 						<ctl:call-test name="getCapabilities:core-SOS.GetCapabilities-ResponseContentsValidProcedure.1">
 							<ctl:with-param name="capabilitiesDocument" select="$getCapabilitiesRequest"/>
 						</ctl:call-test>
-
 						
 						<ctl:message select="'********************************************************'"/>
 						<ctl:message select="''"/>												
@@ -389,7 +388,6 @@
 						<xsl:variable name="outputFormatVersion" select="sosFunctions:mimeTypeSubtypeVersion($describeSensorOutputFormat)"/>
 
 												
-
 						<xsl:for-each select="$getCapabilitiesRequest//ows:Operation[@name='DescribeSensor']//ows:Parameter[@name='procedure']//ows:AllowedValues/ows:Value">
 							<ctl:message select="'********************************************************'"/>
 							<ctl:message select="''"/>
@@ -487,7 +485,6 @@
 							<ctl:with-param name="responseFormat" select="$observationOfferingResponseFormat"/>					
 							<ctl:with-param name="observedProperty" select="$observationOfferingObservedProperty"/>
 						</ctl:call-test>
-
 				
 						<ctl:message select="'********************************************************'"/>
 						<ctl:message select="''"/>																					
@@ -617,7 +614,7 @@
 						<ctl:with-param name="getObservationVersion" select="$getObservationVersion"/>
 						<ctl:with-param name="responseFormat" select="$observationOfferingResponseFormat"/>											
 					</ctl:call-test>
-			
+		
 					<ctl:message select="'********************************************************'"/>
 					<ctl:message select="''"/>						
 					<ctl:call-test name="getObservation:core-SOS.GetObservation-ResponseAdvertisedEventTimeData.1">
@@ -627,7 +624,7 @@
 						<ctl:with-param name="getObservationVersion" select="$getObservationVersion"/>
 						<ctl:with-param name="observedProperty" select="$observationOfferingObservedProperty"/>	
 					</ctl:call-test>
-	
+
 					<ctl:message select="'********************************************************'"/>
 					<ctl:message select="''"/>						
 					<ctl:call-test name="getObservation:core-SOS.GetObservation-ResponseMatchingEventTimeData.1">
@@ -668,6 +665,7 @@
 						<ctl:with-param name="postURL" select="$getObservationPostURL"/>
 						<ctl:with-param name="getObservationVersion" select="$getObservationVersion"/>
 					</ctl:call-test>
+
 <!--					omitting this test					
 					<ctl:message select="'********************************************************'"/>
 					<ctl:message select="''"/>						

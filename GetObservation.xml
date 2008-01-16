@@ -1264,11 +1264,11 @@
 											</responseFormat>										
 										</GetObservation>						
 									</ctl:body>	
-									
+
 									<ctl:call-function name="sosFunctions:xmlValidatingParser">											
 										<ctl:with-param name="schemaFile" select="sosFunctions:schemaPathFromMimeType($ogcSchemaRoot, $responseFormat)"/>
 									</ctl:call-function>
-									
+
 								</ctl:request>							 																					
 							</xsl:variable>						
 							<xsl:choose>								
@@ -1852,8 +1852,7 @@
 											</responseMode>											
 										</GetObservation>						
 									</ctl:body>	
-									
-								
+	
 									<ctl:call-function name="sosFunctions:xmlValidatingParser">											
 										<ctl:with-param name="schemaFile" select="sosFunctions:schemaPathFromMimeType($ogcSchemaRoot, $responseFormat)"/>
 									</ctl:call-function>
