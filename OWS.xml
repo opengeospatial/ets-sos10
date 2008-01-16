@@ -1334,7 +1334,7 @@
 		<code>
           <xsl:for-each select="$formats//ows:Value">
             <xsl:variable name="format" select="./text()" />
-			<ctl:message select="concat('Query String: ', $serviceType)"/>
+			<ctl:message select="concat('Service: ', $serviceType)"/>
 			<ctl:message select="concat('AcceptsFormats parameter: ', $format)"/>			
             <xsl:variable name="response">
 				<ctl:request>
@@ -1349,6 +1349,7 @@
 				</ctl:request>
 			</xsl:variable>
 <!--<ctl:message select="concat('*******', $response)"/>-->
+
             <xsl:variable name="content-type" select="$response//headers/header[@name='Content-Type']"/>
 			<xsl:choose>				
 				<xsl:when test="not(starts-with($content-type, $format))">
@@ -1360,6 +1361,7 @@
 					<ctl:message></ctl:message>
 				</xsl:otherwise>
 			</xsl:choose>
+			
           </xsl:for-each>
 		</code>
 	</test>
