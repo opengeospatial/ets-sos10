@@ -470,6 +470,15 @@
 		</ctl:code>
 	</ctl:function>
 
+	<ctl:function name="sosFunctions:filterTM_During">
+        <ctl:param name="capabilitiesDocument">The capabilities document</ctl:param>
+		<ctl:description>Return the TM_During temporal operator, if it exists</ctl:description>
+		<ctl:code>		
+		<!--xsl:value-of select="($capabilitiesDocument//sos:Filter_Capabilities/ogc:Scalar_Capabilities/ogc:ComparisonOperators/ogc:ComparisonOperator [text()='EqualTo'])[1]"/-->			
+		<xsl:value-of select="$capabilitiesDocument//sos:Filter_Capabilities/ogc:Temporal_Capabilities/ogc:TemporalOperators/ogc:TemporalOperator[@name='TM_During']"/>								   
+		</ctl:code>
+	</ctl:function>
+	
 	<ctl:function name="sosFunctions:resultComparisonOperator">
         <ctl:param name="capabilitiesDocument">The capabilities document</ctl:param>
 		<ctl:description>Return a comparison operator from the capabilities response that is not Between or NullCheck</ctl:description>
