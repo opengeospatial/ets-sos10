@@ -487,7 +487,7 @@
 			<ctl:link title="Verify that an invalid named gml feature in the featureOfInterest value of the request causes the server to produce a valid error message.  This includes providing an empty featureOfInterest element or providing a named gml feature value in the featureOfInterest that does not correspond with the featureOfInterest values advertised in the Capabilities document for the requested offering.">../ATS/SOS 1.0 ATS.html#SOS.GetObservation-RequestInvalidFeatureOfInterest</ctl:link>
 			<ctl:code>			
 				<xsl:variable name="invalidFeatureOfInterest" select="'urn:ogc:def:object:feature:TheInvalidFeature'"/>
-				<ctl:message select="concat('Making GetObservation request with an &quot;featureOfInterest&quot; parameter value that is not advertised in the capabilities document: ', $invalidFeatureOfInterest, '   ...')"/>									
+				<ctl:message select="concat('Making GetObservation request with a &quot;featureOfInterest&quot; parameter value that is not advertised in the capabilities document: ', $invalidFeatureOfInterest, '   ...')"/>									
 				<xsl:variable name="getObservation">
 					<ctl:request>
 						<ctl:url>
@@ -677,7 +677,7 @@
 			<ctl:link title="Verify that providing an invalid outputFormat value in the request produces a valid error message.  This includes any outputFormat value that is not advertised by the requested offering in the Capabilities document.">../ATS/SOS 1.0 ATS.html#SOS.GetObservation-RequestInvalidResponseFormat</ctl:link>
 			<ctl:code>
 				<xsl:variable name="invalidResponseFormat" select="'text/xml;subtype=&quot;XX&quot;'"/>
-				<ctl:message select="concat('Making GetObservation request with an &quot;responseFormat&quot; parameter value that is not advertised in the capabilities document: ', $invalidResponseFormat, '   ...')"/>									
+				<ctl:message select="concat('Making GetObservation request with a &quot;responseFormat&quot; parameter value that is not advertised in the capabilities document: ', $invalidResponseFormat, '   ...')"/>									
 				<xsl:variable name="getObservation">
 					<ctl:request>
 						<ctl:url>
