@@ -24,12 +24,14 @@
 	xmlns:om="http://www.opengis.net/om/1.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 >
-
+	
 	<ctl:suite name="sos:suite">		<!--NOTE: Don't forget to update the TARGET_NAMESPACE_URI and ../ATS/SOS 1.0 ATS.html placeholder values-->
-
-		<ctl:title>Annex A - Abstract Test Suite for the Sensor Observation Service</ctl:title>
+		<ctl:title>SOS 1.0 Compliance Test Suite</ctl:title>
+		<ctl:description>Verifies that an SOS 1.0 implementation complies with a given conformance class.</ctl:description>
+        <ctl:link>docs/sos/1.0/</ctl:link>		
 		<ctl:starting-test>sos:Main</ctl:starting-test>
 	</ctl:suite>
+	
 	<ctl:test name="sos:Main">
 		<ctl:assertion>The IUT satisfies all applicable assertions.</ctl:assertion>
 		<ctl:code>
