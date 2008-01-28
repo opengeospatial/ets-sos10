@@ -1501,7 +1501,9 @@
 												<xsl:value-of select="sosFunctions:observationOfferingObservedProperty($capabilitiesDocument, $offeringId)"/>
 											</observedProperty>
 											<featureOfInterest>
-												<xsl:value-of select="$featureOfInterest"/>
+												<ObjectID>
+													<xsl:value-of select="$featureOfInterest"/>
+												</ObjectID>
 											</featureOfInterest>											
 											<responseFormat>
 												<xsl:value-of select="$responseFormat"/>
