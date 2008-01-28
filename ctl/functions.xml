@@ -410,14 +410,14 @@
 	<ctl:function name="sosFunctions:beginTimePosition">
         <ctl:param name="timePeriod">The time period</ctl:param>		
 		<ctl:code>		
-			<xsl:value-of select="$timePeriod/gml:beginPosition | $timePeriod/gml:begin/gml:timePosition"/>
+			<xsl:value-of select="$timePeriod//gml:beginPosition | $timePeriod//gml:begin/gml:timePosition"/>
 		</ctl:code>
 	</ctl:function>
 
 	<ctl:function name="sosFunctions:endTimePosition">
         <ctl:param name="timePeriod">The time period</ctl:param>
 		<ctl:code>		
-			<xsl:value-of select="$timePeriod/gml:endPosition | $timePeriod/gml:end/gml:timePosition"/>
+			<xsl:value-of select="$timePeriod//gml:endPosition | $timePeriod//gml:end/gml:timePosition"/>
 		</ctl:code>
 	</ctl:function>
 	

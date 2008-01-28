@@ -1312,8 +1312,7 @@
 			<ctl:comment>Check the time value(s) in the response data fall within the requested eventTime.  Pass if assertion holds; fail otherwise.</ctl:comment>
 			<ctl:link title="Verify that the time values in the response data fall within the requested eventTime.  If no eventTime is specified, then any data from any time period matching the other request parameters must be returned.  If the requested eventTime range falls outside of the advertised eventTime range and overlaps the advertised event time range, then the data returned should fall within the advertised eventTime range for the requested offering.">../ATS/SOS 1.0 ATS.html#SOS.GetObservation-ResponseMatchingEventTimeData</ctl:link>
 			<ctl:code>	
-<ctl:message select="'scoob'"/>
-<ctl:message select="string(sosFunctions:filterTM_During($capabilitiesDocument))"/>
+
 				<xsl:choose>
 					<xsl:when test="not(sosFunctions:filterTM_During($capabilitiesDocument))">
 						<ctl:message select="'Temporal operator &quot;TM_During&quot; is not supported by this implementation.  Test will be skipped.'"/>							
@@ -1333,28 +1332,27 @@
 									<ctl:message select="'This offering does not have a begin and end time.'"/>
 								</xsl:when>
 								<xsl:otherwise>				
-									<!-- to do  check to be sure that begin and end positions exist before doing this -->								
-									<xsl:variable name="beginPosition" select="xsd:dateTime(sosFunctions:dateTimeFromISO(sosFunctions:beginTimePosition($capabilitiesDocument, $offeringId)))"/>																			
+									<!--divide offering time range into thirds and query each third -->								
+									<xsl:variable name="beginPosition" select="xsd:dateTime(sosFunctions:dateTimeFromISO(sosFunctions:beginTimePosition($capabilitiesDocument, $offeringId)))"/>
 									<xsl:variable name="endPosition" select="xsd:dateTime(sosFunctions:dateTimeFromISO(sosFunctions:endTimePosition($capabilitiesDocument, $offeringId)))"/>
-									<xsl:variable name="thirdOfSeconds" select="sosFunctions:total-seconds-from-duration($endPosition - $beginPosition) div 3"/>					
-									<xsl:variable name="firsdThirdPosition" select="$beginPosition + xsd:dayTimeDuration(sosFunctions:dayTimeDurationFromSeconds($thirdOfSeconds))"/>															
-									<xsl:variable name="secondThirdPosition" select="$firsdThirdPosition + xsd:dayTimeDuration(sosFunctions:dayTimeDurationFromSeconds($thirdOfSeconds))"/>
-									
+									<xsl:variable name="thirdOfSeconds" select="sosFunctions:total-seconds-from-duration($endPosition - $beginPosition) div 3"/>
+									<xsl:variable name="firstThirdPosition" select="$beginPosition + xsd:dayTimeDuration(sosFunctions:dayTimeDurationFromSeconds($thirdOfSeconds))"/>															
+									<xsl:variable name="secondThirdPosition" select="$endPosition + xsd:dayTimeDuration(sosFunctions:dayTimeDurationFromSeconds($thirdOfSeconds))"/>
+									<!-- start a month before and a month after range, to ensure that service handles times ranges that overlap the boundaries-->
+									<xsl:variable name="firstStartPosition" select="$beginPosition - xsd:yearMonthDuration('P0Y1M')"/>									
+									<xsl:variable name="lastEndPosition" select="$endPosition + xsd:yearMonthDuration('P0Y1M')"/>									
 									<!-- first third -->
 									<xsl:for-each select="$capabilitiesDocument//sos:ObservationOffering[@gml:id=$offeringId]//sos:responseFormat[starts-with(.,'text/xml')]">
 										<xsl:variable name="responseFormat" select="."/>	
-										<ctl:message select="concat('ResponseFormat: ', $responseFormat)"/>						
-										<xsl:variable name="firstStartPosition" select="$beginPosition - xsd:yearMonthDuration('P0Y1M')"/>
-										<ctl:message select="$firstStartPosition"/>
-										<xsl:variable name="lastEndPosition" select="$endPosition + xsd:yearMonthDuration('P0Y1M')"/>
-										<ctl:message select="concat('Making getObservation request for the range ', $firstStartPosition,' to ', $firsdThirdPosition)"/>
+										<ctl:message select="concat('ResponseFormat: ', $responseFormat)"/>																
+										<ctl:message select="concat('Making getObservation request for the range ', $firstStartPosition,' to ', $firstThirdPosition)"/>
 											<xsl:variable name="getObservation1">							
 												<xsl:copy-of select="sosFunctions:getObservationByTimePeriod
 																			($postURL, 
 																			$getObservationVersion, 
 																			$offeringId, 
 																			$firstStartPosition, 
-																			$firsdThirdPosition, 
+																			$firstThirdPosition, 
 																			$observedProperty, 
 																			$responseFormat,
 																			sosFunctions:schemaPathFromMimeType($ogcSchemaRoot, $responseFormat))"/>
@@ -1366,9 +1364,9 @@
 													<ctl:fail/>
 												</xsl:when>																							
 												<xsl:otherwise>		
-													<xsl:for-each select="$getObservation1//om:ObservationCollection//om:member//om:samplingTime">												
-														<xsl:if test="sosFunctions:sampleTimeIsInRange(.,$firstStartPosition, $firsdThirdPosition)='false'">
-															<ctl:message select="'Sample time for an observation memebr does not fall within the requested range.'"/>
+													<xsl:for-each select="$getObservation1//om:ObservationCollection//om:member//om:samplingTime">	
+														<xsl:if test="sosFunctions:sampleTimeIsInRange(.,$firstStartPosition, $firstThirdPosition)='false'">
+															<ctl:message select="'Sample time for an observation member does not fall within the requested range.'"/>
 															<ctl:message select="."/>
 															<ctl:fail/>
 														</xsl:if>													
@@ -1378,13 +1376,13 @@
 											<xsl:variable name="numObservations1" select="xsd:integer(sosFunctions:numberOfObservations($getObservation1))"/>
 
 										<!-- middle third -->
-										<ctl:message select="concat('Making getObservation request for the range ', $firsdThirdPosition,' to ', $secondThirdPosition)"/>
+										<ctl:message select="concat('Making getObservation request for the range ', $firstThirdPosition,' to ', $secondThirdPosition)"/>
 											<xsl:variable name="getObservation2">							
 												<xsl:copy-of select="sosFunctions:getObservationByTimePeriod
 																			($postURL, 
 																			$getObservationVersion, 
 																			$offeringId, 
-																			$firsdThirdPosition, 
+																			$firstThirdPosition, 
 																			$secondThirdPosition, 
 																			$observedProperty, 
 																			$responseFormat,
@@ -1398,7 +1396,7 @@
 												</xsl:when>																							
 												<xsl:otherwise>		
 													<xsl:for-each select="$getObservation2//om:ObservationCollection//om:member//om:samplingTime">												
-															<xsl:if test="sosFunctions:sampleTimeIsInRange(.,$firsdThirdPosition, $secondThirdPosition)='false'">
+															<xsl:if test="sosFunctions:sampleTimeIsInRange(.,$firstThirdPosition, $secondThirdPosition)='false'">
 																<ctl:message select="'Sample time for an observation memebr does not fall within the requested range.'"/>
 																<ctl:message select="."/>
 																<ctl:fail/>
