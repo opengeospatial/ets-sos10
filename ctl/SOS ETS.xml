@@ -88,7 +88,7 @@
 			<xsl:variable name="exceptionReportSchema" select="sosFunctions:exceptionReportSchemaPath($ogc.schema.root, $ows.version)"/>
 			<ctl:message select="concat('SOS service URL: ',$sos.service.url)"/>		
 
-<!--
+			
 			<ctl:call-test name="sos:ows-main">
 				<ctl:with-param name="serviceURL" select="$sos.service.url" />
 				<ctl:with-param name="exceptionReportSchema" select="$exceptionReportSchema" />
@@ -100,7 +100,7 @@
 				<ctl:with-param name="serviceURL" select="$sos.service.url" />
 				<ctl:with-param name="exceptionReportSchema" select="$exceptionReportSchema" />
 			</ctl:call-test>			
--->		
+
 			<ctl:call-test name="sos:core-main">
 				<ctl:with-param name="serviceURL" select="$sos.service.url" />
 				<ctl:with-param name="ogcSchemaRoot" select="$ogc.schema.root" />
@@ -323,12 +323,14 @@
 						<ctl:call-test name="getCapabilities:core-SOS.GetCapabilities-ResponseContentsValidTime.1">
 							<ctl:with-param name="capabilitiesDocument" select="$getCapabilitiesRequest"/>
 						</ctl:call-test>
-	
+
+						<!-- skipping this test for now 
 						<ctl:message select="'********************************************************'"/>
 						<ctl:message select="''"/>							
 						<ctl:call-test name="getCapabilities:core-SOS.GetCapabilities-ResponseContentsValidProcedure.1">
 							<ctl:with-param name="capabilitiesDocument" select="$getCapabilitiesRequest"/>
 						</ctl:call-test>
+						-->
 						
 						<ctl:message select="'********************************************************'"/>
 						<ctl:message select="''"/>												
@@ -447,7 +449,8 @@
 									<ctl:with-param name="response" select="$describeSensor"/>
 									<ctl:with-param name="procedure" select="."/>
 								</ctl:call-test>
-							</xsl:if>					
+							</xsl:if>	
+							
 						</xsl:for-each>
 
 						<!--********************   Create variables for GetObservation **********************************-->	
