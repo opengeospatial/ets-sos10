@@ -247,7 +247,11 @@
 					</xsl:otherwise>
 				</xsl:choose>					
 		
+<!--
 
+				<xsl:variable name="beginPosition" select="sosFunctions:beginTimePosition($capabilitiesDocument, $offeringId)"/>											
+				<xsl:variable name="endPosition" select="sosFunctions:endTimePosition($capabilitiesDocument, $offeringId)"/>
+				
 				<xsl:if test="($beginPosition != '' and $endPosition != '')">
 					<xsl:variable name="invalidBeginPosition" select="xsd:dateTime(sosFunctions:dateTimeFromISO($beginPosition)) - xsd:yearMonthDuration('P1Y2M')"/>					
 					<xsl:variable name="invalidEndPosition" select="xsd:dateTime(sosFunctions:dateTimeFromISO($beginPosition)) - xsd:yearMonthDuration('P1Y0M')"/>				
@@ -273,7 +277,7 @@
 							<ctl:message select="concat('Schema file: ', $exceptionReportSchema)"/>
 							<ctl:fail/>
 						</xsl:when>
-						<!-- check for correct exception code -->					
+						
 						<xsl:when test="not($getObservationBadInterval/ows:ExceptionReport/ows:Exception/@exceptionCode = 'InvalidParameterValue')">						
 							<ctl:message>Invalid exception code.</ctl:message>
 							<ctl:message>
@@ -290,12 +294,12 @@
 							<ctl:message>Locator value should be: 'eventTime'.</ctl:message>
 							<ctl:fail/>
 						</xsl:when>						
-						<!-- looks good -->
 						<xsl:otherwise>
 							<ctl:message>OK</ctl:message>
 						</xsl:otherwise>
 					</xsl:choose>
 				</xsl:if>
+-->				
 			</ctl:code>
 		</ctl:test>
 		
@@ -516,8 +520,10 @@
 										<xsl:value-of select="$observedProperty"/>
 									</observedProperty>	
 									<featureOfInterest>
-										<xsl:value-of select="$invalidFeatureOfInterest"/>
-									</featureOfInterest>
+										<ObjectID>
+											<xsl:value-of select="$invalidFeatureOfInterest"/>
+										</ObjectID>
+									</featureOfInterest>									
 									<responseFormat>
 										<xsl:value-of select="$responseFormat"/>
 									</responseFormat>	
@@ -1334,17 +1340,56 @@
 								<xsl:otherwise>				
 									<!--divide offering time range into thirds and query each third -->								
 									<xsl:variable name="beginPosition" select="xsd:dateTime(sosFunctions:dateTimeFromISO(sosFunctions:beginTimePosition($capabilitiesDocument, $offeringId)))"/>
-									<xsl:variable name="endPosition" select="xsd:dateTime(sosFunctions:dateTimeFromISO(sosFunctions:endTimePosition($capabilitiesDocument, $offeringId)))"/>
+									<xsl:variable name="endPosition" select="xsd:dateTime(sosFunctions:dateTimeFromISO(sosFunctions:endTimePosition($capabilitiesDocument, $offeringId)))"/>																	
 									<xsl:variable name="thirdOfSeconds" select="sosFunctions:total-seconds-from-duration($endPosition - $beginPosition) div 3"/>
 									<xsl:variable name="firstThirdPosition" select="$beginPosition + xsd:dayTimeDuration(sosFunctions:dayTimeDurationFromSeconds($thirdOfSeconds))"/>															
 									<xsl:variable name="secondThirdPosition" select="$endPosition + xsd:dayTimeDuration(sosFunctions:dayTimeDurationFromSeconds($thirdOfSeconds))"/>
 									<!-- start a month before and a month after range, to ensure that service handles times ranges that overlap the boundaries-->
 									<xsl:variable name="firstStartPosition" select="$beginPosition - xsd:yearMonthDuration('P0Y1M')"/>									
 									<xsl:variable name="lastEndPosition" select="$endPosition + xsd:yearMonthDuration('P0Y1M')"/>									
-									<!-- first third -->
+								
 									<xsl:for-each select="$capabilitiesDocument//sos:ObservationOffering[@gml:id=$offeringId]//sos:responseFormat[starts-with(.,'text/xml')]">
 										<xsl:variable name="responseFormat" select="."/>	
-										<ctl:message select="concat('ResponseFormat: ', $responseFormat)"/>																
+										<ctl:message select="concat('ResponseFormat: ', $responseFormat)"/>
+
+										<!-- test querying a date range not in the advertised range -->
+										<xsl:variable name="tooOldBeginPosition" select="xsd:dateTime(sosFunctions:dateTimeFromISO($beginPosition)) - xsd:yearMonthDuration('P1Y2M')"/>					
+										<xsl:variable name="tooOldEndPosition" select="xsd:dateTime(sosFunctions:dateTimeFromISO($beginPosition)) - xsd:yearMonthDuration('P1Y0M')"/>				
+										<ctl:message select="' '"/>
+										<ctl:message select="'Making a GetObservation request with an eventTime that is before the earliest advertised beginPosition'"/>	
+										<ctl:message select="'SOS should return an empty set of observations'"/>
+										<ctl:message select="concat('Begin position: ', $tooOldBeginPosition)"/>
+										<ctl:message select="concat('End position: ', $tooOldEndPosition)"/>
+										<xsl:variable name="getObservationTooOld">
+											<xsl:copy-of select="sosFunctions:getObservationByTimePeriod
+																($postURL, 
+																$getObservationVersion, 
+																$offeringId, 
+																$tooOldBeginPosition, 
+																$tooOldEndPosition, 
+																$observedProperty, 
+																$responseFormat,
+																sosFunctions:schemaPathFromMimeType($ogcSchemaRoot, $responseFormat))"/>
+										</xsl:variable>		
+
+										<xsl:choose>								
+											<xsl:when test="not($getObservationTooOld/*)">							
+												<ctl:message>Response failed schema validation.</ctl:message>
+												<ctl:message select="concat('Schema file: ', sosFunctions:schemaPathFromMimeType($ogcSchemaRoot, $responseFormat))"/>
+												<ctl:fail/>
+											</xsl:when>		
+											<xsl:when test="$getObservationTooOld//om:member[@xlink:href!='urn:ogc:def:nil:OGC:inapplicable']">
+												<ctl:message select="'Failure, member element should be &quot;urn:ogc:def:nil:OGC:inapplicable&quot;'"/>
+												<ctl:message select="concat('Returned member is: &quot;',$getObservationTooOld//om:member[@xlink:href!='urn:ogc:def:nil:OGC:inapplicable']/@xlink:href, '&quot;')"/> 
+												<ctl:fail/>
+											</xsl:when>
+											<xsl:otherwise>		
+												<ctl:message select="concat('member: ', $getObservationTooOld//om:member/@xlink:href)"/>
+												<ctl:message>OK</ctl:message>
+											</xsl:otherwise>
+										</xsl:choose>		
+										
+										<!-- first third -->
 										<ctl:message select="concat('Making getObservation request for the range ', $firstStartPosition,' to ', $firstThirdPosition)"/>
 											<xsl:variable name="getObservation1">							
 												<xsl:copy-of select="sosFunctions:getObservationByTimePeriod
@@ -1527,8 +1572,13 @@
 								</xsl:when>
 								
 								<xsl:otherwise>
-								
-									<xsl:for-each select="distinct-values($getObservation//om:ObservationCollection//om:member//om:featureOfInterest/@xlink:href)">
+									<!-- if there are features, but they are not named, fail -->
+									<xsl:if test="$getObservation//om:ObservationCollection//om:member//om:featureOfInterest
+												  and not($getObservation//om:ObservationCollection//om:member//om:featureOfInterest/@xlink:href)">
+										<ctl:message select="'Failure, no features are named in observation collection'"/>
+										<ctl:fail/>
+									</xsl:if>									
+									<xsl:for-each select="distinct-values($getObservation//om:ObservationCollection//om:member//om:featureOfInterest/@xlink:href)">										
 										<xsl:variable name="thisFeature" select="substring-after(string(.), ':')"/>
 										<xsl:choose>
 											<xsl:when test="not($thisFeature = $featureOfInterest)">													

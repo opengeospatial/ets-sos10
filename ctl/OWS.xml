@@ -1346,12 +1346,23 @@
 					<ctl:param name="request">GetCapabilities</ctl:param>
                     <ctl:param name="acceptformats"><xsl:value-of select="$format"/></ctl:param>
 					<parsers:HTTPParser />
+<!--					
+			<parsers:HTTPParser>
+            <parsers:parse>
+              <parsers:NullParser/>
+            </parsers:parse>
+          </parsers:HTTPParser>
+-->
 				</ctl:request>
 			</xsl:variable>
 <!--<ctl:message select="concat('*******', $response)"/>-->
-
+			
             <xsl:variable name="content-type" select="$response//headers/header[@name='Content-Type']"/>
-			<xsl:choose>				
+			<xsl:choose>			
+				<xsl:when test="not($response/*)">
+					<ctl:message select="'FAILURE: HTTP Header failed validation.'"/>
+					<ctl:fail/>
+				</xsl:when>
 				<xsl:when test="not(starts-with($content-type, $format))">
 					<ctl:message>FAILURE: Unexpected content type for response entity (Request: <xsl:value-of select="$format"/>, Response: <xsl:value-of select="$content-type"/>).</ctl:message>
 					<ctl:fail/>
