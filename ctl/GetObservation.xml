@@ -1134,7 +1134,7 @@
 			<ctl:link title="Verify that the observedProperty value(s) in the response match or are a subset of the observedProperty value(s) specified in the request.">../ATS/SOS 1.0 ATS.html#SOS.GetObservation-ResponseMatchingObservedPropertyData</ctl:link>
 			<ctl:code>
 				<ctl:message select="''"/>
-				<ctl:message select="'A GetObservation request will be made for each procedure advertised in the capabilities document'"/>
+				<ctl:message select="'A GetObservation request will be made for each observedProperty advertised in the capabilities document'"/>
 				<ctl:message select="''"/>
 
 				<xsl:for-each select="$capabilitiesDocument//sos:ObservationOffering/@gml:id">
@@ -1575,7 +1575,7 @@
 									<!-- if there are features, but they are not named, fail -->
 									<xsl:if test="$getObservation//om:ObservationCollection//om:member//om:featureOfInterest
 												  and not($getObservation//om:ObservationCollection//om:member//om:featureOfInterest/@xlink:href)">
-										<ctl:message select="'Failure, no features are named in observation collection'"/>
+										<ctl:message select="'Failure, featureOfInterest ID should be in &quot;xlink:href&quot; attribute of &quot;om:featureOfInterest&quot;.'"/>
 										<ctl:fail/>
 									</xsl:if>									
 									<xsl:for-each select="distinct-values($getObservation//om:ObservationCollection//om:member//om:featureOfInterest/@xlink:href)">										
@@ -1583,7 +1583,7 @@
 										<xsl:choose>
 											<xsl:when test="not($thisFeature = $featureOfInterest)">													
 												<ctl:message>
-													<xsl:value-of select="concat('Invalid featureOfInterest: ', $thisFeature)"/>
+													<xsl:value-of select="concat('Incorrect featureOfInterest name: ', $thisFeature)"/>
 												</ctl:message>							
 												<ctl:fail/>
 											</xsl:when>

@@ -10,6 +10,7 @@
  xmlns:xlink="http://www.w3.org/1999/xlink" 
  xmlns:xi="http://www.w3.org/2001/XInclude"
  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+ xmlns:sos="http://www.opengis.net/sos/1.0"	
  xmlns:owsTests="https://www.cite.opengeospatial.org/ows-1.0/tests"
  xmlns:owsFunctions="https://www.cite.opengeospatial.org/ows-1.0/functions">
  
@@ -1345,14 +1346,12 @@
 					<ctl:param name="service"><xsl:value-of select="$serviceType" /></ctl:param>
 					<ctl:param name="request">GetCapabilities</ctl:param>
                     <ctl:param name="acceptformats"><xsl:value-of select="$format"/></ctl:param>
-					<parsers:HTTPParser />
-<!--					
-			<parsers:HTTPParser>
-            <parsers:parse>
-              <parsers:NullParser/>
-            </parsers:parse>
-          </parsers:HTTPParser>
--->
+					<!--<parsers:HTTPParser />-->
+					<parsers:HTTPParser>
+						<parsers:parse>
+							<parsers:NullParser/>
+						</parsers:parse>
+					</parsers:HTTPParser>
 				</ctl:request>
 			</xsl:variable>
 <!--<ctl:message select="concat('*******', $response)"/>-->

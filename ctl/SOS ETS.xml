@@ -324,13 +324,11 @@
 							<ctl:with-param name="capabilitiesDocument" select="$getCapabilitiesRequest"/>
 						</ctl:call-test>
 
-						<!-- skipping this test for now 
 						<ctl:message select="'********************************************************'"/>
 						<ctl:message select="''"/>							
 						<ctl:call-test name="getCapabilities:core-SOS.GetCapabilities-ResponseContentsValidProcedure.1">
 							<ctl:with-param name="capabilitiesDocument" select="$getCapabilitiesRequest"/>
 						</ctl:call-test>
-						-->
 						
 						<ctl:message select="'********************************************************'"/>
 						<ctl:message select="''"/>												
@@ -442,6 +440,7 @@
 								<ctl:with-param name="procedure" select="."/>
 							</ctl:call-test>
 
+<!--
 							<xsl:if test="$describeSensor/*">
 								<ctl:message select="'********************************************************'"/>
 								<ctl:message select="''"/>									
@@ -450,7 +449,8 @@
 									<ctl:with-param name="procedure" select="."/>
 								</ctl:call-test>
 							</xsl:if>	
-							
+-->
+
 						</xsl:for-each>
 
 						<!--********************   Create variables for GetObservation **********************************-->	
