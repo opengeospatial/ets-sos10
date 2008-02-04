@@ -15,7 +15,6 @@
 	xmlns:ows="http://www.opengis.net/ows/1.1" 
 	xmlns:gml="http://www.opengis.net/gml" 
 	xmlns:sos="http://www.opengis.net/sos/1.0"	
-	xmlns:sml="http://www.opengis.net/sensorML/1.0.1"
 	xmlns:tml="http://www.opengis.net/tml"
 	xmlns:om="http://www.opengis.net/om/1.0"
 	xmlns:xml="http://www.w3.org/XML/1998/namespace"
@@ -1570,31 +1569,14 @@
 									<ctl:message select="concat('Schema file: ', sosFunctions:schemaPathFromMimeType($ogcSchemaRoot, $responseFormat))"/>
 									<ctl:fail/>
 								</xsl:when>
-								
+								<!-- just check that there exists an attribute with a value of the feature ID -->
+								<xsl:when test="not($getObservation//om:ObservationCollection//om:member//om:featureOfInterest//@*=$featureOfInterest)">
+									<ctl:message select="'Failure, the requested feature was not returned.'"/>
+									<ctl:fail/>
+								</xsl:when>
 								<xsl:otherwise>
-									<!-- if there are features, but they are not named, fail -->
-									<xsl:if test="$getObservation//om:ObservationCollection//om:member//om:featureOfInterest
-												  and not($getObservation//om:ObservationCollection//om:member//om:featureOfInterest/@xlink:href)">
-										<ctl:message select="'Failure, featureOfInterest ID should be in &quot;xlink:href&quot; attribute of &quot;om:featureOfInterest&quot;.'"/>
-										<ctl:fail/>
-									</xsl:if>									
-									<xsl:for-each select="distinct-values($getObservation//om:ObservationCollection//om:member//om:featureOfInterest/@xlink:href)">										
-										<xsl:variable name="thisFeature" select="substring-after(string(.), ':')"/>
-										<xsl:choose>
-											<xsl:when test="not($thisFeature = $featureOfInterest)">													
-												<ctl:message>
-													<xsl:value-of select="concat('Incorrect featureOfInterest name: ', $thisFeature)"/>
-												</ctl:message>							
-												<ctl:fail/>
-											</xsl:when>
-											
-											<xsl:otherwise>
-												<xsl:message select="concat('featureOfInterest in response is OK: ', $thisFeature)"/>
-											</xsl:otherwise>
-										</xsl:choose>
-									</xsl:for-each>
-								</xsl:otherwise>
-							
+									<ctl:message select="'OK'"/>
+								</xsl:otherwise>							
 							</xsl:choose>	
 						</xsl:for-each>
 					</xsl:for-each>

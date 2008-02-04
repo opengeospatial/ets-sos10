@@ -270,6 +270,7 @@
 				<ctl:message select="'********************************************************'"/>
 				<ctl:message select="''"/>				
 				<ctl:message select="'A request for a valid capabilities document will now be made.'"/>
+				<ctl:message select="'The optional &quot;service&quot; parameter will be omitted.'"/>
 				<ctl:message select="'If this response passes schema validation, further tests will be performed on the GetCapabilities response.'"/>
 				<ctl:message select="'If it fails schema validation, testing will stop.'"/>
 				<ctl:message select="'Validating...'"/>
@@ -296,7 +297,7 @@
 						<ctl:message><xsl:value-of select="concat('Schema: ', sosFunctions:schemaPath($sosSchemaRoot, $sosVersion,'sos', 'sosGetCapabilities.xsd'))"/></ctl:message>
 						<ctl:fail/>
 					</xsl:when>
-					<xsl:when test="not($getCapabilitiesRequest/sos:Capabilities)">
+					<xsl:when test="not(string(node-name($getCapabilitiesRequest/*))='sos:Capabilities')">
 						<ctl:message>Root element name was not "sos:Capabilities".</ctl:message>
 						<ctl:message select="concat('Root element name was: &quot;', string(node-name($getCapabilitiesRequest/*)), '&quot;')"/>
 						<ctl:fail/>
@@ -440,7 +441,7 @@
 								<ctl:with-param name="procedure" select="."/>
 							</ctl:call-test>
 
-<!--
+
 							<xsl:if test="$describeSensor/*">
 								<ctl:message select="'********************************************************'"/>
 								<ctl:message select="''"/>									
@@ -449,7 +450,7 @@
 									<ctl:with-param name="procedure" select="."/>
 								</ctl:call-test>
 							</xsl:if>	
--->
+
 
 						</xsl:for-each>
 
@@ -683,6 +684,7 @@
 					</ctl:call-test>
 -->
 					
+<!--					
 					<ctl:message select="'********************************************************'"/>
 					<ctl:message select="''"/>						
 					<ctl:call-test name="getObservation:core-SOS.GetObservation-ResponseMatchingResponseMode.1">
@@ -691,7 +693,7 @@
 						<ctl:with-param name="postURL" select="$getObservationPostURL"/>
 						<ctl:with-param name="getObservationVersion" select="$getObservationVersion"/>
 					</ctl:call-test>									
-
+-->
 					</xsl:otherwise>					
 				</xsl:choose>		
 

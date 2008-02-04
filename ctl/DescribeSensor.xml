@@ -327,7 +327,7 @@
 			<ctl:code>				
 				<!--xsl:variable name="responseId" select="string($response//sml:System/@gml:id | $response//sml:Sensor/@gml:id | $response//sml:System/@id | $response//sml:Sensor/@id | $response//tml:system/@uid  | $response//tml:transducer/@uid)"/-->
 				<!--<xsl:variable name="responseId" select="string($response//sml:System/@gml:id | $response//sml:Sensor/@gml:id | $response//sml:System/@id | $response//sml:Sensor/@id)"/>-->
-				<xsl:variable name="responseId" select="string($response//sml:System/@gml:id | $response//sml:Sensor/@gml:id | $response//sml:System/@id | $response//sml:Sensor/@id  | $response//tml:system/@uid  | $response//tml:transducer/@uid)"/>
+				<xsl:variable name="responseId" select="string($response//sml:identification//sml:Term[@definition='urn:ogc:def:identifierType:OGC:uniqueID']/sml:value)"/> 
 				<xsl:choose>
 					<xsl:when test="$responseId = $procedure">
 						<ctl:message>OK</ctl:message>
