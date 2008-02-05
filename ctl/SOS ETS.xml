@@ -17,8 +17,6 @@
 	xmlns:ows="http://www.opengis.net/ows/1.1" 
 	xmlns:gml="http://www.opengis.net/gml" 
 	xmlns:sos="http://www.opengis.net/sos/1.0"	
-	xmlns:sml="http://www.opengis.net/sensorML/1.0.1"
-	xmlns:tml="http://www.opengis.net/tml"
 	xmlns:xml="http://www.w3.org/XML/1998/namespace"
 	xmlns:ogc="http://www.opengis.net/ogc"
 	xmlns:om="http://www.opengis.net/om/1.0"

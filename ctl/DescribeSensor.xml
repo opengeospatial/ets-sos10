@@ -14,7 +14,8 @@
 	xmlns:ows="http://www.opengis.net/ows/1.1" 
 	xmlns:gml="http://www.opengis.net/gml" 
 	xmlns:sos="http://www.opengis.net/sos/1.0"		
-	xmlns:sml="http://www.opengis.net/sensorML/1.0.1"
+	xmlns:sml10="http://www.opengis.net/sensorML/1.0"
+	xmlns:sml101="http://www.opengis.net/sensorML/1.0.1"
 	xmlns:tml="http://www.opengis.net/tml"
 	xmlns:om="http://www.opengis.net/om/1.0"
 	xmlns:xml="http://www.w3.org/XML/1998/namespace"
@@ -327,7 +328,8 @@
 			<ctl:code>				
 				<!--xsl:variable name="responseId" select="string($response//sml:System/@gml:id | $response//sml:Sensor/@gml:id | $response//sml:System/@id | $response//sml:Sensor/@id | $response//tml:system/@uid  | $response//tml:transducer/@uid)"/-->
 				<!--<xsl:variable name="responseId" select="string($response//sml:System/@gml:id | $response//sml:Sensor/@gml:id | $response//sml:System/@id | $response//sml:Sensor/@id)"/>-->
-				<xsl:variable name="responseId" select="string($response//sml:identification//sml:Term[@definition='urn:ogc:def:identifierType:OGC:uniqueID']/sml:value)"/> 
+				<xsl:variable name="responseId" select="string($response//sml10:identification//sml10:Term[@definition='urn:ogc:def:identifierType:OGC:uniqueID']/sml10:value 
+															  |$response//sml101:identification//sml101:Term[@definition='urn:ogc:def:identifierType:OGC:uniqueID']/sml101:value)"/> 
 				<xsl:choose>
 					<xsl:when test="$responseId = $procedure">
 						<ctl:message>OK</ctl:message>
