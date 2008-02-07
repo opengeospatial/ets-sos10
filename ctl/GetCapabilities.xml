@@ -363,29 +363,31 @@
 		<ctl:comment>Check that the values in the responseFormat element(s) for each ObservationOffering contain a value and are valid MIME types.  Pass if assertions hold; fail otherwise.</ctl:comment>
 		<ctl:link title="Verify that the responseFormat values provided for each ObservationOffering are valid MIME types.">ATS_URL#SOS.GetCapabilities-ResponseContentsValidResponseFormat</ctl:link>
 		<ctl:code>		
-			<xsl:choose>
-				<xsl:when test="not($capabilitiesDocument//sos:ObservationOffering//sos:responseFormat)">
-					<ctl:message select="'ObservationOffering is missing responseFormat.'"/>
-					<ctl:fail/>
-				</xsl:when>
-				<xsl:otherwise>				
-					<xsl:for-each select="$capabilitiesDocument//sos:ObservationOffering//sos:responseFormat">
-						<xsl:variable name="thisResponseFormat"> 
-							<xsl:value-of select="."/>
-						</xsl:variable>
-						<xsl:choose>
-							<xsl:when test="sosFunctions:isValidMIMETypeFormat($thisResponseFormat) = 'false'">
-								<ctl:message select="concat($thisResponseFormat, '   **INVALID**')"/>
-								<ctl:fail/>
-							</xsl:when>
-							<xsl:otherwise>
-								<ctl:message select="concat($thisResponseFormat, '   OK')"/>
-							</xsl:otherwise>
-						</xsl:choose>
-					</xsl:for-each>
+			<xsl:for-each select="$capabilitiesDocument//sos:ObservationOffering">
+				<ctl:message select="concat('Testing offering: ',./@gml:id)"/>
+				<xsl:choose>
+					<xsl:when test="not(.//sos:responseFormat)">
+						<ctl:message select="'ObservationOffering is missing responseFormat.'"/>
+						<ctl:fail/>
+					</xsl:when>
+					<xsl:otherwise>				
+						<xsl:for-each select=".//sos:responseFormat">
+							<xsl:variable name="thisResponseFormat"> 
+								<xsl:value-of select="."/>
+							</xsl:variable>
+							<xsl:choose>
+								<xsl:when test="sosFunctions:isValidMIMETypeFormat($thisResponseFormat) = 'false'">
+									<ctl:message select="concat($thisResponseFormat, '   **INVALID**')"/>
+									<ctl:fail/>
+								</xsl:when>
+								<xsl:otherwise>
+									<ctl:message select="concat($thisResponseFormat, '   OK')"/>
+								</xsl:otherwise>
+							</xsl:choose>
+						</xsl:for-each>
 					</xsl:otherwise>
-					
-			</xsl:choose>
+				</xsl:choose>
+			</xsl:for-each>			
 		</ctl:code>
 	</ctl:test>
 
@@ -425,5 +427,31 @@
 		</ctl:code>
 	</ctl:test>
 		
-
+	<!--*****************************************************************************************************************************************************************************-->		
+				
+	<ctl:test name="getCapabilities:core-SOS.GetCapabilities-ResponseContentsValidResponseMode.1">
+		<ctl:param name="capabilitiesDocument"/>
+		<ctl:assertion> If an ObservationOffering provides the responseMode element, then the responseMode element contains a value that is one of the valid responseMode values.</ctl:assertion>
+		<ctl:comment>Check if an ObservationOffering provides the responseMode element, then the responseMode element contains a value that is one of the valid responseMode values. Pass if assertions hold; fail otherwise.</ctl:comment>
+		<ctl:link title="Verify that the responseMode values provided for each ObservationOffering are valid.">ATS_URL#SOS.GetCapabilities-ResponseContentsValidResponseMode</ctl:link>
+		<ctl:code>
+			<xsl:for-each select="$capabilitiesDocument//sos:ObservationOffering/@gml:id">
+				<xsl:variable name="offeringId" select="."/>
+				<ctl:message select="concat('Offering: ', $offeringId)"/>						
+				<xsl:for-each select="$capabilitiesDocument//sos:ObservationOffering[@gml:id=$offeringId]//sos:responseMode">
+					<xsl:variable name="thisResponseMode" select="."/>					
+					<xsl:choose>
+						<xsl:when test="sosFunctions:isValidResponseMode($thisResponseMode) = 'false'">
+							<ctl:message select="concat($thisResponseMode, '   **INVALID***')"/>							
+							<ctl:fail/>
+						</xsl:when>
+						<xsl:otherwise>
+							<ctl:message select="concat($thisResponseMode, '   OK')"/>							
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:for-each>	
+				<ctl:message></ctl:message>
+			</xsl:for-each>
+		</ctl:code>
+	</ctl:test>
 </ctl:package>

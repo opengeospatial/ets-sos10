@@ -347,6 +347,12 @@
 							<ctl:with-param name="capabilitiesDocument" select="$getCapabilitiesRequest"/>
 						</ctl:call-test>
 
+						<ctl:message select="'********************************************************'"/>
+						<ctl:message select="''"/>												
+						<ctl:call-test name="getCapabilities:core-SOS.GetCapabilities-ResponseContentsValidResponseMode.1">
+							<ctl:with-param name="capabilitiesDocument" select="$getCapabilitiesRequest"/>
+						</ctl:call-test>
+
 						<!--********************   Create variables for DescribeSensor **********************************-->		
 
 						<xsl:variable name="describeSensorPostURL" select="sosFunctions:operationPostURL($getCapabilitiesRequest, 'DescribeSensor')"/>
@@ -682,7 +688,7 @@
 					</ctl:call-test>
 -->
 					
-<!--					
+<!--					omitting this test
 					<ctl:message select="'********************************************************'"/>
 					<ctl:message select="''"/>						
 					<ctl:call-test name="getObservation:core-SOS.GetObservation-ResponseMatchingResponseMode.1">

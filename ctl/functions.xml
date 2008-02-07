@@ -186,30 +186,20 @@
 		</ctl:code>
 	</ctl:function>	
    
-<!--
-    <ctl:function name="sosFunctions:isValidResultModel">
-        <ctl:param name="resultModel">The resultModel to validate</ctl:param>
-        <ctl:return>True/False depending on whether the result model is a qualified name of a member of the om:AbstractObservation substitution group.</ctl:return>
-        <ctl:description>Determines whether the result model is valid</ctl:description>
+
+    <ctl:function name="sosFunctions:isValidResponseMode">
+        <ctl:param name="responseMode">The responseMode to validate</ctl:param>
+        <ctl:return>True/False depending on whether the responseMode is a qualified name of a member of the om:AbstractObservation substitution group.</ctl:return>
+        <ctl:description>Determines whether the responseMode is valid</ctl:description>
         <ctl:code>
 			
-			<xsl:value-of select="($resultModel = 'Measurement'
-									or $resultModel = 'CountObservation'
-									or $resultModel = 'CategoryObservation'
-									or $resultModel = 'TruthObservation'
-									or $resultModel = 'ComplexObservation'
-									or $resultModel = 'DiscreteCoverageObservationType'
-									or $resultModel = 'PointCoverageObservationType'
-									or $resultModel = 'TimeSeriesObservationType'
-									or $resultModel = 'ElementCoverageObservationType'
-									or $resultModel = 'DiscreteCoverageObsType'
-									or $resultModel = 'PointCoverageObsType'
-									or $resultModel = 'TimeSeriesObsType'
-									or $resultModel = 'CommonObservationType')"/>							
+			<xsl:value-of select="($responseMode = 'inline'
+									or $responseMode = 'out-of-band'
+									or $responseMode = 'attached'
+									or $responseMode = 'resultTemplate')"/>							
 									
         </ctl:code>
     </ctl:function>	
--->
 	
     <ctl:function name="sosFunctions:operationPostURL">
 		<ctl:param name="capabilitesDocument">The capabilities document</ctl:param>
