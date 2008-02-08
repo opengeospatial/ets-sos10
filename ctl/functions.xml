@@ -150,7 +150,7 @@
 											or $operationName='GetResult'
 											or $operationName='GetFeatureOfInterest'
 											or $operationName='GetFeatureOfInterestTime'
-											or $operationName='Insert'
+											or $operationName='InsertObservation'
 											or $operationName='RegisterSensor')"/>																					
         </ctl:code>
     </ctl:function>	
