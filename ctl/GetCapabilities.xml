@@ -264,39 +264,39 @@
 		<ctl:link title="Verify that the time values provided for each ObservationOffering are valid.">ATS_URL#SOS.GetCapabilities-ResponseContentsValidTime</ctl:link>
 		<ctl:code>
 			<!-- I also need to check for time instant? -->
-			<xsl:for-each select="$capabilitiesDocument//sos:ObservationOffering//gml:TimePeriod">
-									
-				<xsl:variable name="beginPosition" select="gml:beginPosition | gml:begin/gml:timePosition"/>					
-				<xsl:variable name="endPosition" select="gml:endPosition  | gml:end/gml:endPosition"/>
-				<xsl:choose>					
-					<!-- test beginPosition -->
-					<xsl:when test="sosFunctions:isValidTimePeriodPosition($beginPosition) = 'false'">
-						<ctl:message>Invalid beginPosition for ObservationOffering TimePeriod.</ctl:message>
-						<ctl:message select="concat('beginPosition is: ', $beginPosition)"/>
-						<ctl:message select="concat('Indeterminate beginPosition: ', $beginPosition/@indeterminatePosition)"/>	
-						<ctl:fail/>								
-					</xsl:when>
-					<!-- testEndPosition -->
-					<xsl:when test="sosFunctions:isValidTimePeriodPosition($endPosition) = 'false'">
-						<ctl:message>Invalid endPosition for ObservationOffering TimePeriod.</ctl:message>
-						<ctl:message select="concat('Indeterminate endPosition: ', $endPosition/@indeterminatePosition)"/>	
-						<ctl:message select="concat('endPosition is: ', $endPosition)"/>								
-						<ctl:fail/>								
-					</xsl:when>
-					<!-- make sure begin time does not come after end time -->
-					<xsl:when test="($beginPosition != '' and $endPosition != '')
+			<xsl:for-each select="$capabilitiesDocument//sos:ObservationOffering/@gml:id">
+				<xsl:variable name="offeringId" select="."/>
+				<ctl:message select="concat('Time values for offering: ', $offeringId)"/>
+				<xsl:for-each select="$capabilitiesDocument//sos:ObservationOffering[@gml:id=$offeringId]//gml:TimePeriod">													
+					<xsl:variable name="beginPosition" select="gml:beginPosition | gml:begin/gml:timePosition"/>					
+					<xsl:variable name="endPosition" select="gml:endPosition  | gml:end/gml:endPosition"/>
+					<ctl:message select="concat('beginPosition: ', $beginPosition, $beginPosition/@indeterminatePosition)"/>
+					<ctl:message select="concat('endPosition: ',$endPosition, $endPosition/@indeterminatePosition)"/>
+					<xsl:choose>					
+						<!-- test beginPosition -->
+						<xsl:when test="sosFunctions:isValidTimePeriodPosition($beginPosition) = 'false'">
+							<ctl:message>Invalid beginPosition for TimePeriod.</ctl:message>						
+							<ctl:fail/>								
+						</xsl:when>
+						<!-- testEndPosition -->
+						<xsl:when test="sosFunctions:isValidTimePeriodPosition($endPosition) = 'false'">
+							<ctl:message>Invalid endPosition for TimePeriod.</ctl:message>						
+							<ctl:fail/>								
+						</xsl:when>
+						<!-- make sure begin time does not come after end time -->
+						<xsl:when test="($beginPosition != '' and $endPosition != '')
 									and
 									(sosFunctions:dateTimeFromISO($beginPosition) &gt; sosFunctions:dateTimeFromISO($endPosition))">
-						<ctl:message>Begin position is later than end position.</ctl:message>
-						<ctl:fail/>							
-					</xsl:when>						
-					<xsl:otherwise>																	
-						<ctl:message>OK</ctl:message>							
-					</xsl:otherwise>
-				</xsl:choose>
-														
+							<ctl:message>Begin position is later than end position.</ctl:message>
+							<ctl:fail/>							
+						</xsl:when>						
+						<xsl:otherwise>																	
+							<ctl:message>OK</ctl:message>							
+						</xsl:otherwise>
+					</xsl:choose>
+					<ctl:message></ctl:message>
+				</xsl:for-each>
 			</xsl:for-each>
-
 		</ctl:code>
 	</ctl:test>
 
