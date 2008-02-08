@@ -429,7 +429,7 @@
 	<ctl:function name="sosFunctions:dayTimeDurationFromSeconds">
 		<ctl:param name="seconds"/> 
 		<ctl:code>
-			<xsl:value-of select="xsd:dayTimeDuration(concat('PT', string($seconds), 'S'))"/>   
+			<xsl:value-of select="xsd:dayTimeDuration('PT1S') * $seconds"/>
 		</ctl:code>
 	</ctl:function>
 	
