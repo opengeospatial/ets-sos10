@@ -277,7 +277,7 @@
 						<ctl:fail/>								
 					</xsl:when>
 					<!-- testEndPosition -->
-					<xsl:when test="sosFunctions:isValidTimePeriodPosition($beginPosition) = 'false'">
+					<xsl:when test="sosFunctions:isValidTimePeriodPosition($endPosition) = 'false'">
 						<ctl:message>Invalid endPosition for ObservationOffering TimePeriod.</ctl:message>
 						<ctl:message select="concat('Indeterminate endPosition: ', $endPosition/@indeterminatePosition)"/>	
 						<ctl:message select="concat('endPosition is: ', $endPosition)"/>								
