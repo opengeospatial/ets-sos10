@@ -48,7 +48,7 @@
 									xmlns:om="http://www.opengis.net/om/1.0" 
 									xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 									xsi:schemaLocation="http://www.opengis.net/sos/1.0
-										C:\Ifgi\OGC_material\schemata_final\svn\swe\trunk\sos\1.0.0/sosGetObservation.xsd" 
+										http://schemas.opengis.net/sos/1.0.0/sosGetObservation.xsd" 
 									service="SOS"
 								>
 									<xsl:attribute name="version">
@@ -134,7 +134,7 @@
 									xmlns:om="http://www.opengis.net/om/1.0" 
 									xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 									xsi:schemaLocation="http://www.opengis.net/sos/1.0
-										C:\Ifgi\OGC_material\schemata_final\svn\swe\trunk\sos\1.0.0/sosGetObservation.xsd" 
+										http://schemas.opengis.net/sos/1.0.0/sosGetObservation.xsd" 
 									service="SOS"
 								>
 									<xsl:attribute name="version">
@@ -331,7 +331,7 @@
 									xmlns:om="http://www.opengis.net/om/1.0" 
 									xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 									xsi:schemaLocation="http://www.opengis.net/sos/1.0
-										C:\Ifgi\OGC_material\schemata_final\svn\swe\trunk\sos\1.0.0/sosGetObservation.xsd" 
+										http://schemas.opengis.net/sos/1.0.0/sosGetObservation.xsd" 
 									service="SOS"
 								>
 									<xsl:attribute name="version">
@@ -418,7 +418,7 @@
 									xmlns:om="http://www.opengis.net/om/1.0" 
 									xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 									xsi:schemaLocation="http://www.opengis.net/sos/1.0
-										C:\Ifgi\OGC_material\schemata_final\svn\swe\trunk\sos\1.0.0/sosGetObservation.xsd" 
+										http://schemas.opengis.net/sos/1.0.0/sosGetObservation.xsd" 
 									service="SOS"
 								>
 									<xsl:attribute name="version">
@@ -506,7 +506,7 @@
 									xmlns:om="http://www.opengis.net/om/1.0" 
 									xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 									xsi:schemaLocation="http://www.opengis.net/sos/1.0
-										C:\Ifgi\OGC_material\schemata_final\svn\swe\trunk\sos\1.0.0/sosGetObservation.xsd" 
+										http://schemas.opengis.net/sos/1.0.0/sosGetObservation.xsd" 
 									service="SOS"
 								>
 									<xsl:attribute name="version">
@@ -601,7 +601,7 @@
 								xmlns:om="http://www.opengis.net/om/1.0" 
 								xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 								xsi:schemaLocation="http://www.opengis.net/sos/1.0
-									C:\Ifgi\OGC_material\schemata_final\svn\swe\trunk\sos\1.0.0/sosGetObservation.xsd" 
+									http://schemas.opengis.net/sos/1.0.0/sosGetObservation.xsd" 
 								service="SOS"
 							>
 								<xsl:attribute name="version">
@@ -698,7 +698,7 @@
 									xmlns:om="http://www.opengis.net/om/1.0" 
 									xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 									xsi:schemaLocation="http://www.opengis.net/sos/1.0
-										C:\Ifgi\OGC_material\schemata_final\svn\swe\trunk\sos\1.0.0/sosGetObservation.xsd" 
+										http://schemas.opengis.net/sos/1.0.0/sosGetObservation.xsd" 
 									service="SOS"
 								>
 									<xsl:attribute name="version">
@@ -784,7 +784,7 @@
 									xmlns:om="http://www.opengis.net/om/1.0" 
 									xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 									xsi:schemaLocation="http://www.opengis.net/sos/1.0
-										C:\Ifgi\OGC_material\schemata_final\svn\swe\trunk\sos\1.0.0/sosGetObservation.xsd" 
+										http://schemas.opengis.net/sos/1.0.0/sosGetObservation.xsd" 
 									service="SOS"
 								>
 									<xsl:attribute name="version">
@@ -874,7 +874,7 @@
 									xmlns:om="http://www.opengis.net/om/1.0" 
 									xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 									xsi:schemaLocation="http://www.opengis.net/sos/1.0
-										C:\Ifgi\OGC_material\schemata_final\svn\swe\trunk\sos\1.0.0/sosGetObservation.xsd" 
+										http://schemas.opengis.net/sos/1.0.0/sosGetObservation.xsd" 
 									service="SOS"
 								>
 									<xsl:attribute name="version">
@@ -968,7 +968,7 @@
 												xmlns:om="http://www.opengis.net/om/1.0" 
 												xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 												xsi:schemaLocation="http://www.opengis.net/sos/1.0
-													C:\Ifgi\OGC_material\schemata_final\svn\swe\trunk\sos\1.0.0/sosGetObservation.xsd" 
+													http://schemas.opengis.net/sos/1.0.0/sosGetObservation.xsd" 
 												service="SOS"
 											>
 												<xsl:attribute name="version">
@@ -1064,7 +1064,7 @@
 											xmlns:om="http://www.opengis.net/om/1.0" 
 											xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 											xsi:schemaLocation="http://www.opengis.net/sos/1.0
-											C:\Ifgi\OGC_material\schemata_final\svn\swe\trunk\sos\1.0.0/sosGetObservation.xsd" 
+											http://schemas.opengis.net/sos/1.0.0/sosGetObservation.xsd" 
 											service="SOS"
 										>
 											<xsl:attribute name="version">
@@ -1160,7 +1160,7 @@
 											xmlns:om="http://www.opengis.net/om/1.0" 
 											xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 											xsi:schemaLocation="http://www.opengis.net/sos/1.0
-											C:\Ifgi\OGC_material\schemata_final\svn\swe\trunk\sos\1.0.0/sosGetObservation.xsd" 
+											http://schemas.opengis.net/sos/1.0.0/sosGetObservation.xsd" 
 											service="SOS"
 										>
 											<xsl:attribute name="version">
@@ -1250,7 +1250,7 @@
 													xmlns:om="http://www.opengis.net/om/1.0" 
 													xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 													xsi:schemaLocation="http://www.opengis.net/sos/1.0
-													C:\Ifgi\OGC_material\schemata_final\svn\swe\trunk\sos\1.0.0/sosGetObservation.xsd" 
+													http://schemas.opengis.net/sos/1.0.0/sosGetObservation.xsd" 
 													service="SOS"
 												>
 													<xsl:attribute name="version">
@@ -1532,7 +1532,7 @@
 											xmlns:om="http://www.opengis.net/om/1.0" 
 											xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 											xsi:schemaLocation="http://www.opengis.net/sos/1.0
-											C:\Ifgi\OGC_material\schemata_final\svn\swe\trunk\sos\1.0.0/sosGetObservation.xsd" 
+											http://schemas.opengis.net/sos/1.0.0/sosGetObservation.xsd" 
 											service="SOS"
 										>
 											<xsl:attribute name="version">
@@ -1616,7 +1616,7 @@
 								xmlns:om="http://www.opengis.net/om/1.0" 
 								xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 								xsi:schemaLocation="http://www.opengis.net/sos/1.0
-									C:\Ifgi\OGC_material\schemata_final\svn\swe\trunk\sos\1.0.0/sosGetObservation.xsd" 
+									http://schemas.opengis.net/sos/1.0.0/sosGetObservation.xsd" 
 								service="SOS"
 							>
 								<xsl:attribute name="version">
@@ -1707,7 +1707,7 @@
 											xmlns:om="http://www.opengis.net/om/1.0" 
 											xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 											xsi:schemaLocation="http://www.opengis.net/sos/1.0
-												C:\Ifgi\OGC_material\schemata_final\svn\swe\trunk\sos\1.0.0/sosGetObservation.xsd" 
+												http://schemas.opengis.net/sos/1.0.0/sosGetObservation.xsd" 
 											service="SOS"
 										>
 											<xsl:attribute name="version">
@@ -1785,7 +1785,7 @@
 											xmlns:om="http://www.opengis.net/om/1.0" 
 											xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 											xsi:schemaLocation="http://www.opengis.net/sos/1.0
-											C:\Ifgi\OGC_material\schemata_final\svn\swe\trunk\sos\1.0.0/sosGetObservation.xsd" 
+											http://schemas.opengis.net/sos/1.0.0/sosGetObservation.xsd" 
 											service="SOS"
 										>
 											<xsl:attribute name="version">
@@ -1884,7 +1884,7 @@
 											xmlns:om="http://www.opengis.net/om/1.0" 
 											xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 											xsi:schemaLocation="http://www.opengis.net/sos/1.0
-											C:\Ifgi\OGC_material\schemata_final\svn\swe\trunk\sos\1.0.0/sosGetObservation.xsd" 
+											http://schemas.opengis.net/sos/1.0.0/sosGetObservation.xsd" 
 											service="SOS"
 										>
 											<xsl:attribute name="version">
