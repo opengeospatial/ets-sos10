@@ -172,9 +172,8 @@
                     2.)  Validate the response against the ExceptionReport schema.
                     3.)  If the response validates, then check that the exceptionCode value is "InvalidRequest"
                 -->
-        <ctl:message>Issuing an invalid request to:  <xsl:value-of select="$serviceURL" /></ctl:message>		
-        <xsl:variable name="body" select="string('Test')" />
-		<ctl:message select="concat('The body of the request will be the string &quot;', $body , '&quot;')"/>
+        <ctl:message>Issuing an invalid request to:  <xsl:value-of select="$serviceURL" /></ctl:message>		     
+		<ctl:message select="'The body of the request will be &quot;&lt;test/&gt;&quot;'"/>
         <xsl:variable name="invalidRequestResponse">
                 <ctl:request>
                     <ctl:url>
@@ -182,7 +181,7 @@
                     </ctl:url>
                     <ctl:method>post</ctl:method>
                     <ctl:body>
-                        <xsl:value-of select="$body" />
+                        <test/>
                     </ctl:body>
 					<ctl:call-function name="sosFunctions:xmlValidatingParser">	
 						<ctl:with-param name="schemaFile" select="$exceptionReportSchema"/>
