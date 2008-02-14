@@ -246,7 +246,7 @@
         <ctl:return>The responseFormat for the ObservationOffering</ctl:return>
         <ctl:description>Return a valid responseFormat for the offering</ctl:description>
         <ctl:code>
-			<xsl:value-of select="$capabilitesDocument//sos:ObservationOffering[@gml:id=$offeringId]//sos:responseFormat[1]"/>																
+			<xsl:value-of select="$capabilitesDocument//sos:ObservationOffering[@gml:id=$offeringId]//sos:responseFormat[1]"/>
         </ctl:code>
     </ctl:function>
 
@@ -256,7 +256,8 @@
         <ctl:return>The first observedProperty for the ObservationOffering</ctl:return>
         <ctl:description>Return a valid responseFormat for the offering</ctl:description>
         <ctl:code>
-			<xsl:value-of select="$capabilitesDocument//sos:ObservationOffering[@gml:id=$offeringId]//sos:observedProperty[1]/@xlink:href"/>																
+			<xsl:value-of select="$capabilitesDocument//sos:ObservationOffering[@gml:id=$offeringId]//sos:observedProperty[1]/@xlink:href |
+								 $capabilitesDocument//sos:ObservationOffering[@gml:id=$offeringId]//sos:observedProperty[1]//gml:name"/>
         </ctl:code>
     </ctl:function>
 	
