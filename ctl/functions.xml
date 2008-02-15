@@ -155,6 +155,31 @@
         </ctl:code>
     </ctl:function>	
 	
+	<!-- perhaps this could use the sos schema to instead of hard coded values -->
+   <ctl:function name="sosFunctions:isValidResultModel">
+        <ctl:param name="resultModel">The name of the resultModel</ctl:param>
+        <ctl:return>True/False depending on whether the resultModel is a member of the om:Observation substitution group.</ctl:return>
+        <ctl:description>Determines whether the resultModel is valid</ctl:description>
+        <ctl:code>
+			<xsl:variable name="resultModelName" select="substring-after($resultModel, ':')"/>
+			<xsl:value-of select="($resultModelName='Observation'
+								or $resultModelName='PointCoverageObservation'
+								or $resultModelName='DiscreteCoverageObservation'
+								or $resultModelName='TimeSeriesObservation'
+								or $resultModelName='ElementCoverageObservation'
+								or $resultModelName='DiscreteCoverageObs'
+								or $resultModelName='PointCoverageObs'
+								or $resultModelName='TimeSeriesObs'
+								or $resultModelName='Measurement'
+								or $resultModelName='CategoryObservation'
+								or $resultModelName='CountObservation'
+								or $resultModelName='TruthObservation'
+								or $resultModelName='GeometryObservation'
+								or $resultModelName='TemporalObservation'
+								or $resultModelName='ComplexObservation')"/>																					
+        </ctl:code>
+    </ctl:function>
+	
     <ctl:function name="sosFunctions:isValidProcedureURN">
         <ctl:param name="urnString">The URN to validate</ctl:param>
         <ctl:return>True/False depending on whether or not the URN is valid</ctl:return>
@@ -217,7 +242,8 @@
         <ctl:return>Post URL of given operation</ctl:return>
         <ctl:description>Returns post URL of given operation</ctl:description>
         <ctl:code>
-			<xsl:value-of select="$capabilitesDocument//ows:Operation[@name=$operation]/ows:Parameter[@name='version']//ows:AllowedValues/ows:Value"/>																
+			<xsl:value-of select="$capabilitesDocument//ows:Operation[@name=$operation]/ows:Parameter[@name='version']//ows:AllowedValues/ows:Value | 
+								  $capabilitesDocument//ows:ServiceIdentification//ows:ServiceTypeVersion"/>																
         </ctl:code>
     </ctl:function>	
 
