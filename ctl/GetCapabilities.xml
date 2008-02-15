@@ -399,28 +399,19 @@
 		<ctl:comment>Check If an ObservationOffering provides the resultModel element, then the resultModel element contains a value that is qualified name of a member of the om:AbstractObservation substitution group.  Pass if assertions hold; fail otherwise.</ctl:comment>
 		<ctl:link title="Verify that the resultModel values provided for each ObservationOffering are valid.">ATS_URL#SOS.GetCapabilities-ResponseContentsValidResultModel</ctl:link>
 		<ctl:code>
-			<xsl:variable name="observationSpecializationsSchema" select="'http://georepo.net/schemas/om/1.0.0/observationSpecializations.xsd'"/>			  
-		    <xsl:variable name="observationSpecializations">
-				<ctl:request>
-					<ctl:url>
-						<xsl:value-of select="$observationSpecializationsSchema"/>
-					</ctl:url>
-					<ctl:method>get</ctl:method>		  		  
-				</ctl:request>
-			</xsl:variable>
-			
-			<ctl:message select="concat('Checking advertised result models against members of the substitution group om:AbstractObservation listed in: ', $observationSpecializationsSchema)"/>
+
+			<ctl:message select="'Checking advertised result models against members of the substitution group om:Observation.'"/>
 			<xsl:for-each select="$capabilitiesDocument//sos:ObservationOffering//sos:resultModel">			
-				<xsl:variable name="thisresultModel"> 
+				<xsl:variable name="thisResultModel"> 
 					<xsl:value-of select="."/>
 				</xsl:variable>				
 				<xsl:choose>
-					<xsl:when test="not($thisresultModel='Observation') and not($observationSpecializations//*[@substitutionGroup='om:AbstractObservation']/@name=$thisresultModel)">
-						<ctl:message select="concat($thisresultModel, '   **INVALID***')"/>							
+					<xsl:when test="not(sosFunctions:isValidResultModel($thisResultModel)='true')">
+						<ctl:message select="concat($thisResultModel, '   **INVALID***')"/>							
 						<ctl:fail/>
 					</xsl:when>
 					<xsl:otherwise>
-						<ctl:message select="concat($thisresultModel, '   OK')"/>							
+						<ctl:message select="concat($thisResultModel, '   OK')"/>							
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:for-each>	
