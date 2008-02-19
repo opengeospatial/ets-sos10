@@ -403,10 +403,22 @@
 	
 	<ctl:function name="sosFunctions:mimeTypeSubtypeVersion">
         <ctl:param name="mimeType">The mime type</ctl:param>
-		<ctl:code>			
-			<xsl:value-of select="substring-after(sosFunctions:mimeSubtype($mimeType), '/')"/>
+		<ctl:code>
+			<xsl:variable name="unalteredVersion" select="substring-after(sosFunctions:mimeSubtype($mimeType), '/')"/>
+			<xsl:choose>
+				<xsl:when test="contains(substring-after($unalteredVersion, '.'), '.')">
+					<xsl:value-of select="$unalteredVersion"/>
+				</xsl:when>
+				<xsl:when test="contains(substring-after(concat($unalteredVersion, '.0'), '.'), '.')">
+				    <xsl:value-of select="concat($unalteredVersion, '.0')"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="concat($unalteredVersion, '.0.0')"/>
+				</xsl:otherwise>
+			</xsl:choose>
 		</ctl:code>
 	</ctl:function>
+	
 
 	
 	<ctl:function name="sosFunctions:schemaPathFromMimeType">
