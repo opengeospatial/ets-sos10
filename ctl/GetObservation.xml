@@ -948,7 +948,7 @@
 				<xsl:for-each select="$capabilitiesDocument//sos:ObservationOffering/@gml:id">
 				<xsl:variable name="offeringId" select="."/>
 					<xsl:for-each select="$capabilitiesDocument//sos:ObservationOffering[@gml:id=$offeringId]//sos:responseFormat[starts-with(.,'text/xml')]">
-						<xsl:variable name="responseFormat" select="."/>
+						<xsl:variable name="responseFormat" select="."/>																			
 						<xsl:for-each select="distinct-values($capabilitiesDocument//sos:ObservationOffering[@gml:id=$offeringId]//@srsName)">
 							<xsl:variable name="srsName" select="."/>		
 							<ctl:message select="'****'"/>
@@ -986,15 +986,14 @@
 												</responseFormat>										
 											</GetObservation>						
 										</ctl:body>	
-									
-									
+																		
 									<ctl:call-function name="sosFunctions:xmlValidatingParser">											
 										<ctl:with-param name="schemaFile" select="sosFunctions:schemaPathFromMimeType($ogcSchemaRoot, $responseFormat)"/>
 									</ctl:call-function>						
 									
-									
 									</ctl:request>							 														
-							</xsl:variable>		
+							</xsl:variable>	
+								
 							<xsl:choose>
 								<!-- check for valid schema or missing response-->
 								<xsl:when test="not($getObservation/*)">							

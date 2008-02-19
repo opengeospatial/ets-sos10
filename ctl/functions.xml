@@ -206,11 +206,27 @@
 		<ctl:return>True/False depending on whether the input is a valid MIME type based on ows:owsCommon.xsd</ctl:return>
 		<ctl:description>Determines if a definition URN is valid</ctl:description>
 		<ctl:code>		
-			<xsl:value-of select="(matches($responseFormat,'^(application|audio|image|text|video|message|multipart|model)/.+(;\s*.+=.+)*','i'))"/>
+			<xsl:choose>
+				<xsl:when test="starts-with($responseFormat,'text/xml')">
+					<xsl:value-of select="sosFunctions:isValidTextXMLFormat($responseFormat)"/>				
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="(matches($responseFormat,'^(application|audio|image|text|video|message|multipart|model)/.+(;\s*.+=.+)*','i'))"/>
+				</xsl:otherwise>
+			</xsl:choose>
 			<!--xsl:value-of select="(matches($responseFormat,'^text/xml;subtype=.*(OM|TML).*','i'))"/-->
 		</ctl:code>
 	</ctl:function>	
-   
+
+	<ctl:function name="sosFunctions:isValidTextXMLFormat">
+		<ctl:param name="responseFormat">The respsonseFormat to validate</ctl:param>
+		<ctl:return>True/False depending on whether the input is a valid MIME type based on ows:owsCommon.xsd</ctl:return>
+		<ctl:description>Determines if a definition URN is valid</ctl:description>
+		<ctl:code>		
+			<xsl:value-of select="(matches($responseFormat,'^text/xml;\s*subtype=&quot;.+&quot;','i'))"/>						
+		</ctl:code>
+	</ctl:function>
+	
 
     <ctl:function name="sosFunctions:isValidResponseMode">
         <ctl:param name="responseMode">The responseMode to validate</ctl:param>
@@ -227,71 +243,78 @@
     </ctl:function>	
 	
     <ctl:function name="sosFunctions:operationPostURL">
-		<ctl:param name="capabilitesDocument">The capabilities document</ctl:param>
+		<ctl:param name="capabilitiesDocument">The capabilities document</ctl:param>
         <ctl:param name="operation">The operation for which the URL is reqested</ctl:param>
         <ctl:return>Post URL of given operation</ctl:return>
         <ctl:description>Returns post URL of given operation</ctl:description>
         <ctl:code>
-			<xsl:value-of select="$capabilitesDocument//ows:Operation[@name=$operation]/ows:DCP/ows:HTTP/ows:Post/@xlink:href"/>						         
+			<xsl:value-of select="$capabilitiesDocument//ows:Operation[@name=$operation]/ows:DCP/ows:HTTP/ows:Post/@xlink:href"/>						         
         </ctl:code>
     </ctl:function>	
 
     <ctl:function name="sosFunctions:operationVersion">
-		<ctl:param name="capabilitesDocument">The capabilities document</ctl:param>
+		<ctl:param name="capabilitiesDocument">The capabilities document</ctl:param>
         <ctl:param name="operation">The operation for which the URL is reqested</ctl:param>
         <ctl:return>Post URL of given operation</ctl:return>
         <ctl:description>Returns post URL of given operation</ctl:description>
         <ctl:code>
-			<xsl:value-of select="$capabilitesDocument//ows:Operation[@name=$operation]/ows:Parameter[@name='version']//ows:AllowedValues/ows:Value | 
-								  $capabilitesDocument//ows:ServiceIdentification//ows:ServiceTypeVersion"/>																
+			<xsl:value-of select="$capabilitiesDocument//ows:Operation[@name=$operation]/ows:Parameter[@name='version']//ows:AllowedValues/ows:Value | 
+								  $capabilitiesDocument//ows:ServiceIdentification//ows:ServiceTypeVersion"/>																
         </ctl:code>
     </ctl:function>	
 
     <ctl:function name="sosFunctions:describeSensorFirstProcedure">
-		<ctl:param name="capabilitesDocument">The capabilities document</ctl:param>        
+		<ctl:param name="capabilitiesDocument">The capabilities document</ctl:param>        
         <ctl:return>The first procedure for DescribeSensor advertised in the capabilities document</ctl:return>
         <ctl:description>Return a valid procedure for use in calling DescribeSensor</ctl:description>
         <ctl:code>
-			<xsl:value-of select="$capabilitesDocument//ows:Operation[@name='DescribeSensor']//ows:Parameter[@name='procedure']//ows:AllowedValues/ows:Value[1]"/>																
+			<xsl:value-of select="$capabilitiesDocument//ows:Operation[@name='DescribeSensor']//ows:Parameter[@name='procedure']//ows:AllowedValues/ows:Value[1]"/>																
         </ctl:code>
     </ctl:function>	
 		
     <ctl:function name="sosFunctions:describeSensorOutputFormat">
-		<ctl:param name="capabilitesDocument">The capabilities document</ctl:param>        
+		<ctl:param name="capabilitiesDocument">The capabilities document</ctl:param>        
         <ctl:return>The outputFormat for DescribeSensor advertised in the capabilities document</ctl:return>
         <ctl:description>Return a valid outputFormat for use in calling DescribeSensor</ctl:description>
         <ctl:code>
-			<xsl:value-of select="$capabilitesDocument//ows:Operation[@name='DescribeSensor']//ows:Parameter[@name='outputFormat']//ows:AllowedValues/ows:Value[1]"/>																
+			<xsl:variable name="outputFormat" select="$capabilitiesDocument//ows:Operation[@name='DescribeSensor']//ows:Parameter[@name='outputFormat']//ows:AllowedValues/ows:Value[1]"/>
+			<xsl:choose>
+				<xsl:when test="not($outputFormat)">
+					<xsl:value-of select="'text/xml;subtype=&quot;sensorML/1.0.0&quot;'"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="$outputFormat"/>
+				</xsl:otherwise>
+			</xsl:choose>
         </ctl:code>
     </ctl:function>	
-
 	
 	<ctl:function name="sosFunctions:observationOfferingResponseFormat">
-		<ctl:param name="capabilitesDocument">The capabilities document</ctl:param>
+		<ctl:param name="capabilitiesDocument">The capabilities document</ctl:param>
 		<ctl:param name="offeringId">The offering Id</ctl:param>        
         <ctl:return>The responseFormat for the ObservationOffering</ctl:return>
         <ctl:description>Return a valid responseFormat for the offering</ctl:description>
         <ctl:code>
-			<xsl:value-of select="$capabilitesDocument//sos:ObservationOffering[@gml:id=$offeringId]//sos:responseFormat[1]"/>
+			<xsl:value-of select="($capabilitiesDocument//sos:ObservationOffering[@gml:id=$offeringId]//sos:responseFormat[starts-with(.,'text/xml')])[1]"/>
         </ctl:code>
     </ctl:function>
 
 	<ctl:function name="sosFunctions:observationOfferingObservedProperty">
-		<ctl:param name="capabilitesDocument">The capabilities document</ctl:param>
+		<ctl:param name="capabilitiesDocument">The capabilities document</ctl:param>
 		<ctl:param name="offeringId">The offering Id</ctl:param>        
         <ctl:return>The first observedProperty for the ObservationOffering</ctl:return>
         <ctl:description>Return a valid responseFormat for the offering</ctl:description>
         <ctl:code>
-			<xsl:value-of select="$capabilitesDocument//sos:ObservationOffering[@gml:id=$offeringId]//sos:observedProperty[1]/@xlink:href |
-								 $capabilitesDocument//sos:ObservationOffering[@gml:id=$offeringId]//sos:observedProperty[1]//gml:name"/>
+			<xsl:value-of select="$capabilitiesDocument//sos:ObservationOffering[@gml:id=$offeringId]//sos:observedProperty[1]/@xlink:href |
+								 $capabilitiesDocument//sos:ObservationOffering[@gml:id=$offeringId]//sos:observedProperty[1]//gml:name"/>
         </ctl:code>
     </ctl:function>
 	
 	 <ctl:function name="sosFunctions:capabilitiesFirstOfferingId">
-		<ctl:param name="capabilitesDocument">The capabilities document</ctl:param>        
+		<ctl:param name="capabilitiesDocument">The capabilities document</ctl:param>        
         <ctl:return>The id of the first offering in the capbilities document</ctl:return>        
         <ctl:code>
-			<xsl:value-of select="$capabilitesDocument//sos:ObservationOffering/@gml:id[1]"/>
+			<xsl:value-of select="$capabilitiesDocument//sos:ObservationOffering/@gml:id[1]"/>
         </ctl:code>
     </ctl:function>
 	

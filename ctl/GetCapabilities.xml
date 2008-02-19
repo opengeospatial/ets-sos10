@@ -363,6 +363,7 @@
 		<ctl:comment>Check that the values in the responseFormat element(s) for each ObservationOffering contain a value and are valid MIME types.  Pass if assertions hold; fail otherwise.</ctl:comment>
 		<ctl:link title="Verify that the responseFormat values provided for each ObservationOffering are valid MIME types.">ATS_URL#SOS.GetCapabilities-ResponseContentsValidResponseFormat</ctl:link>
 		<ctl:code>		
+			<!-- check all the responseFormats from offerings -->
 			<xsl:for-each select="$capabilitiesDocument//sos:ObservationOffering">
 				<ctl:message select="concat('Testing offering: ',./@gml:id)"/>
 				<xsl:choose>
@@ -387,7 +388,26 @@
 						</xsl:for-each>
 					</xsl:otherwise>
 				</xsl:choose>
-			</xsl:for-each>			
+			</xsl:for-each>	
+
+			<!-- checking outputFormat for DescribeSensor -->
+			<xsl:if test="$capabilitiesDocument//ows:Operation[@name='DescribeSensor']//ows:Parameter[@name='outputFormat']//ows:AllowedValues/ows:Value">
+				<ctl:message select="'Checking outputFormats for DescribeSensor operation...'"/>
+				<xsl:for-each select="distinct-values($capabilitiesDocument//ows:Operation[@name='DescribeSensor']//ows:Parameter[@name='outputFormat']//ows:AllowedValues/ows:Value)">											
+					<xsl:variable name="thisResponseFormat"> 
+						<xsl:value-of select="."/>
+					</xsl:variable>
+					<xsl:choose>
+						<xsl:when test="sosFunctions:isValidMIMETypeFormat($thisResponseFormat) = 'false'">
+							<ctl:message select="concat($thisResponseFormat, '   **INVALID**')"/>
+							<ctl:fail/>
+						</xsl:when>
+						<xsl:otherwise>
+							<ctl:message select="concat($thisResponseFormat, '   OK')"/>
+						</xsl:otherwise>
+					</xsl:choose>					
+				</xsl:for-each>	
+			</xsl:if>
 		</ctl:code>
 	</ctl:test>
 
