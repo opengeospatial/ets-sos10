@@ -297,50 +297,95 @@
 		
 		<!--*****************************************************************************************************************************************************************************-->		
 		
-		<ctl:test name="describeSensor:core-SOS.DescribeSensor-ResponseMatchingResponseFormat.1">			
-			<ctl:param name="response"/>
-			<ctl:param name="outputFormat"/>	
-			<ctl:param name="procedure"/>
+		<ctl:test name="describeSensor:core-SOS.DescribeSensor-ResponseMatchingResponseFormat.1">
+			<ctl:param name="capabilitiesDocument"/>
+			<ctl:param name="postURL"/>
+			<ctl:param name="describeSensorVersion"/>
+			<ctl:param name="outputFormat" />
+			<ctl:param name="schemaFile"/>
 			<ctl:assertion>The format of the response document matches the outputFormat specified in the request and is valid according to the outputFormat schema.</ctl:assertion>
 			<ctl:comment>Check that the format of the response document matches the outputFormat specified in the request and is valid according to the outputFormat schema.  Pass if assertion holds; fail otherwise.</ctl:comment>
 			<ctl:link title="Verify that the format of the returned document matches the requested outputFormat (i.e. SensorML, OM, etc.)">ATS_URL#SOS.DescribeSensor-ResponseMatchingResponseFormat</ctl:link>
 			<ctl:code>			
-				<xsl:choose>
-					<!-- check for valid schema or missing response-->
-					<xsl:when test="not($response)">
-						<ctl:message select="concat('The DescribeSensor response for ', $procedure, ' was invalid according to the  ', $outputFormat, ' schema.')"/>						
-						<ctl:fail/>
-					</xsl:when>
-					<!-- looks good -->
-					<xsl:otherwise>
-						<ctl:message>OK</ctl:message>
-					</xsl:otherwise>
-				</xsl:choose>
+				<xsl:for-each select="distinct-values($capabilitiesDocument//sos:ObservationOffering//sos:procedure/@xlink:href)">			
+					<xsl:variable name="procedure" select="."/>
+					<ctl:message select="concat('Procedure: &quot;',$procedure, '&quot;')"/>
+					<ctl:message select="concat('OutputFormat: &quot;',$outputFormat, '&quot;')"/>
+					<xsl:variable name="response">
+						<xsl:copy-of select="sosFunctions:describeSensor
+											($postURL, 
+											$describeSensorVersion, 
+											$procedure,
+											$outputFormat, 
+											$schemaFile)"/>
+					</xsl:variable>					
+					<xsl:choose>
+						<!-- check for valid schema or missing response-->
+						<xsl:when test="not($response/*)">
+							<ctl:message select="'Failure'"/>
+							<ctl:message select="concat('The DescribeSensor response for ', $procedure, ' was invalid according to the  ', $outputFormat, ' schema.')"/>						
+							<ctl:message select="concat('Schema file: &quot;', $schemaFile)"/>
+							<ctl:fail/>
+						</xsl:when>
+						<!-- looks good -->
+						<xsl:otherwise>
+							<ctl:message>OK</ctl:message>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:for-each>
 			</ctl:code>
 		</ctl:test>
 		
 		<ctl:test name="describeSensor:core-SOS.DescribeSensor-ResponseMatchingProcedure.1">
-			<ctl:param name="response"/>
-			<ctl:param name="procedure"/>
+			<ctl:param name="capabilitiesDocument"/>
+			<ctl:param name="postURL"/>
+			<ctl:param name="describeSensorVersion"/>
+			<ctl:param name="outputFormat" />
+			<ctl:param name="schemaFile"/>
 			<ctl:assertion>The unique identifier in the response document matches the procedure specified in the request.</ctl:assertion>
 			<ctl:comment>Check that the unique identifier in the response document matches the Procedure specified in the request.  Pass if assertion holds; fail otherwise.</ctl:comment>
 			<ctl:link title="Verify that the unique identifier URN for the sensor in the returned document matches the Procedure in the request">ATS_URL#SOS.DescribeSensor-ResponseMatchingProcedure</ctl:link>
 			<ctl:code>				
-				<!--xsl:variable name="responseId" select="string($response//sml:System/@gml:id | $response//sml:Sensor/@gml:id | $response//sml:System/@id | $response//sml:Sensor/@id | $response//tml:system/@uid  | $response//tml:transducer/@uid)"/-->
-				<!--<xsl:variable name="responseId" select="string($response//sml:System/@gml:id | $response//sml:Sensor/@gml:id | $response//sml:System/@id | $response//sml:Sensor/@id)"/>-->
-				<xsl:variable name="responseId" select="string($response//sml10:identification//sml10:Term[@definition='urn:ogc:def:identifierType:OGC:uniqueID']/sml10:value 
-															  |$response//sml101:identification//sml101:Term[@definition='urn:ogc:def:identifierType:OGC:uniqueID']/sml101:value)"/> 
-				<ctl:message select="concat('Requested procedure: ',$procedure)"/>	
-				<ctl:message select="concat('Identifier URN from response: ',$responseId)"/>																		 
-				<xsl:choose>
-					<xsl:when test="$responseId = $procedure">
-						<ctl:message>OK</ctl:message>
-					</xsl:when>
-					<xsl:otherwise>
-						<ctl:message select="'Procedure and id do not match.'"/>
-						<ctl:fail/>
-					</xsl:otherwise>
-				</xsl:choose>
+
+				<xsl:for-each select="distinct-values($capabilitiesDocument//sos:ObservationOffering//sos:procedure/@xlink:href)">			
+					<xsl:variable name="procedure" select="."/>
+					<ctl:message select="concat('Procedure: &quot;',$procedure, '&quot;')"/>
+					<xsl:variable name="response">
+						<xsl:copy-of select="sosFunctions:describeSensor
+											($postURL, 
+											$describeSensorVersion, 
+											$procedure,
+											$outputFormat, 
+											$schemaFile)"/>
+					</xsl:variable>					
+
+										
+					<xsl:choose>
+						<!-- check for valid schema or missing response-->
+						<xsl:when test="not($response/*)">
+							<ctl:message select="'Failure'"/>
+							<ctl:message select="concat('The DescribeSensor response for ', $procedure, ' was invalid according to the  ', $outputFormat, ' schema.')"/>						
+							<ctl:message select="concat('Schema file: &quot;', $schemaFile)"/>
+							<ctl:fail/>
+						</xsl:when>
+						<!-- looks good -->
+						<xsl:otherwise>
+							<xsl:variable name="responseId" select="string($response//sml10:identification//sml10:Term[@definition='urn:ogc:def:identifierType:OGC:uniqueID']/sml10:value 
+																		  |$response//sml101:identification//sml101:Term[@definition='urn:ogc:def:identifierType:OGC:uniqueID']/sml101:value)"/> 
+							<ctl:message select="concat('Identifier URN from response: ',$responseId)"/>																		  
+							<xsl:choose>
+								<xsl:when test="$responseId = $procedure">
+									<ctl:message>OK</ctl:message>
+								</xsl:when>
+								<xsl:otherwise>
+									<ctl:message select="'Procedure and id do not match.'"/>
+									<ctl:fail/>
+								</xsl:otherwise>
+							</xsl:choose>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:for-each>				
 			</ctl:code>
 		</ctl:test>
+		
 </ctl:package>

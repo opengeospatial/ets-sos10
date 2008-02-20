@@ -415,8 +415,8 @@
 				
 	<ctl:test name="getCapabilities:core-SOS.GetCapabilities-ResponseContentsValidResultModel.1">
 		<ctl:param name="capabilitiesDocument"/>
-		<ctl:assertion> If an ObservationOffering provides the resultModel element, then the resultModel element contains a value that is qualified name of a member of the om:AbstractObservation substitution group.</ctl:assertion>
-		<ctl:comment>Check If an ObservationOffering provides the resultModel element, then the resultModel element contains a value that is qualified name of a member of the om:AbstractObservation substitution group.  Pass if assertions hold; fail otherwise.</ctl:comment>
+		<ctl:assertion> If an ObservationOffering provides the resultModel element, then the resultModel element must be in the om:Observation substitution group and is typically om:Observation or a specialized extension.  Value must be namespace-qualified.</ctl:assertion>
+		<ctl:comment>Check If an ObservationOffering provides the resultModel element, then the resultModel element must be in the om:Observation substitution group and is typically om:Observation or a specialized extension.  Value must be namespace-qualified. Pass if assertions hold; fail otherwise.</ctl:comment>
 		<ctl:link title="Verify that the resultModel values provided for each ObservationOffering are valid.">ATS_URL#SOS.GetCapabilities-ResponseContentsValidResultModel</ctl:link>
 		<ctl:code>
 
