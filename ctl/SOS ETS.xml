@@ -23,7 +23,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 >
 	
-	<ctl:suite name="sos:suite">		<!--NOTE: Don't forget to update the TARGET_NAMESPACE_URI and ../ATS/SOS 1.0 ATS.html placeholder values-->
+	<ctl:suite name="sos:suite">		<!--NOTE: Don't forget to update the TARGET_NAMESPACE_URI and docs/sos/1.0/SOS 1.0 ATS.html placeholder values-->
 		<ctl:title>SOS 1.0 Compliance Test Suite</ctl:title>
 		<ctl:description>Verifies that an SOS 1.0 implementation complies with a given conformance class.</ctl:description>
         <ctl:link>docs/sos/1.0/</ctl:link>		
@@ -118,7 +118,7 @@
 		<ctl:param name="sosVersion"/>
 		<ctl:assertion>All assertions for "ows" conformance are satisfied.</ctl:assertion>
 		<ctl:comment>Test driver for the ows module.</ctl:comment>
-		<ctl:link title="1. OWS">../ATS/SOS 1.0 ATS.html#ows</ctl:link>
+		<ctl:link title="1. OWS">docs/sos/1.0/SOS 1.0 ATS.html#ows</ctl:link>
 		<ctl:code>
 			<ctl:message>***************************</ctl:message>
 			<ctl:message>Running OWS Common Tests...</ctl:message>
@@ -144,7 +144,7 @@
 	  <ctl:param name="exceptionReportSchema" />
       <ctl:assertion>All assertions for "general" conformance are satisfied.</ctl:assertion>
       <ctl:comment>Test driver for the general module.</ctl:comment>
-      <ctl:link title="2. General">../ATS/SOS 1.0 ATS.html#general</ctl:link>
+      <ctl:link title="2. General">docs/sos/1.0/SOS 1.0 ATS.html#general</ctl:link>
       <ctl:code>
 	    <ctl:message></ctl:message>
         <ctl:message>****************************</ctl:message>
@@ -165,7 +165,7 @@
 	  <ctl:param name="exceptionReportSchema" />
       <ctl:assertion>Sending a request that is non-conformant to a schema associated with an SOS operation causes the server to return a valid error report message with an exceptionCode value of InvalidRequest.</ctl:assertion>
       <ctl:comment>Send several test documents that are invalid according to the schemas associated with some of the SOS operations (i.e. the mandatory operations). Pass if the service returns a valid exception message with an exceptionCode value of InvalidRequest; fail otherwise.</ctl:comment>
-      <ctl:link title="Verify that an invalid request produces an appropriate response from the server.">../ATS/SOS 1.0 ATS.html#SOS.General-InvalidRequest</ctl:link>
+      <ctl:link title="Verify that an invalid request produces an appropriate response from the server.">docs/sos/1.0/SOS 1.0 ATS.html#SOS.General-InvalidRequest</ctl:link>
       <ctl:code>
         <!--
                     1.)  Issue several invalid request documents to the service.
@@ -217,7 +217,7 @@
       <ctl:param name="responseDocument" />
       <ctl:assertion>A response is a valid response for the SOS.  This general assertion should be tested by all other tests.</ctl:assertion>
       <ctl:comment>Tested through other tests.</ctl:comment>
-      <ctl:link title="Verify that a response entity is schema-valid">../ATS/SOS 1.0 ATS.html#SOS.General-ValidResponse</ctl:link>
+      <ctl:link title="Verify that a response entity is schema-valid">docs/sos/1.0/SOS 1.0 ATS.html#SOS.General-ValidResponse</ctl:link>
       <ctl:code>
         <ctl:message>This general assertion is tested by all other tests, so there is nothing specific to test now.</ctl:message>
       </ctl:code>
@@ -236,14 +236,11 @@
 	
 			<ctl:assertion>All assertions for "core" conformance are satisfied.</ctl:assertion>
 			<ctl:comment>Test driver for the core module.</ctl:comment>
-			<ctl:link title="3. Core">../ATS/SOS 1.0 ATS.html#core</ctl:link>
+			<ctl:link title="3. Core">docs/sos/1.0/SOS 1.0 ATS.html#core</ctl:link>
 			<ctl:code>		
 				<ctl:message></ctl:message>
 				<ctl:message select="'********************************************************'"/>
 				<ctl:message select="''"/>
-	
-
-
 
 				<ctl:message select="'********************************************************'"/>
 				<ctl:message select="''"/>				
@@ -284,7 +281,11 @@
 						<ctl:message select="'********************************************************'"/>
 						<ctl:message select="''"/>					
 						<ctl:message>Capabilities response is valid, continuing...</ctl:message>
+						<ctl:message select="''"/>	
 
+		 				<ctl:message></ctl:message>
+						<ctl:message select="'********************************************************'"/>
+						<ctl:message select="''"/>						
 						<ctl:call-test name="getCapabilities:core-SOS.GetCapabilities-KVPRequestParameterHandling.1">
 							<ctl:with-param name="serviceURL" select="$serviceURL"/>
 							<ctl:with-param name="exceptionReportSchema" select="$exceptionReportSchema"/>
@@ -371,10 +372,15 @@
 						<ctl:message select="'This url was obtained from the GetCapabilities response'"/>
 						<ctl:message select="''"/>												
 						
-						<xsl:choose>	
+						<xsl:choose>															
+							<xsl:when test="not($describeSensorPostURL)">
+								<ctl:message>Failure</ctl:message>
+								<ctl:message select="'This service does not implement the &quot;POST&quot; for the DescribeSensor operation.'"/>
+								<ctl:message select="'The POST method must be implemented.'"/>
+								<ctl:fail/>
+							</xsl:when>
 							<!-- don't do anymore describeSensor tests if advertised describe sensor outputFormat is not valid -->
-							<xsl:when test="sosFunctions:isValidMIMETypeFormat($describeSensorOutputFormat) = 'false'">
-								<ctl:message></ctl:message>
+							<xsl:when test="sosFunctions:isValidMIMETypeFormat($describeSensorOutputFormat) = 'false'">								
 								<ctl:message>Failure</ctl:message>
 								<ctl:message select="concat('The outputFormat advertised for the DescribeSensor operation is invalid: ', $describeSensorOutputFormat)"/>
 								<ctl:message select="'The encoding, subtype and version must all be specified.'"/>
@@ -444,6 +450,14 @@
 						<ctl:message select="''"/>
 		
 						<xsl:choose>
+							
+							<xsl:when test="not($getObservationPostURL)">
+								<ctl:message>Failure</ctl:message>
+								<ctl:message select="'This service does not implement the &quot;POST&quot; for the GetObservation operation.'"/>
+								<ctl:message select="'The POST method must be implemented.'"/>
+								<ctl:fail/>
+							</xsl:when>
+							
 							<xsl:when test="count($getCapabilitiesRequest//sos:ObservationOffering//sos:responseFormat[starts-with(.,'text/xml') and sosFunctions:isValidMIMETypeFormat(.) = 'false'])>0">
 								<ctl:message select="'Failure'"/>
 								<ctl:message select="'One or more text/xml responseFormats for one or more offerings is invalid.'"/>

@@ -28,7 +28,7 @@
 		<ctl:param name="exceptionReportSchema"/>
 		<ctl:assertion>The server returns a valid error report message with an exceptionCode of MissingParameterValue when mandatory parameters are missing from the request. </ctl:assertion>
 		<ctl:comment>Check that the server returns a valid error report message with an exception code of MissingParameterValue when mandatory parameters are missing from the request.  Pass if the server returns a valid error report message with an exception code of MissingParameterValue; fail otherwise.</ctl:comment>
-		<ctl:link title="Verify that the server handles missing parameters correctly.">ATS_URL#SOS.GetCapabilities-KVPRequestParameterHandling</ctl:link>
+		<ctl:link title="Verify that the server handles missing parameters correctly.">docs/sos/1.0/SOS 1.0 ATS.html#SOS.GetCapabilities-KVPRequestParameterHandling</ctl:link>
 		<ctl:code>				
 			<xsl:variable name="thisRequest">
 				<ctl:message select="'Making GetCapabilities request with no &quot;service&quot; parameter...'"/>
@@ -84,7 +84,7 @@
 		<ctl:param name="exceptionReportSchema"/>
 		<ctl:assertion>The server returns a valid error report message with an exceptionCode of InvalidParameterValue when the service key value is not SOS. </ctl:assertion>
 		<ctl:comment>Check the server returns a valid error report message with an exception code of InvalidParameterValue when the service key value is not SOS.  Pass if the server returns a valid error report message with an exception code of InvalideParameterValue; fail otherwise.</ctl:comment>
-		<ctl:link title="Verify that the server handles invalid service key values correctly.">ATS_URL#SOS.GetCapabilities-KVPRequestServiceParameterHandling</ctl:link>
+		<ctl:link title="Verify that the server handles invalid service key values correctly.">docs/sos/1.0/SOS 1.0 ATS.html#SOS.GetCapabilities-KVPRequestServiceParameterHandling</ctl:link>
 		<ctl:code>		
 			<xsl:variable name="invalidServiceValue" select = "'XYZ'"/>
 			<ctl:message select="concat('Making GetCapabilities request with &quot;service&quot; parameter value of &quot;',
@@ -141,7 +141,7 @@
 		<ctl:param name="exceptionReportSchema"/>			
 		<ctl:assertion>The server returns a valid error report message with an exceptionCode of InvalidRequest when the request key value is not GetCapabilities.</ctl:assertion>
 		<ctl:comment>Check the server returns a valid error report message with an exceptionCode of InvalidRequest when the request key value is not GetCapabilities.  Pass if the server returns a valid error report message with an exception code of InvalideParameterValue; fail otherwise.</ctl:comment>
-		<ctl:link title="Verify that the server handles invalid request key values correctly.">ATS_URL#SOS.GetCapabilities-KVPRequestRequestParameterHandling</ctl:link>
+		<ctl:link title="Verify that the server handles invalid request key values correctly.">docs/sos/1.0/SOS 1.0 ATS.html#SOS.GetCapabilities-KVPRequestRequestParameterHandling</ctl:link>
 		<ctl:code>
 			<xsl:variable name="invalidRequestValue" select="'GetMeASandwich'"/>
 			<ctl:message select="concat('Making GetCapabilities request with &quot;request&quot; parameter value of &quot;',
@@ -199,7 +199,7 @@
 		<ctl:param name="capabilitiesDocument"/>			
 		<ctl:assertion>The OperationsMetadata section lists the mandatory operations of the SOS.</ctl:assertion>
 		<ctl:comment>Check that the OperationsMetadata section lists the mandatory operations of the SOS.  Pass if assertion holds; fail otherwise.</ctl:comment>
-		<ctl:link title="Verify that the OperationsMetadata section advertises the mandatory operations of the SOS.">ATS_URL#SOS.GetCapabilities-OperationsMetadataMandatoryOperations</ctl:link>
+		<ctl:link title="Verify that the OperationsMetadata section advertises the mandatory operations of the SOS.">docs/sos/1.0/SOS 1.0 ATS.html#SOS.GetCapabilities-OperationsMetadataMandatoryOperations</ctl:link>
 		<ctl:code>				
 			<xsl:choose>
 				<xsl:when test="not($capabilitiesDocument//ows:Operation[@name='GetCapabilities'])
@@ -237,7 +237,7 @@
 		<ctl:param name="capabilitiesDocument"/>			
 		<ctl:assertion>Any non-mandatory operations advertised in the OperationsMetadata section have valid SOS method names.</ctl:assertion>
 		<ctl:comment>Check that any non-mandatory operations advertised in the OperationsMetadata section have valid SOS method names.  Pass if assertion holds; fail otherwise.</ctl:comment>
-		<ctl:link title="Verify that any non-mandatory operations listed in the OperationsMetadata section are valid SOS operation names.  This is still up for debate and will probably not be part of the final tests.">ATS_URL#SOS.GetCapabilities-OperationsMetadaOptionalOperations</ctl:link>
+		<ctl:link title="Verify that any non-mandatory operations listed in the OperationsMetadata section are valid SOS operation names.  This is still up for debate and will probably not be part of the final tests.">docs/sos/1.0/SOS 1.0 ATS.html#SOS.GetCapabilities-OperationsMetadaOptionalOperations</ctl:link>
 		<ctl:code>								
 			
 			<xsl:message select="'Checking all operations...'"/>	
@@ -261,7 +261,7 @@
 		<ctl:param name="capabilitiesDocument"/>
 		<ctl:assertion>The values in the time element for each ObservationOffering are valid time values (ISO 8601) or are valid named times (i.e. indeterminate, now, etc.).  If a time period is specified, then the beginTime must come before the endTime or be equal to the endTime.</ctl:assertion>
 		<ctl:comment>Check that the values in the time element for each ObservationOffering are valid time values (ISO 8601) or are valid named times (i.e. indeterminate, now, etc.).  If a time period is specified, then the beginTime must come before the endTime or be equal to the endTime.  Pass if time the values in the time element are valid time values; fail otherwise.</ctl:comment>
-		<ctl:link title="Verify that the time values provided for each ObservationOffering are valid.">ATS_URL#SOS.GetCapabilities-ResponseContentsValidTime</ctl:link>
+		<ctl:link title="Verify that the time values provided for each ObservationOffering are valid.">docs/sos/1.0/SOS 1.0 ATS.html#SOS.GetCapabilities-ResponseContentsValidTime</ctl:link>
 		<ctl:code>
 			<!-- I also need to check for time instant? -->
 			<xsl:for-each select="$capabilitiesDocument//sos:ObservationOffering/@gml:id">
@@ -306,7 +306,7 @@
 		<ctl:param name="capabilitiesDocument"/>
 		<ctl:assertion>The values in the procedure element(s) for each ObservationOffering contain a value and are valid URNs.</ctl:assertion>
 		<ctl:comment>Check that the values in the procedure element(s) for each ObservationOffering contain a value and are valid URNs according to the OGC URN scheme.  Pass if values in the procedure element(s) contain a value and are valid URNs; fail otherwise.</ctl:comment>
-		<ctl:link title="Verify that the procedure values provided for each ObservationOffering are valid.">ATS_URL#SOS.GetCapabilities-ResponseContentsValidProcedure</ctl:link>
+		<ctl:link title="Verify that the procedure values provided for each ObservationOffering are valid.">docs/sos/1.0/SOS 1.0 ATS.html#SOS.GetCapabilities-ResponseContentsValidProcedure</ctl:link>
 		<ctl:code>			
 		
 			<xsl:for-each select="$capabilitiesDocument//sos:ObservationOffering//sos:procedure">				
@@ -333,7 +333,7 @@
 		<ctl:param name="capabilitiesDocument"/>
 		<ctl:assertion>The values in the observedProperty element(s) for each ObservationOffering contain a value and are valid URNs. See document OGC 05-010 for correct formatting of definition URN.</ctl:assertion>
 		<ctl:comment>Check that the values in the observedProperty element(s) for each ObservationOffering contain a value and are valid URNs according to the OGC URN scheme.  Pass if the values in the observedProperty element(s) contain a value and are valid URNs; fail otherwise.</ctl:comment>
-		<ctl:link title="Verify that the observedProperty values provided for each ObservationOffering are valid.">../ATS/SOS 1.0 ATS.html#SOS.GetCapabilities-ResponseContentsValidObservedProperty</ctl:link>
+		<ctl:link title="Verify that the observedProperty values provided for each ObservationOffering are valid.">docs/sos/1.0/SOS 1.0 ATS.html#SOS.GetCapabilities-ResponseContentsValidObservedProperty</ctl:link>
 		<ctl:code>				
 			<xsl:for-each select="$capabilitiesDocument//sos:ObservationOffering//sos:observedProperty//@xlink:href">
 				<xsl:variable name="thisURN" select="."/>
@@ -361,7 +361,7 @@
 		<ctl:param name="capabilitiesDocument"/>
 		<ctl:assertion>The values in the responseFormat element(s) for each ObservationOffering contain a value and are valid MIME types.</ctl:assertion>
 		<ctl:comment>Check that the values in the responseFormat element(s) for each ObservationOffering contain a value and are valid MIME types.  Pass if assertions hold; fail otherwise.</ctl:comment>
-		<ctl:link title="Verify that the responseFormat values provided for each ObservationOffering are valid MIME types.">ATS_URL#SOS.GetCapabilities-ResponseContentsValidResponseFormat</ctl:link>
+		<ctl:link title="Verify that the responseFormat values provided for each ObservationOffering are valid MIME types.">docs/sos/1.0/SOS 1.0 ATS.html#SOS.GetCapabilities-ResponseContentsValidResponseFormat</ctl:link>
 		<ctl:code>		
 			<!-- check all the responseFormats from offerings -->
 			<xsl:for-each select="$capabilitiesDocument//sos:ObservationOffering">
@@ -417,7 +417,7 @@
 		<ctl:param name="capabilitiesDocument"/>
 		<ctl:assertion> If an ObservationOffering provides the resultModel element, then the resultModel element must be in the om:Observation substitution group and is typically om:Observation or a specialized extension.  Value must be namespace-qualified.</ctl:assertion>
 		<ctl:comment>Check If an ObservationOffering provides the resultModel element, then the resultModel element must be in the om:Observation substitution group and is typically om:Observation or a specialized extension.  Value must be namespace-qualified. Pass if assertions hold; fail otherwise.</ctl:comment>
-		<ctl:link title="Verify that the resultModel values provided for each ObservationOffering are valid.">ATS_URL#SOS.GetCapabilities-ResponseContentsValidResultModel</ctl:link>
+		<ctl:link title="Verify that the resultModel values provided for each ObservationOffering are valid.">docs/sos/1.0/SOS 1.0 ATS.html#SOS.GetCapabilities-ResponseContentsValidResultModel</ctl:link>
 		<ctl:code>
 
 			<ctl:message select="'Checking advertised result models against members of the substitution group om:Observation.'"/>
@@ -444,7 +444,7 @@
 		<ctl:param name="capabilitiesDocument"/>
 		<ctl:assertion> If an ObservationOffering provides the responseMode element, then the responseMode element contains a value that is one of the valid responseMode values.</ctl:assertion>
 		<ctl:comment>Check if an ObservationOffering provides the responseMode element, then the responseMode element contains a value that is one of the valid responseMode values. Pass if assertions hold; fail otherwise.</ctl:comment>
-		<ctl:link title="Verify that the responseMode values provided for each ObservationOffering are valid.">ATS_URL#SOS.GetCapabilities-ResponseContentsValidResponseMode</ctl:link>
+		<ctl:link title="Verify that the responseMode values provided for each ObservationOffering are valid.">docs/sos/1.0/SOS 1.0 ATS.html#SOS.GetCapabilities-ResponseContentsValidResponseMode</ctl:link>
 		<ctl:code>
 			<xsl:for-each select="$capabilitiesDocument//sos:ObservationOffering/@gml:id">
 				<xsl:variable name="offeringId" select="."/>

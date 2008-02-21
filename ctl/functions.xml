@@ -223,7 +223,7 @@
 		<ctl:return>True/False depending on whether the input is a valid MIME type based on ows:owsCommon.xsd</ctl:return>
 		<ctl:description>Determines if a definition URN is valid</ctl:description>
 		<ctl:code>		
-			<xsl:value-of select="(matches($responseFormat,'^text/xml;\s*subtype=&quot;.+&quot;','i'))"/>						
+			<xsl:value-of select="(matches($responseFormat,'^text/xml;\s*subtype=&quot;?.+/[0-9].&quot;?','i'))"/>						
 		</ctl:code>
 	</ctl:function>
 	

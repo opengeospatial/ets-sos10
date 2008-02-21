@@ -29,7 +29,7 @@
 			<ctl:param name="offeringId"/>			
 			<ctl:assertion>An invalid srsName in the request produces a valid error message.</ctl:assertion>
 			<ctl:comment>Check that an invalid srsName in the request produces a valid error message.  Pass if an invalid srsName produces a valid error message; fail otherwise.</ctl:comment>
-			<ctl:link title="Verify that an invalid srsName in the request produces a valid error message.  This includes providing an empty srsName element or providing an srsName that is not advertised for the requested offering.">../ATS/SOS 1.0 ATS.html#SOS.GetObservation-RequestInvalidSRSName</ctl:link>
+			<ctl:link title="Verify that an invalid srsName in the request produces a valid error message.  This includes providing an empty srsName element or providing an srsName that is not advertised for the requested offering.">docs/sos/1.0/SOS 1.0 ATS.html#SOS.GetObservation-RequestInvalidSRSName</ctl:link>
 			<ctl:code>
 				<xsl:variable name="invalidSRSName" select="'urn:ogc:crs:epsg:9999'"/>
 				<ctl:message select="concat('Making GetObservation request with an &quot;srsName&quot; parameter value that is not advertised in the capabilities document: ', $invalidSRSName, '   ...')"/>									
@@ -115,7 +115,7 @@
 			<ctl:param name="observedProperty"/>
 			<ctl:assertion>An invalid offering in the request produces a valid error message. </ctl:assertion>
 			<ctl:comment>Check that an invalid offering in the request produces a valid error message.    Pass if an invalid offering in the request produces a valid error message; fail otherwise.</ctl:comment>
-			<ctl:link title="Verify that an invalid offering in the request produces a valid error message.  This includes specifying no offering or an offering value that is not advertised in the Capabilities document.">../ATS/SOS 1.0 ATS.html#SOS.GetObservation-RequestInvalidOffering</ctl:link>
+			<ctl:link title="Verify that an invalid offering in the request produces a valid error message.  This includes specifying no offering or an offering value that is not advertised in the Capabilities document.">docs/sos/1.0/SOS 1.0 ATS.html#SOS.GetObservation-RequestInvalidOffering</ctl:link>
 			<ctl:code>
 				<xsl:variable name="invalidOfferingId" select="'softliness_of_jello'"/>
 				<ctl:message select="concat('Making GetObservation request with an &quot;offeringId&quot; parameter value that is not advertised in the capabilities document: ', $invalidOfferingId, '   ...')"/>									
@@ -199,7 +199,7 @@
 			<ctl:param name="offeringId"/>				
 			<ctl:assertion>An invalid eventTime in the request produces a valid error message.</ctl:assertion>
 			<ctl:comment>Check that an invalid eventTime in the request produces a valid error message.  Pass if an invalid eventTime in the request produces a valid error message; fail otherwise.</ctl:comment>
-			<ctl:link title="Verify that an invalid eventTime in the request produces a valid error message.">../ATS/SOS 1.0 ATS.html#SOS.GetObservation-RequestInvalidEventTime</ctl:link>
+			<ctl:link title="Verify that an invalid eventTime in the request produces a valid error message.">docs/sos/1.0/SOS 1.0 ATS.html#SOS.GetObservation-RequestInvalidEventTime</ctl:link>
 			<ctl:code>
 				<xsl:variable name="beginPosition" select="sosFunctions:beginTimePosition($capabilitiesDocument, $offeringId)"/>											
 				<xsl:variable name="endPosition" select="sosFunctions:endTimePosition($capabilitiesDocument, $offeringId)"/>												
@@ -312,7 +312,7 @@
 			<ctl:param name="offeringId"/>	
 			<ctl:assertion>An invalid procedure in the request produces a valid error message.</ctl:assertion>
 			<ctl:comment>Check that an invalid procedure in the request produces a valid error message.  Pass if an invalid procedure in the request produces a valid error message; fail otherwise.</ctl:comment>
-			<ctl:link title="Verify that an invalid procedure in the request produces a valid error message.  This includes providing an empty procedure element or providing one or more procedures that are not advertised for the requested offering in the Capabilities document.">../ATS/SOS 1.0 ATS.html#SOS.GetObservation-RequestInvalidProcedure</ctl:link>
+			<ctl:link title="Verify that an invalid procedure in the request produces a valid error message.  This includes providing an empty procedure element or providing one or more procedures that are not advertised for the requested offering in the Capabilities document.">docs/sos/1.0/SOS 1.0 ATS.html#SOS.GetObservation-RequestInvalidProcedure</ctl:link>
 			<ctl:code>
 				<xsl:variable name="invalidProcedure" select="'urn:ogc:object:procedure:CITE:WeatherService:ThisIsInvalid'"/>
 				<ctl:message select="concat('Making GetObservation request with a &quot;procedure&quot; parameter value that is not advertised in the capabilities document: ', $invalidProcedure, '   ...')"/>									
@@ -399,7 +399,7 @@
 			<ctl:param name="offeringId"/>	
 			<ctl:assertion>Supplying one or more invalid observedProperty values in the request produces a valid error message.</ctl:assertion>
 			<ctl:comment>Check that supplying one or more invalid observedProperty values in the request produces a valid error message.  Pass if an invalid observedProperty value produces a valid error message; fail otherwise.</ctl:comment>
-			<ctl:link title="Verify that one or more invalid observedProperty values cause the server to return a valid error message.  This includes providing empty observedProperty elements or providing observedProperty values that do not correspond with the observedProperty values advertised in the Capabilities document for the requested offering.">../ATS/SOS 1.0 ATS.html#SOS.GetObservation-RequestInvalidObservedProperty</ctl:link>
+			<ctl:link title="Verify that one or more invalid observedProperty values cause the server to return a valid error message.  This includes providing empty observedProperty elements or providing observedProperty values that do not correspond with the observedProperty values advertised in the Capabilities document for the requested offering.">docs/sos/1.0/SOS 1.0 ATS.html#SOS.GetObservation-RequestInvalidObservedProperty</ctl:link>
 			<ctl:code>
 				<xsl:variable name="invalidObservedProperty" select="'urn:ogc:def:phenomenon:OGC:TheInvalidObservedProperty'"/>
 				<ctl:message select="concat('Making GetObservation request with an &quot;observedProperty&quot; parameter value that is not advertised in the capabilities document: ', $invalidObservedProperty, '   ...')"/>									
@@ -487,7 +487,7 @@
 			<ctl:param name="offeringId"/>					
 			<ctl:assertion>Supplying one or more invalid featureOfInterest values in the request produces a valid error message.</ctl:assertion>
 			<ctl:comment>Check that supplying one or more invalid featureOfInterest values in the request produces a valid error message.  Pass if one or more invalid featureOfInterest values in the request produces a valid error message; fail otherwise.</ctl:comment>
-			<ctl:link title="Verify that an invalid named gml feature in the featureOfInterest value of the request causes the server to produce a valid error message.  This includes providing an empty featureOfInterest element or providing a named gml feature value in the featureOfInterest that does not correspond with the featureOfInterest values advertised in the Capabilities document for the requested offering.">../ATS/SOS 1.0 ATS.html#SOS.GetObservation-RequestInvalidFeatureOfInterest</ctl:link>
+			<ctl:link title="Verify that an invalid named gml feature in the featureOfInterest value of the request causes the server to produce a valid error message.  This includes providing an empty featureOfInterest element or providing a named gml feature value in the featureOfInterest that does not correspond with the featureOfInterest values advertised in the Capabilities document for the requested offering.">docs/sos/1.0/SOS 1.0 ATS.html#SOS.GetObservation-RequestInvalidFeatureOfInterest</ctl:link>
 			<ctl:code>			
 				<xsl:variable name="invalidFeatureOfInterest" select="'urn:ogc:def:object:feature:TheInvalidFeature'"/>
 				<ctl:message select="concat('Making GetObservation request with a &quot;featureOfInterest&quot; parameter value that is not advertised in the capabilities document: ', $invalidFeatureOfInterest, '   ...')"/>									
@@ -581,7 +581,7 @@
 			<ctl:param name="offeringId"/>				
 			<ctl:assertion>Providing an invalid value in the result field produces a valid error message.</ctl:assertion>
 			<ctl:comment>Check that providing an invalid value in the result field produces a valid error message.  Pass if a valid error message is produced from providing an invalid value in the result field; fail otherwise.</ctl:comment>
-			<ctl:link title="Verify that supplying an invalid value in the result parameter produces a valid error message.  This includes providing an empty result element or providing a result element that is not advertised in the Filter_Capabilities section of the Capabilities document.">../ATS/SOS 1.0 ATS.html#SOS.GetObservation-RequestInvalidResult</ctl:link>
+			<ctl:link title="Verify that supplying an invalid value in the result parameter produces a valid error message.  This includes providing an empty result element or providing a result element that is not advertised in the Filter_Capabilities section of the Capabilities document.">docs/sos/1.0/SOS 1.0 ATS.html#SOS.GetObservation-RequestInvalidResult</ctl:link>
 			<ctl:code>					
 				<xsl:choose>
 					<xsl:when test="string($compareOperatorElement)=''">
@@ -679,7 +679,7 @@
 			<ctl:param name="offeringId"/>	
 			<ctl:assertion>Providing an invalid outputFormat value produces a valid error message.</ctl:assertion>
 			<ctl:comment>Check that providing an invalid outputFormat value produces a valid error message.  Pass if an invalid outputFormat produces a valid error message; fail otherwise.</ctl:comment>
-			<ctl:link title="Verify that providing an invalid outputFormat value in the request produces a valid error message.  This includes any outputFormat value that is not advertised by the requested offering in the Capabilities document.">../ATS/SOS 1.0 ATS.html#SOS.GetObservation-RequestInvalidResponseFormat</ctl:link>
+			<ctl:link title="Verify that providing an invalid outputFormat value in the request produces a valid error message.  This includes any outputFormat value that is not advertised by the requested offering in the Capabilities document.">docs/sos/1.0/SOS 1.0 ATS.html#SOS.GetObservation-RequestInvalidResponseFormat</ctl:link>
 			<ctl:code>
 				<xsl:variable name="invalidResponseFormat" select="'text/xml;subtype=&quot;XX&quot;'"/>
 				<ctl:message select="concat('Making GetObservation request with a &quot;responseFormat&quot; parameter value that is not advertised in the capabilities document: ', $invalidResponseFormat, '   ...')"/>									
@@ -765,7 +765,7 @@
 			<ctl:param name="offeringId"/>	
 			<ctl:assertion>Providing an invalid resultModel in the request produces a valid error message.</ctl:assertion>
 			<ctl:comment>Check that providing an invalid resultModel in the request produces a valid error message.  Pass if providing an invalid resultModel in the request produces a valid error message; fail otherwise.</ctl:comment>
-			<ctl:link title="Verify that providing an invalid resultModel value in the request produces a valid error message.  This includes any resultModel value that is not advertised by the requested offering in the Capabilities document.">../ATS/SOS 1.0 ATS.html#SOS.GetObservation-RequestInvalidResultModel</ctl:link>
+			<ctl:link title="Verify that providing an invalid resultModel value in the request produces a valid error message.  This includes any resultModel value that is not advertised by the requested offering in the Capabilities document.">docs/sos/1.0/SOS 1.0 ATS.html#SOS.GetObservation-RequestInvalidResultModel</ctl:link>
 			<ctl:code>
 				<xsl:variable name="invalidResultModel" select="'TheBogusOne'"/>
 				<ctl:message select="concat('Making GetObservation request with a &quot;resultModel&quot; parameter value that is not advertised in the capabilities document: ', $invalidResultModel, '   ...')"/>									
@@ -855,7 +855,7 @@
 			<ctl:param name="offeringId"/>	
 			<ctl:assertion>Providing an invalid responseMode in the request produces a valid error message.</ctl:assertion>
 			<ctl:comment>Check that providing an invalid responseMode in the request produces a valid error message.  Pass if providing an invalid responseMode in the request produces a valid error mesage; fail otherwise.</ctl:comment>
-			<ctl:link title="Verify that providing an invalid responseMode in the request produces a valid error message.  This includes any responseMode that is not advertised by the requested offering in the Capabilities document.">../ATS/SOS 1.0 ATS.html#SOS.GetObservation-RequestInvalidResponseMode</ctl:link>
+			<ctl:link title="Verify that providing an invalid responseMode in the request produces a valid error message.  This includes any responseMode that is not advertised by the requested offering in the Capabilities document.">docs/sos/1.0/SOS 1.0 ATS.html#SOS.GetObservation-RequestInvalidResponseMode</ctl:link>
 			<ctl:code>
 				<xsl:variable name="invalidResponseMode" select="'NotValid'"/>
 				<ctl:message select="concat('Making GetObservation request with a &quot;resultModel&quot; parameter value that is not advertised in the capabilities document: ', $invalidResponseMode, '   ...')"/>									
@@ -943,7 +943,7 @@
 			<ctl:param name="getObservationVersion"/>
 			<ctl:assertion>If an srsName value is supplied in the request, then the srs of the response data is valid according to the format specified by the requested srsName.</ctl:assertion>
 			<ctl:comment>Check if an srsName value is supplied in the request, then the srs of the response data is valid according to the format specified by the requested srsName.  Pass if assertion holds; fail otherwise.</ctl:comment>
-			<ctl:link title="Verify that the srs of the returned data is in the correct format given the requested srsName.">../ATS/SOS 1.0 ATS.html#SOS.GetObservation-ResponseMatchingSRSData</ctl:link>
+			<ctl:link title="Verify that the srs of the returned data is in the correct format given the requested srsName.">docs/sos/1.0/SOS 1.0 ATS.html#SOS.GetObservation-ResponseMatchingSRSData</ctl:link>
 			<ctl:code>					
 				<xsl:choose>
 					<xsl:when test="not($capabilitiesDocument//sos:ObservationOffering//@srsName
@@ -1044,7 +1044,7 @@
 			<ctl:param name="getObservationVersion"/>						
 			<ctl:assertion>The procedure value(s) in the response match or a subset of the procedure value(s) specified in the request.</ctl:assertion>
 			<ctl:comment>Check that the procedure value(s) in the response match or are a subset of the procedure value(s) specified in the request.  Pass if assertion holds; fail otherwise.</ctl:comment>
-			<ctl:link title="Verify that the procedure value(s) in the response match or are a subset of the procedure value(s) specified in the request.">../ATS/SOS 1.0 ATS.html#SOS.GetObservation-ResponseMatchingProcedureData</ctl:link>
+			<ctl:link title="Verify that the procedure value(s) in the response match or are a subset of the procedure value(s) specified in the request.">docs/sos/1.0/SOS 1.0 ATS.html#SOS.GetObservation-ResponseMatchingProcedureData</ctl:link>
 			<ctl:code>
 				<ctl:message select="''"/>
 				<ctl:message select="'A GetObservation request will be made for each procedure advertised in the capabilities document'"/>
@@ -1140,7 +1140,7 @@
 			<ctl:param name="getObservationVersion"/>								
 			<ctl:assertion>The observedProperty value(s) in the response match or are a subset of the observedProperty value(s) specified in the request.</ctl:assertion>
 			<ctl:comment>Check the observedProperty value(s) in the response match or are a subset of the observedProperty value(s) specified in the request.  Pass if assertion holds; fail otherwise.</ctl:comment>
-			<ctl:link title="Verify that the observedProperty value(s) in the response match or are a subset of the observedProperty value(s) specified in the request.">../ATS/SOS 1.0 ATS.html#SOS.GetObservation-ResponseMatchingObservedPropertyData</ctl:link>
+			<ctl:link title="Verify that the observedProperty value(s) in the response match or are a subset of the observedProperty value(s) specified in the request.">docs/sos/1.0/SOS 1.0 ATS.html#SOS.GetObservation-ResponseMatchingObservedPropertyData</ctl:link>
 			<ctl:code>
 				<ctl:message select="''"/>
 				<ctl:message select="'A GetObservation request will be made for each observedProperty advertised in the capabilities document'"/>
@@ -1224,7 +1224,7 @@
 			<ctl:param name="observedProperty"/>
 			<ctl:assertion>The server returns one or more observations when the advertised eventTime for the requested offering is supplied in a valid request.</ctl:assertion>
 			<ctl:comment>Check that the server returns one or more observations when the advertised eventTime for the requested offering is supplied in a valid request.  Pass if one more observations are returned when supplied a valid request; fail otherwise.</ctl:comment>
-			<ctl:link title="Verify that requesting data for the advertised eventTime for each offering returns one or more observations.">../ATS/SOS 1.0 ATS.html#SOS.GetObservation-ResponseAdvertisedEventTimeData</ctl:link>
+			<ctl:link title="Verify that requesting data for the advertised eventTime for each offering returns one or more observations.">docs/sos/1.0/SOS 1.0 ATS.html#SOS.GetObservation-ResponseAdvertisedEventTimeData</ctl:link>
 			<ctl:code>		
 
 				<xsl:choose>
@@ -1325,7 +1325,7 @@
 			<ctl:param name="observedProperty"/>
 			<ctl:assertion>The time value(s) in the response data fall within the requested eventTime.</ctl:assertion>
 			<ctl:comment>Check the time value(s) in the response data fall within the requested eventTime.  Pass if assertion holds; fail otherwise.</ctl:comment>
-			<ctl:link title="Verify that the time values in the response data fall within the requested eventTime.  If no eventTime is specified, then any data from any time period matching the other request parameters must be returned.  If the requested eventTime range falls outside of the advertised eventTime range and overlaps the advertised event time range, then the data returned should fall within the advertised eventTime range for the requested offering.">../ATS/SOS 1.0 ATS.html#SOS.GetObservation-ResponseMatchingEventTimeData</ctl:link>
+			<ctl:link title="Verify that the time values in the response data fall within the requested eventTime.  If no eventTime is specified, then any data from any time period matching the other request parameters must be returned.  If the requested eventTime range falls outside of the advertised eventTime range and overlaps the advertised event time range, then the data returned should fall within the advertised eventTime range for the requested offering.">docs/sos/1.0/SOS 1.0 ATS.html#SOS.GetObservation-ResponseMatchingEventTimeData</ctl:link>
 			<ctl:code>	
 
 				<xsl:choose>
@@ -1512,7 +1512,7 @@
 			<ctl:param name="getObservationVersion"/>
 			<ctl:assertion>The featureOfInterest value(s) in the response match or fall within the spatial extent identified in the featureOfInterest value specified in the request.</ctl:assertion>
 			<ctl:comment>Check the featureOfInterest value(s) in the response match or fall within the spatial extent identified in the featureOfInterest value specified in the request.  Pass if assertion holds; fail otherwise.</ctl:comment>
-			<ctl:link title="Verify that the featureOfInterest values in the response data match the requested featureOfInterest for a named gml feature or fall within the requested spatial extents for a spatially defined featureOfInterest">../ATS/SOS 1.0 ATS.html#SOS.GetObservation-ResponseMatchingFeatureOfInterestData</ctl:link>
+			<ctl:link title="Verify that the featureOfInterest values in the response data match the requested featureOfInterest for a named gml feature or fall within the requested spatial extents for a spatially defined featureOfInterest">docs/sos/1.0/SOS 1.0 ATS.html#SOS.GetObservation-ResponseMatchingFeatureOfInterestData</ctl:link>
 			<ctl:code>
 				<ctl:message select="''"/>
 				<ctl:message select="'A GetObservation request will be made for each featureOfInterest advertised in the capabilities document'"/>
@@ -1605,7 +1605,7 @@
 			<ctl:param name="offeringId"/>	
 			<ctl:assertion>If a valid filter value is supplied in the result parameter of the request, then the response O &amp; M data is valid for that filter.</ctl:assertion>
 			<ctl:comment>Check that if a valid filter value is supplied in the result parameter of the request, then the response O &amp; M data is valid for that filter.  Pass if response O &amp; M data is valid for the filter when supplied a valid filter; fail otherwise.</ctl:comment>
-			<ctl:link title="Verify that OM response data is valid for the filter contained in the result parameter of the request, if a result parameter is specified.">../ATS/SOS 1.0 ATS.html#SOS.GetObservation-ResponseMatchingResultData</ctl:link>
+			<ctl:link title="Verify that OM response data is valid for the filter contained in the result parameter of the request, if a result parameter is specified.">docs/sos/1.0/SOS 1.0 ATS.html#SOS.GetObservation-ResponseMatchingResultData</ctl:link>
 			<ctl:code>
 				<xsl:choose>
 					<xsl:when test="string($compareOperatorElement)=''">
@@ -1694,7 +1694,7 @@
 			<ctl:param name="getObservationVersion"/>
 			<ctl:assertion> The format of the response data matches the format supplied in the responseFormat parameter of the request.</ctl:assertion>
 			<ctl:comment>Check that the format of the response data matches the format supplied in the responseFormat parameter of the request.  Pass if assertion holds; fail otherwise.</ctl:comment>
-			<ctl:link title="Verify that the format of the response data matches the requested format supplied in the responseFormat parameter.  If the requested responseFormat is TML, then the response will be an O &amp; M document with a link to the TML stream.">../ATS/SOS 1.0 ATS.html#SOS.GetObservation-ResponseMatchingResponseFormatData</ctl:link>
+			<ctl:link title="Verify that the format of the response data matches the requested format supplied in the responseFormat parameter.  If the requested responseFormat is TML, then the response will be an O &amp; M document with a link to the TML stream.">docs/sos/1.0/SOS 1.0 ATS.html#SOS.GetObservation-ResponseMatchingResponseFormatData</ctl:link>
 			<ctl:code>				<!--Response Format is per offering-->
 				<xsl:for-each select="$capabilitiesDocument//sos:ObservationOffering/@gml:id">
 				<xsl:variable name="offeringId" select="."/>
@@ -1765,7 +1765,7 @@
 			<ctl:param name="getObservationVersion"/>
 			<ctl:assertion>The format of the response data matches the requested resultModel.</ctl:assertion>
 			<ctl:comment>Check that the format of the response data matches the requested resultModel.  Pass if assertion holds; fail otherwise.</ctl:comment>
-			<ctl:link title="Verify that the format of the response data matches the requested resultModel">../ATS/SOS 1.0 ATS.html#SOS.GetObservation-ResponseMatchingResultModel</ctl:link>
+			<ctl:link title="Verify that the format of the response data matches the requested resultModel">docs/sos/1.0/SOS 1.0 ATS.html#SOS.GetObservation-ResponseMatchingResultModel</ctl:link>
 			<ctl:code>				
 				<ctl:message select="''"/>
 				<ctl:message select="'A GetObservation request will be made for each resultModel advertised in the capabilities document'"/>
@@ -1864,7 +1864,7 @@
 			<ctl:param name="getObservationVersion"/>
 			<ctl:assertion>The format of the response data matches the requested responseMode.</ctl:assertion>
 			<ctl:comment>Check that the format of the response data matches the requested responseMode.  Pass if assertion holds; fail otherwise.</ctl:comment>
-			<ctl:link title="Verify that the format of the response data matches the requested responseMode.">../ATS/SOS 1.0 ATS.html#SOS.GetObservation-ResponseMatchingResponseMode</ctl:link>
+			<ctl:link title="Verify that the format of the response data matches the requested responseMode.">docs/sos/1.0/SOS 1.0 ATS.html#SOS.GetObservation-ResponseMatchingResponseMode</ctl:link>
 			<ctl:code>				<!-- response mode is per offering -->
 				<ctl:message select="''"/>
 				<ctl:message select="'A GetObservation request will be made for each responseMode advertised in the capabilities document'"/>
