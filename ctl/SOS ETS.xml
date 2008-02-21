@@ -245,7 +245,7 @@
 				<ctl:message select="'********************************************************'"/>
 				<ctl:message select="''"/>				
 				<ctl:message select="'A request for a valid capabilities document will now be made.'"/>
-				<ctl:message select="'The optional &quot;service&quot; parameter will be omitted.'"/>
+				<ctl:message select="'The optional &quot;version&quot; parameter will be omitted.'"/>
 				<ctl:message select="'If this response passes schema validation, further tests will be performed on the GetCapabilities response.'"/>
 				<ctl:message select="'If it fails schema validation, testing will stop.'"/>
 				<ctl:message select="'Validating...'"/>
