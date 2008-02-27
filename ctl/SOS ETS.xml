@@ -627,7 +627,6 @@
 									<ctl:with-param name="ogcSchemaRoot" select="$ogcSchemaRoot"/>						
 									<ctl:with-param name="postURL" select="$getObservationPostURL"/>
 									<ctl:with-param name="getObservationVersion" select="$getObservationVersion"/>
-									<ctl:with-param name="observedProperty" select="$observationOfferingObservedProperty"/>	
 								</ctl:call-test>
 
 								<ctl:message select="'********************************************************'"/>
@@ -637,7 +636,6 @@
 									<ctl:with-param name="ogcSchemaRoot" select="$ogcSchemaRoot"/>						
 									<ctl:with-param name="postURL" select="$getObservationPostURL"/>
 									<ctl:with-param name="getObservationVersion" select="$getObservationVersion"/>
-									<ctl:with-param name="observedProperty" select="$observationOfferingObservedProperty"/>	
 								</ctl:call-test>
 						
 								<ctl:message select="'********************************************************'"/>

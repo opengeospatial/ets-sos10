@@ -1220,8 +1220,7 @@
 			<ctl:param name="capabilitiesDocument"/>
 			<ctl:param name="ogcSchemaRoot"/>
 			<ctl:param name="postURL"/>
-			<ctl:param name="getObservationVersion"/>	
-			<ctl:param name="observedProperty"/>
+			<ctl:param name="getObservationVersion"/>				
 			<ctl:assertion>The server returns one or more observations when the advertised eventTime for the requested offering is supplied in a valid request.</ctl:assertion>
 			<ctl:comment>Check that the server returns one or more observations when the advertised eventTime for the requested offering is supplied in a valid request.  Pass if one more observations are returned when supplied a valid request; fail otherwise.</ctl:comment>
 			<ctl:link title="Verify that requesting data for the advertised eventTime for each offering returns one or more observations.">docs/sos/1.0/SOS 1.0 ATS.html#SOS.GetObservation-ResponseAdvertisedEventTimeData</ctl:link>
@@ -1238,12 +1237,15 @@
 
 						<xsl:for-each select="$capabilitiesDocument//sos:ObservationOffering/@gml:id">
 							<xsl:variable name="offeringId" select="."/>
-							<ctl:message select="concat('Offering: ', $offeringId)"/>
+							<ctl:message select="concat('Offering: ', $offeringId)"/>							
+							<xsl:variable name="observedProperty" select="sosFunctions:observationOfferingObservedProperty($capabilitiesDocument, $offeringId)"/>
+							<ctl:message select="concat('Observed Property: ', $observedProperty)"/>
 							<xsl:variable name="beginPosition" select="sosFunctions:beginTimePosition($capabilitiesDocument, $offeringId)"/>
 							<xsl:variable name="endPosition" select="sosFunctions:endTimePosition($capabilitiesDocument, $offeringId)"/>							
 							<ctl:message select="concat('Begin time: ', $beginPosition)"/>
 							<ctl:message select="concat('End time: ', $endPosition)"/>
-								
+							
+							
 							<xsl:for-each select="$capabilitiesDocument//sos:ObservationOffering[@gml:id=$offeringId]//sos:responseFormat[starts-with(.,'text/xml')]">
 								<xsl:variable name="responseFormat" select="."/>	
 								<ctl:message select="concat('ResponseFormat: ', $responseFormat)"/>									
@@ -1335,7 +1337,6 @@
 			<ctl:param name="ogcSchemaRoot"/>
 			<ctl:param name="postURL"/>
 			<ctl:param name="getObservationVersion"/>	
-			<ctl:param name="observedProperty"/>
 			<ctl:assertion>The time value(s) in the response data fall within the requested eventTime.</ctl:assertion>
 			<ctl:comment>Check the time value(s) in the response data fall within the requested eventTime.  Pass if assertion holds; fail otherwise.</ctl:comment>
 			<ctl:link title="Verify that the time values in the response data fall within the requested eventTime.  If no eventTime is specified, then any data from any time period matching the other request parameters must be returned.  If the requested eventTime range falls outside of the advertised eventTime range and overlaps the advertised event time range, then the data returned should fall within the advertised eventTime range for the requested offering.">docs/sos/1.0/SOS 1.0 ATS.html#SOS.GetObservation-ResponseMatchingEventTimeData</ctl:link>
@@ -1354,6 +1355,8 @@
 						<xsl:for-each select="$capabilitiesDocument//sos:ObservationOffering/@gml:id">
 						<xsl:variable name="offeringId" select="."/>
 							<ctl:message select="concat('Offering: ', $offeringId)"/>
+							<xsl:variable name="observedProperty" select="sosFunctions:observationOfferingObservedProperty($capabilitiesDocument, $offeringId)"/>
+							<ctl:message select="concat('Observed Property: ', $observedProperty)"/>							
 							<xsl:choose>
 								<xsl:when test="sosFunctions:beginTimePosition($capabilitiesDocument, $offeringId) = ''
 											 or sosFunctions:endTimePosition($capabilitiesDocument, $offeringId) = ''">	
