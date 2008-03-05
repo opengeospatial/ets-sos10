@@ -428,7 +428,6 @@
 									<ctl:with-param name="outputFormat" select="$describeSensorOutputFormat"/>
 									<ctl:with-param name="schemaFile" select="$describeSensorSchemaFile"/>	
 								</ctl:call-test>
-
 								
 							</xsl:otherwise>
 						</xsl:choose>
@@ -448,7 +447,7 @@
 						<ctl:message select="concat('All GetObservation tests will use the &quot;Post&quot; method at the following url: ', $getObservationPostURL)"/>
 						<ctl:message select="'This url was obtained from the GetCapabilities response'"/>
 						<ctl:message select="''"/>
-		
+	
 						<xsl:choose>
 							
 							<xsl:when test="not($getObservationPostURL)">
@@ -466,8 +465,16 @@
 								<ctl:message select="'See reults of test &quot;GetCapabilities-ResponseContentsValidResponseFormat&quot; for details'"/>
 								<ctl:fail/>
 							</xsl:when>
+							
+							<xsl:when test="not($offeringId)">
+								<ctl:message>Failure</ctl:message>
+								<ctl:message select="'There are no offerings with valid begin and end times.'"/>
+								<ctl:message select="'At least one offering must have observations.'"/>
+								<ctl:fail/>
+							</xsl:when>
+							
 							<xsl:otherwise>											
-								
+
 								<ctl:message select="'********************************************************'"/>
 								<ctl:message select="''"/>									
 								<ctl:call-test name="getObservation:core-SOS.GetObservation-RequestInvalidSRSName.1">

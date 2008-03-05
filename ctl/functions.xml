@@ -329,9 +329,10 @@
 	
 	 <ctl:function name="sosFunctions:capabilitiesFirstOfferingId">
 		<ctl:param name="capabilitiesDocument">The capabilities document</ctl:param>        
-        <ctl:return>The id of the first offering in the capbilities document</ctl:return>        
+        <ctl:return>The id of the first offering in the capbilities document that has valid begin and end times.</ctl:return>        
         <ctl:code>
-			<xsl:value-of select="$capabilitiesDocument//sos:ObservationOffering/@gml:id[1]"/>
+			<xsl:value-of select="($capabilitiesDocument//sos:ObservationOffering/@gml:id[not(sosFunctions:beginTimePosition($capabilitiesDocument, .) = '' 
+									or sosFunctions:endTimePosition($capabilitiesDocument, .) = '')])[1]"/>
         </ctl:code>
     </ctl:function>
 	
@@ -490,10 +491,11 @@
 		</ctl:code>
 	</ctl:function>
 	
+	<!-- this may not actually be the number of observations, but I am more interested in whether there are any at all as apposed to the exact number -->
 	<ctl:function name="sosFunctions:numberOfObservations">
         <ctl:param name="getObservationResponse">The GetObservationResponse</ctl:param>		
 		<ctl:code>					
-			<xsl:value-of select="count($getObservationResponse//om:ObservationCollection//om:member)"/>
+			<xsl:value-of select="count($getObservationResponse//om:ObservationCollection//om:member//om:observedProperty)"/>
 		</ctl:code>
 	</ctl:function>
 	
