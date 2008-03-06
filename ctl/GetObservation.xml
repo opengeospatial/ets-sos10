@@ -1263,7 +1263,7 @@
 								<ctl:message select="concat('ResponseFormat: ', $responseFormat)"/>									
 								<xsl:choose>
 									<xsl:when test="$beginPosition = '' or $endPosition=''">
-										<ctl:message select="'One of these time values is indeterminate.'"/>
+										<ctl:message select="'Offering does not have a specific time range..'"/>
 										<ctl:message select="concat('Skipping the offering &quot;', $offeringId, '&quot;')"/>
 									</xsl:when>
 									<xsl:otherwise>
@@ -1325,16 +1325,17 @@
 												<ctl:fail/>
 											</xsl:when>									
 											<xsl:when test="xsd:integer(sosFunctions:numberOfObservations($getObservation)) = 0">
+												<ctl:message select="'Failure.'"/>
 												<ctl:message select="'Response does not contain any observations for the advertised time period.'"/>
 												<ctl:fail/>
 											</xsl:when>															
 											<xsl:otherwise>
 												<xsl:message select="'OK'"/>
 											</xsl:otherwise>
-										</xsl:choose>							
-							
+										</xsl:choose>														
 									</xsl:otherwise>
 								</xsl:choose>
+								<ctl:message></ctl:message>
 							</xsl:for-each>
 						</xsl:for-each>
 				

@@ -470,6 +470,7 @@
 								<ctl:message>Failure</ctl:message>
 								<ctl:message select="'There are no offerings with valid begin and end times.'"/>
 								<ctl:message select="'At least one offering must have observations.'"/>
+								<ctl:message select="'The SOS must have observations in order to be tested.'"/>
 								<ctl:fail/>
 							</xsl:when>
 							
