@@ -31,7 +31,7 @@
 			<ctl:comment>Check that an invalid srsName in the request produces a valid error message.  Pass if an invalid srsName produces a valid error message; fail otherwise.</ctl:comment>
 			<ctl:link title="Verify that an invalid srsName in the request produces a valid error message.  This includes providing an empty srsName element or providing an srsName that is not advertised for the requested offering.">docs/sos/1.0/SOS 1.0 ATS.html#SOS.GetObservation-RequestInvalidSRSName</ctl:link>
 			<ctl:code>
-				<xsl:variable name="invalidSRSName" select="'urn:ogc:crs:epsg:9999'"/>
+				<xsl:variable name="invalidSRSName" select="'urn:ogc:def:crs:EPSG:9999'"/>
 				<ctl:message select="concat('Making GetObservation request with an &quot;srsName&quot; parameter value that is not advertised in the capabilities document: ', $invalidSRSName, '   ...')"/>									
 				<xsl:variable name="getObservation">
 					<ctl:request>
