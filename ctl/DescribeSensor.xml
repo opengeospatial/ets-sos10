@@ -370,8 +370,12 @@
 						</xsl:when>
 						<!-- looks good -->
 						<xsl:otherwise>
+						<!--
 							<xsl:variable name="responseId" select="string($response//sml10:identification//sml10:Term[@definition='urn:ogc:def:identifierType:OGC:uniqueID']/sml10:value 
 																		  |$response//sml101:identification//sml101:Term[@definition='urn:ogc:def:identifierType:OGC:uniqueID']/sml101:value)"/> 
+						-->
+							<xsl:variable name="responseId" select="string($response//sml10:identification//sml10:Term[ends-with(lower-case(@definition),':uniqueid')]/sml10:value 
+																		  |$response//sml101:identification//sml101:Term[ends-with(lower-case(@definition),':uniqueid')]/sml101:value)"/> 
 							<ctl:message select="concat('Identifier URN from response: ',$responseId)"/>																		  
 							<xsl:choose>
 								<xsl:when test="$responseId = $procedure">

@@ -201,104 +201,72 @@
 			<ctl:comment>Check that an invalid eventTime in the request produces a valid error message.  Pass if an invalid eventTime in the request produces a valid error message; fail otherwise.</ctl:comment>
 			<ctl:link title="Verify that an invalid eventTime in the request produces a valid error message.">docs/sos/1.0/SOS 1.0 ATS.html#SOS.GetObservation-RequestInvalidEventTime</ctl:link>
 			<ctl:code>
-				<xsl:variable name="beginPosition" select="sosFunctions:beginTimePosition($capabilitiesDocument, $offeringId)"/>											
-				<xsl:variable name="endPosition" select="sosFunctions:endTimePosition($capabilitiesDocument, $offeringId)"/>												
-				<xsl:variable name="invalidDate" select="'scooby'"/>
-				<ctl:message select="' '"/>
-				<ctl:message select="concat('Making a GetObservation request with improperly formatted begin date of: &quot;', $invalidDate, '&quot;')"/>				
-				<xsl:variable name="getObservationBadDateFormat">
-					<xsl:copy-of select="sosFunctions:getObservationByTimePeriod
-										($postURL, 
-										$getObservationVersion, 
-										$offeringId, 
-										$invalidDate, 
-										$endPosition, 
-										$observedProperty, 
-										$responseFormat,
-										$exceptionReportSchema)"/>
-				</xsl:variable>						
-				<xsl:choose>
-					<xsl:when test="not($getObservationBadDateFormat/*)">							
-						<ctl:message>Exception report failed schema validation, or no exception was produced.</ctl:message>
-						<ctl:message select="concat('Schema file: ', $exceptionReportSchema)"/>
-						<ctl:fail/>
-					</xsl:when>
-					<!-- check for correct exception code -->					
-					<xsl:when test="not($getObservationBadDateFormat/ows:ExceptionReport/ows:Exception/@exceptionCode = 'InvalidParameterValue')">						
-						<ctl:message>Invalid exception code.</ctl:message>
-						<ctl:message>
-							<xsl:value-of select="concat('Exception code is: ', $getObservationBadDateFormat/ows:ExceptionReport/ows:Exception/@exceptionCode)"/>
-						</ctl:message>
-						<ctl:message>Exception code should be: 'InvalidParameterValue'.</ctl:message>
-						<ctl:fail/>
-					</xsl:when>
-					<xsl:when test="not(contains(lower-case(sosFunctions:exceptionCodeLocator($getObservationBadDateFormat)), 'eventtime'))">
-						<ctl:message>Invalid locator.</ctl:message>
-						<ctl:message>
-							<xsl:value-of select="concat('Locator is: ', sosFunctions:exceptionCodeLocator($getObservationBadDateFormat))"/>
-						</ctl:message>
-						<ctl:message>Locator value should be: 'eventTime'.</ctl:message>
-						<ctl:fail/>
-					</xsl:when>						
-					<!-- looks good -->
-					<xsl:otherwise>
-						<ctl:message>OK</ctl:message>
-					</xsl:otherwise>
-				</xsl:choose>					
-		
-<!--
-
-				<xsl:variable name="beginPosition" select="sosFunctions:beginTimePosition($capabilitiesDocument, $offeringId)"/>											
-				<xsl:variable name="endPosition" select="sosFunctions:endTimePosition($capabilitiesDocument, $offeringId)"/>
+				<xsl:choose>						
+					<xsl:when test="not(sosFunctions:filterTM_During($capabilitiesDocument) or sosFunctions:filterTM_Equals($capabilitiesDocument))">
+						<ctl:message select="'Temporal operators &quot;TM_During&quot; &quot;TM_Equals&quot; are not supported by this implementation.  Test will be skipped.'"/>							
+					</xsl:when>			
 				
-				<xsl:if test="($beginPosition != '' and $endPosition != '')">
-					<xsl:variable name="invalidBeginPosition" select="xsd:dateTime(sosFunctions:dateTimeFromISO($beginPosition)) - xsd:yearMonthDuration('P1Y2M')"/>					
-					<xsl:variable name="invalidEndPosition" select="xsd:dateTime(sosFunctions:dateTimeFromISO($beginPosition)) - xsd:yearMonthDuration('P1Y0M')"/>				
-					<ctl:message select="' '"/>
-					<ctl:message select="'Making a GetObservation request with an eventTime that is before the earliest valid beginPosition'"/>				
-					<ctl:message select="concat('Begin position: ', $invalidBeginPosition)"/>
-					<ctl:message select="concat('End position: ', $invalidEndPosition)"/>
-					<xsl:variable name="getObservationBadInterval">
-						<xsl:copy-of select="sosFunctions:getObservationByTimePeriod
-											($postURL, 
-											$getObservationVersion, 
-											$offeringId, 
-											$invalidBeginPosition, 
-											$invalidEndPosition, 
-											$observedProperty, 
-											$responseFormat,
-											$exceptionReportSchema)"/>
-					</xsl:variable>		
-
-					<xsl:choose>
-						<xsl:when test="not($getObservationBadInterval/*)">							
-							<ctl:message>Exception report failed schema validation, or no exception was produced.</ctl:message>
-							<ctl:message select="concat('Schema file: ', $exceptionReportSchema)"/>
-							<ctl:fail/>
-						</xsl:when>
-						
-						<xsl:when test="not($getObservationBadInterval/ows:ExceptionReport/ows:Exception/@exceptionCode = 'InvalidParameterValue')">						
-							<ctl:message>Invalid exception code.</ctl:message>
-							<ctl:message>
-								<xsl:value-of select="concat('Exception code is: ', $getObservationBadInterval/ows:ExceptionReport/ows:Exception/@exceptionCode)"/>
-							</ctl:message>
-							<ctl:message>Exception code should be: 'InvalidParameterValue'.</ctl:message>
-							<ctl:fail/>
-						</xsl:when>
-						<xsl:when test="not(contains(lower-case(sosFunctions:exceptionCodeLocator($getObservationBadInterval)), 'eventtime'))">
-							<ctl:message>Invalid locator.</ctl:message>
-							<ctl:message>
-								<xsl:value-of select="concat('Locator is: ', sosFunctions:exceptionCodeLocator($getObservationBadInterval))"/>
-							</ctl:message>
-							<ctl:message>Locator value should be: 'eventTime'.</ctl:message>
-							<ctl:fail/>
-						</xsl:when>						
-						<xsl:otherwise>
-							<ctl:message>OK</ctl:message>
-						</xsl:otherwise>
-					</xsl:choose>
-				</xsl:if>
--->				
+					<xsl:otherwise>								
+						<xsl:variable name="beginPosition" select="sosFunctions:beginTimePosition($capabilitiesDocument, $offeringId)"/>											
+						<xsl:variable name="endPosition" select="sosFunctions:endTimePosition($capabilitiesDocument, $offeringId)"/>												
+						<xsl:variable name="invalidDate" select="'scooby'"/>
+						<ctl:message select="' '"/>
+						<ctl:message select="concat('Making a GetObservation request with improperly formatted begin date of: &quot;', $invalidDate, '&quot;')"/>				
+						<xsl:variable name="getObservationBadDateFormat">
+							<xsl:choose>
+								<xsl:when test="(sosFunctions:filterTM_Equals($capabilitiesDocument))">
+									<xsl:copy-of select="sosFunctions:getObservationByTimeInstant
+														($postURL, 
+														$getObservationVersion, 
+														$offeringId, 
+														$invalidDate, 
+														$observedProperty, 
+														$responseFormat,
+														$exceptionReportSchema)"/>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:copy-of select="sosFunctions:getObservationByTimePeriod
+														($postURL, 
+														$getObservationVersion, 
+														$offeringId, 
+														$invalidDate, 
+														$endPosition, 
+														$observedProperty, 
+														$responseFormat,
+														$exceptionReportSchema)"/>								
+								</xsl:otherwise>
+							</xsl:choose>
+						</xsl:variable>						
+						<xsl:choose>
+							<xsl:when test="not($getObservationBadDateFormat/*)">							
+								<ctl:message>Exception report failed schema validation, or no exception was produced.</ctl:message>
+								<ctl:message select="concat('Schema file: ', $exceptionReportSchema)"/>
+								<ctl:fail/>
+							</xsl:when>
+							<!-- check for correct exception code -->					
+							<xsl:when test="not($getObservationBadDateFormat/ows:ExceptionReport/ows:Exception/@exceptionCode = 'InvalidParameterValue')">						
+								<ctl:message>Invalid exception code.</ctl:message>
+								<ctl:message>
+									<xsl:value-of select="concat('Exception code is: ', $getObservationBadDateFormat/ows:ExceptionReport/ows:Exception/@exceptionCode)"/>
+								</ctl:message>
+								<ctl:message>Exception code should be: 'InvalidParameterValue'.</ctl:message>
+								<ctl:fail/>
+							</xsl:when>
+							<xsl:when test="not(contains(lower-case(sosFunctions:exceptionCodeLocator($getObservationBadDateFormat)), 'eventtime'))">
+								<ctl:message>Invalid locator.</ctl:message>
+								<ctl:message>
+									<xsl:value-of select="concat('Locator is: ', sosFunctions:exceptionCodeLocator($getObservationBadDateFormat))"/>
+								</ctl:message>
+								<ctl:message>Locator value should be: 'eventTime'.</ctl:message>
+								<ctl:fail/>
+							</xsl:when>						
+							<!-- looks good -->
+							<xsl:otherwise>
+								<ctl:message>OK</ctl:message>
+							</xsl:otherwise>
+						</xsl:choose>					
+					</xsl:otherwise>
+				</xsl:choose>
 			</ctl:code>
 		</ctl:test>
 		
