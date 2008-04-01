@@ -1368,13 +1368,13 @@
 									<!--divide offering time range into thirds and query each third -->								
 									<xsl:variable name="beginPosition" select="xsd:dateTime(sosFunctions:dateTimeFromISO(sosFunctions:beginTimePosition($capabilitiesDocument, $offeringId)))"/>
 									<xsl:variable name="endPosition" select="xsd:dateTime(sosFunctions:dateTimeFromISO(sosFunctions:endTimePosition($capabilitiesDocument, $offeringId)))"/>																	
-									<xsl:variable name="thirdOfSeconds" select="sosFunctions:total-seconds-from-duration($endPosition - $beginPosition) div 3"/>
+									<xsl:variable name="thirdOfSeconds" select="format-number(sosFunctions:total-seconds-from-duration($endPosition - $beginPosition) div 3, '#')"/>
 									<xsl:variable name="firstThirdPosition" select="$beginPosition + xsd:dayTimeDuration(sosFunctions:dayTimeDurationFromSeconds($thirdOfSeconds))"/>															
-									<xsl:variable name="secondThirdPosition" select="$endPosition + xsd:dayTimeDuration(sosFunctions:dayTimeDurationFromSeconds($thirdOfSeconds))"/>
+									<xsl:variable name="secondThirdPosition" select="$firstThirdPosition + xsd:dayTimeDuration(sosFunctions:dayTimeDurationFromSeconds($thirdOfSeconds))"/>
 									<!-- start a month before and a month after range, to ensure that service handles times ranges that overlap the boundaries-->
 									<xsl:variable name="firstStartPosition" select="$beginPosition - xsd:yearMonthDuration('P0Y1M')"/>									
 									<xsl:variable name="lastEndPosition" select="$endPosition + xsd:yearMonthDuration('P0Y1M')"/>									
-								
+									<!--<ctl:message select="concat($thirdOfSeconds, ' seconds')"/>-->
 									<xsl:for-each select="$capabilitiesDocument//sos:ObservationOffering[@gml:id=$offeringId]//sos:responseFormat[starts-with(.,'text/xml')]">
 										<xsl:variable name="responseFormat" select="."/>	
 										<ctl:message select="concat('ResponseFormat: ', $responseFormat)"/>
@@ -1642,7 +1642,8 @@
 						<ctl:message>No appropriate operator (EqualTo) for this test could be found.  Test will not be run.</ctl:message>
 					</xsl:when>
 					<xsl:otherwise>
-						<ctl:message select="'Making GetObservation request with a valid &quot;result&quot; parameter'"/>			
+						<ctl:message select="'Making GetObservation request with a valid &quot;result&quot; parameter'"/>		
+						<ctl:message select="concat('Offering: &quot;', $offeringId, '&quot;')"/>						
 						<ctl:message select="concat('Using the comparison operator &quot;', $compareOperatorElement, '&quot;')"/>
 						<ctl:message select="concat('and the property &quot;', $observedProperty, '&quot;')"/>
 						
