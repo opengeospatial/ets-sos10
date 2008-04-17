@@ -213,7 +213,7 @@
         <ctl:description>Determines if a definition URN is valid. Note that the "version" part is optional</ctl:description>
         <ctl:code>
 			<xsl:variable name="urnRegexNoVersion" select="'^urn:ogc:def(:(\w|\(|\)|\+|,|-|\.|=|\$|_|!|\*|''|@|;)+)+$'"/>
-			<xsl:variable name="urnRegexWithVersion" select="'^urn:ogc:def(:(\w|\(|\)|\+|,|-|\.|=|\$|_|!|\*|''|@|;)+){2}:([0-9])+(\.([0-9]+))*:(\w|\(|\)|\+|,|-|\.|=|\$|_|!|\*|''|@|;)+$'"/>
+			<xsl:variable name="urnRegexWithVersion" select="'^urn:ogc:def(:(\w|\(|\)|\+|,|-|\.|=|\$|_|!|\*|''|@|;)+){2}:(([0-9])+(\.([0-9]+))*)*(:(\w|\(|\)|\+|,|-|\.|=|\$|_|!|\*|''|@|;)+)+$'"/>
 			<xsl:value-of select="(matches($urnString, $urnRegexNoVersion,'i') or matches($urnString, $urnRegexWithVersion,'i'))"/>							
         </ctl:code>
     </ctl:function>	
