@@ -196,7 +196,8 @@
 								or $resultModelName='ComplexObservation')"/>																					
         </ctl:code>
     </ctl:function>
-	
+
+<!--
     <ctl:function name="sosFunctions:isValidProcedureURN">
         <ctl:param name="urnString">The URN to validate</ctl:param>
         <ctl:return>True/False depending on whether or not the URN is valid</ctl:return>
@@ -205,6 +206,19 @@
 				<xsl:value-of select="(matches($urnString,'^urn:ogc(:(\w|\(|\)|\+|,|-|\.|=|\$|_|!|\*|''|@|;)+)+$', 'i'))"/>								
         </ctl:code>
     </ctl:function>	
+-->
+
+    <ctl:function name="sosFunctions:isValidURN">
+        <ctl:param name="urnString">The URN to validate</ctl:param>
+        <ctl:return>True/False depending on whether or not the URN is valid</ctl:return>
+        <ctl:description>Determines if a procedure URN is valid</ctl:description>
+        <ctl:code>
+			<xsl:variable name="urnRegexNoVersion" select="'^urn:ogc(:(\w|\(|\)|\+|,|-|\.|=|\$|_|!|\*|''|@|;)+)+$'"/>
+			<xsl:variable name="urnRegexWithVersion" select="'^urn:ogc(:(\w|\(|\)|\+|,|-|\.|=|\$|_|!|\*|''|@|;)+)+:(([0-9])+(\.([0-9]+))*)*(:(\w|\(|\)|\+|,|-|\.|=|\$|_|!|\*|''|@|;)+)+$'"/>
+			<xsl:value-of select="(matches($urnString, $urnRegexNoVersion,'i') or matches($urnString, $urnRegexWithVersion,'i'))"/>	
+        </ctl:code>
+    </ctl:function>
+	
 
 	
     <ctl:function name="sosFunctions:isValidDefinitionURN">
@@ -213,7 +227,7 @@
         <ctl:description>Determines if a definition URN is valid. Note that the "version" part is optional</ctl:description>
         <ctl:code>
 			<xsl:variable name="urnRegexNoVersion" select="'^urn:ogc:def(:(\w|\(|\)|\+|,|-|\.|=|\$|_|!|\*|''|@|;)+)+$'"/>
-			<xsl:variable name="urnRegexWithVersion" select="'^urn:ogc:def(:(\w|\(|\)|\+|,|-|\.|=|\$|_|!|\*|''|@|;)+){2}:(([0-9])+(\.([0-9]+))*)*(:(\w|\(|\)|\+|,|-|\.|=|\$|_|!|\*|''|@|;)+)+$'"/>
+			<xsl:variable name="urnRegexWithVersion" select="'^urn:ogc:def(:(\w|\(|\)|\+|,|-|\.|=|\$|_|!|\*|''|@|;)+)+:(([0-9])+(\.([0-9]+))*)*(:(\w|\(|\)|\+|,|-|\.|=|\$|_|!|\*|''|@|;)+)+$'"/>
 			<xsl:value-of select="(matches($urnString, $urnRegexNoVersion,'i') or matches($urnString, $urnRegexWithVersion,'i'))"/>							
         </ctl:code>
     </ctl:function>	

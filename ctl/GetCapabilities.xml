@@ -319,7 +319,7 @@
 					<xsl:value-of select="@xlink:href"/>
 				</xsl:variable>
 					<xsl:choose>
-					<xsl:when test="sosFunctions:isValidProcedureURN($thisURN) = 'false'">
+					<xsl:when test="sosFunctions:isValidURN($thisURN) = 'false'">
 						<ctl:message select="concat($thisURN, '  **INVALID**')"/>
 						<ctl:fail/>
 					</xsl:when>
