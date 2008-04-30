@@ -1090,9 +1090,17 @@
 											<ctl:fail/>
 										</xsl:when>
 										<xsl:when test="not($getObservation//om:procedure/@xlink:href)">
-											<ctl:message select="'Failure'"/>
-											<ctl:message select="'No procedure is identified in this response'"/>
-											<ctl:fail/>
+											<xsl:choose> <!-- MAYBE THE COLLECTION IS EMPTY -->
+												<xsl:when test="($getObservation//om:member[@xlink:href='urn:ogc:def:nil:OGC:inapplicable'])">
+													<ctl:message select="concat('No observations for procedure &quot;', $procedure, '&quot;')"/>
+													<ctl:message>OK</ctl:message>													
+												</xsl:when>
+												<xsl:otherwise>
+													<ctl:message select="'Failure'"/>
+													<ctl:message select="'No procedure is identified in this response'"/>
+													<ctl:fail/>												
+												</xsl:otherwise>
+											</xsl:choose>
 										</xsl:when>
 										<xsl:otherwise>
 										<xsl:for-each select="distinct-values($getObservation//om:procedure/@xlink:href)">
