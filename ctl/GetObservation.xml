@@ -1208,10 +1208,10 @@
 											<ctl:message select="concat('Schema file: ', sosFunctions:schemaPathFromMimeType($ogcSchemaRoot, $responseFormat))"/>
 											<ctl:fail/>
 										</xsl:when>									
-										<xsl:when test="not($getObservation//om:observedProperty//*[@xlink:href=$observedProperty])">
+										<xsl:when test="not($getObservation//om:observedProperty/descendant-or-self::*[@xlink:href=$observedProperty or gml:name=$observedProperty])">
 											<ctl:message select="concat('Response does not contain the observedProperty: ', $observedProperty)"/>
 											<ctl:fail/>
-										</xsl:when>															
+										</xsl:when>
 										<xsl:otherwise>
 											<xsl:message select="'OK'"/>
 										</xsl:otherwise>
