@@ -80,7 +80,7 @@
         </ctl:code>
     </ctl:function>
     
-	
+
     <ctl:function name="sosFunctions:dateTimeFromISO">
         <ctl:param name="dateString"></ctl:param>
 		<ctl:description>Convert a valid ISO 8601 date time to a valid XSL datetime. 
@@ -88,8 +88,9 @@
 						 dateString is assumed to at least have a year month and day
 		</ctl:description>
         <ctl:code>
-			<xsl:variable name="dateStringNoSpace" select="replace(normalize-space($dateString), ' ', 'T')"/>	
-			<xsl:variable name="newDateString" select="replace($dateString, 'Z', '')"/>			
+      <xsl:variable name="dateAsString" select="xs:string($dateString)"/>
+			<xsl:variable name="dateStringNoSpace" select="replace(normalize-space($dateAsString), ' ', 'T')"/>	
+			<xsl:variable name="newDateString" select="replace($dateAsString, 'Z', '')"/>			
 			<xsl:choose>
 				<xsl:when test="contains($newDateString, '.')"> <!-- if it passed validation and has a "." in it, it should be fine -->				
 					<xsl:value-of select="xsd:dateTime($newDateString)"/>
@@ -843,7 +844,7 @@
 	<ctl:function name="sosFunctions:dayTimeDurationFromSeconds">
 		<ctl:param name="seconds"/> 
 		<ctl:code>
-			<xsl:value-of select="xsd:dayTimeDuration('PT1S') * $seconds"/>
+			<xsl:value-of select="xsd:dayTimeDuration('PT1S') * xs:double($seconds)"/>
 		</ctl:code>
 	</ctl:function>
 	

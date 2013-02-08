@@ -2,6 +2,12 @@ SOS 1.0.0 Test Suite Release Notes
 
 Changes included in latest revision:
 
+Revision r6:
+- Updated config file for TEAM-Engine v4.
+- Fixed invalid function arguments (wrong datatype)
+- Removed nested package elements in SOS_ETS.xml
+
+
 Revision r5 2012-07-20 (rocky)
 - The default getCapabilities URL in the form test change to be "http://sensorweb.demo.52north.org/52nSOSv3.2.1/sos".
 
