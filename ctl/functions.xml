@@ -407,7 +407,7 @@
         <ctl:return>The first procedure for DescribeSensor advertised in the capabilities document</ctl:return>
         <ctl:description>Return a valid procedure for use in calling DescribeSensor</ctl:description>
         <ctl:code>
-			<xsl:value-of select="$capabilitiesDocument//sos:ObservationOffering//sos:procedure[1]/@xlink:href"/>																
+			<xsl:value-of select="$capabilitiesDocument//sos:ObservationOffering[1]//sos:procedure[1]/@xlink:href"/>																
         </ctl:code>
     </ctl:function>	
 		
