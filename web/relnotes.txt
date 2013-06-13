@@ -2,9 +2,9 @@ SOS 1.0.0 Test Suite Release Notes
 
 Changes included in latest revision:
 
-Revision r7 (YYYY-MM-DD):
+Revision r7 (2013-05-13):
 - Fixed sosFunctions:describeSensorFirstProcedure sos:ObservationOffering change to 
-  sos:ObservationOffering[1] to avoid got 2 procedure.
+  sos:ObservationOffering[1] to avoid getting 2 procedures.
 
 Revision r6:
 - Updated config file for TEAM-Engine v4.
