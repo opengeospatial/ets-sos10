@@ -73,7 +73,7 @@
 					</url>
 					<method>get</method>
 					<param name="service"><xsl:value-of select="$serviceType" /></param>
-					<!-- <param name="version"><xsl:value-of select="$serviceVersion" /></param> No version parameter for GetCapabilities in Specification fix by rocky 2012/05/10-->
+					<param name="AcceptVersions">1.0.0</param><!-- OWS 1.1.0 p19 Although optional, client software should always include this parameter, to simplify version negotiation. -->
 					<param name="request">GetCapabilities</param>
 					<parsers:XMLValidatingParser>						
                         <parsers:schemas>
@@ -271,7 +271,7 @@
 					</url>
 					<method>get</method>
 					<param name="SERVICE"><xsl:value-of select="$serviceType" /></param>
-					<!--<param name="VERSION"><xsl:value-of select="$serviceVersion" /></param> No version parameter for GetCapabilities in Specification fix by rocky 2012/05/10-->
+					<param name="AcceptVersions">1.0.0</param><!-- OWS 1.1.0 p19 Although optional, client software should always include this parameter, to simplify version negotiation. -->
 					<param name="REQUEST">GetCapabilities</param>
 					<parsers:XMLValidatingParser>
                         <parsers:schemas>
@@ -294,7 +294,7 @@
 					</url>
 					<method>get</method>
 					<param name="SeRvIcE"><xsl:value-of select="$serviceType" /></param>
-					<!--<param name="vErSiOn"><xsl:value-of select="$serviceVersion" /></param> No version parameter for GetCapabilities in Specification fix by rocky 2012/05/10-->
+					<param name="AcceptVersions">1.0.0</param><!-- OWS 1.1.0 p19 Although optional, client software should always include this parameter, to simplify version negotiation. -->
 					<param name="RequesT">GetCapabilities</param>
 					<parsers:XMLValidatingParser>
                         <parsers:schemas>
@@ -317,7 +317,7 @@
 					</url>
 					<method>get</method>
 					<param name="service"><xsl:value-of select="$serviceType" /></param>
-					<!--<param name="version"><xsl:value-of select="$serviceVersion" /></param> No version parameter for GetCapabilities in Specification fix by rocky 2012/05/10-->
+					<param name="AcceptVersions">1.0.0</param><!-- OWS 1.1.0 p19 Although optional, client software should always include this parameter, to simplify version negotiation. -->
 					<param name="request">GetCapabilities</param>
 					<parsers:XMLValidatingParser>
                         <parsers:schemas>
@@ -369,7 +369,7 @@
 					</url>
 					<method>get</method>
 					<param name="service"><xsl:value-of select="$serviceType" /></param>
-					<!--<param name="version"><xsl:value-of select="$serviceVersion" /></param> No version parameter for GetCapabilities in Specification fix by rocky 2012/05/10-->
+					<param name="AcceptVersions">1.0.0</param><!-- OWS 1.1.0 p19 Although optional, client software should always include this parameter, to simplify version negotiation. -->
 					<param name="request">GetCapabilities</param>
 					<parsers:HTTPParser/>
 				</request>
@@ -426,7 +426,7 @@
 					</url>
 					<method>get</method>
 					<param name="service"><xsl:value-of select="$serviceType" /></param>
-					<!--<param name="version"><xsl:value-of select="$serviceVersion" /></param> No version parameter for GetCapabilities in Specification fix by rocky 2012/05/10-->
+					<param name="AcceptVersions">1.0.0</param><!-- OWS 1.1.0 p19 Although optional, client software should always include this parameter, to simplify version negotiation. -->
 					<param name="request">GetCapabilities</param>
 					<parsers:XMLValidatingParser>
                         <parsers:schemas>
@@ -479,7 +479,7 @@
 					<method>get</method>
                     <param name="request">GetCapabilities</param>
 					<param name="service"><xsl:value-of select="$serviceType" /></param>
-					<!--<param name="version"><xsl:value-of select="$serviceVersion" /></param> No version parameter for GetCapabilities in Specification fix by rocky 2012/05/10-->
+					<param name="AcceptVersions">1.0.0</param><!-- OWS 1.1.0 p19 Although optional, client software should always include this parameter, to simplify version negotiation. -->
 					<parsers:XMLValidatingParser>
                         <parsers:schemas>
 							<parsers:schema type="resource">xsd/w3c/xml.xsd</parsers:schema>
@@ -528,7 +528,7 @@
 					</url>
                     <method>get</method>
 					<param name="request">GetCapabilities</param>
-					<!--<param name="version"><xsl:value-of select="$serviceVersion" /></param> No version parameter for GetCapabilities in Specification fix by rocky 2012/05/10-->
+					<param name="AcceptVersions">1.0.0</param><!-- OWS 1.1.0 p19 Although optional, client software should always include this parameter, to simplify version negotiation. -->
 					<parsers:XMLValidatingParser>
                         <parsers:schemas>
 							<parsers:schema type="resource">xsd/w3c/xml.xsd</parsers:schema>
@@ -579,6 +579,7 @@
                     <method>get</method>
 					<param name="request">GetCapabilities</param>				   
 				   	<param name="service"><xsl:value-of select="$serviceType" /></param>
+					<param name="AcceptVersions">1.0.0</param><!-- OWS 1.1.0 p19 Although optional, client software should always include this parameter, to simplify version negotiation. -->
 					<parsers:XMLValidatingParser>
                         <parsers:schemas>
 							<parsers:schema type="resource">xsd/w3c/xml.xsd</parsers:schema>
@@ -637,6 +638,7 @@
                     <method>get</method>
 					<param name="request">GetCapabilities</param>				   
 				   	<param name="service"><xsl:value-of select="$serviceType" /></param>
+					<param name="AcceptVersions">1.0.0</param><!-- OWS 1.1.0 p19 Although optional, client software should always include this parameter, to simplify version negotiation. -->
 					<parsers:XMLValidatingParser>
                         <parsers:schemas>
 							<parsers:schema type="resource">xsd/w3c/xml.xsd</parsers:schema>
@@ -696,7 +698,7 @@
                     <method>get</method>
 					<param name="request">GetCapabilities</param>				   
 				   	<param name="service"><xsl:value-of select="$serviceType" /></param>
-                    <param name="acceptversions"><xsl:value-of select="$acceptVersions" /></param>
+                    <param name="AcceptVersions"><xsl:value-of select="$acceptVersions" /></param>
 					<parsers:XMLValidatingParser>
                         <parsers:schemas>
 							<parsers:schema type="resource">xsd/w3c/xml.xsd</parsers:schema>
@@ -754,7 +756,7 @@
                     <method>get</method>
 					<param name="request">GetCapabilities</param>				   
 				   	<param name="service"><xsl:value-of select="$serviceType" /></param>
-                    <param name="acceptversions">2000-01-01</param>
+                    <param name="AcceptVersions">2000-01-01</param>
 					<parsers:XMLValidatingParser>
                         <parsers:schemas>
 							<parsers:schema type="resource">xsd/w3c/xml.xsd</parsers:schema>
@@ -809,7 +811,7 @@
 						<xsl:value-of select="$serviceURL"/>
 					</url>
 					<method>get</method>
-					<!--<param name="version"><xsl:value-of select="$serviceVersion" /></param> No version parameter for GetCapabilities in Specification fix by rocky 2012/05/10-->
+					<param name="AcceptVersions">1.0.0</param><!-- OWS 1.1.0 p19 Although optional, client software should always include this parameter, to simplify version negotiation. -->
 					<param name="request">GetCapabilities</param>
 					<parsers:XMLValidatingParser>
                         <parsers:schemas>
@@ -868,7 +870,7 @@
 					</url>
 					<method>get</method>
 					<param name="service">ASDF</param>
-					<!--<param name="version"><xsl:value-of select="$serviceVersion" /></param> No version parameter for GetCapabilities in Specification fix by rocky 2012/05/10-->
+					<param name="AcceptVersions">1.0.0</param><!-- OWS 1.1.0 p19 Although optional, client software should always include this parameter, to simplify version negotiation. -->
 					<param name="request">GetCapabilities</param>
 					<parsers:XMLValidatingParser>
                         <parsers:schemas>
@@ -931,7 +933,7 @@
 					<method>get</method>
 					<param name="service"><xsl:value-of select="$serviceType" /></param>
 					<param name="request">GetCapabilities</param>
-					<param name="acceptversions">2000-01-01</param>
+					<param name="AcceptVersions">2000-01-01</param>
 					<parsers:XMLValidatingParser>
                         <parsers:schemas>
 							<parsers:schema type="resource">xsd/w3c/xml.xsd</parsers:schema>
@@ -990,7 +992,7 @@
 					</url>
 					<method>get</method>
 					<param name="service"><xsl:value-of select="$serviceType" /></param>
-					<!--<param name="version"><xsl:value-of select="$serviceVersion" /></param> No version parameter for GetCapabilities in Specification fix by rocky 2012/05/10-->
+					<param name="AcceptVersions">1.0.0</param><!-- OWS 1.1.0 p19 Although optional, client software should always include this parameter, to simplify version negotiation. -->
 					<param name="request">GetCapabilities</param>
 					<param name="updatesequence">9999999999</param>
 					<parsers:XMLValidatingParser>
@@ -1050,6 +1052,7 @@
 						<xsl:value-of select="$invalidQueryString"/>
 					</url>
 					<method>get</method>
+					<param name="AcceptVersions">1.0.0</param><!-- OWS 1.1.0 p19 Although optional, client software should always include this parameter, to simplify version negotiation. -->
 					<parsers:XMLValidatingParser>
                         <parsers:schemas>
 							<parsers:schema type="resource">xsd/w3c/xml.xsd</parsers:schema>
@@ -1116,7 +1119,7 @@
 					</url>
 					<method>get</method>
 					<param name="service"><xsl:value-of select="$serviceType" /></param>
-					<!--<param name="version"><xsl:value-of select="$serviceVersion" /></param> No version parameter for GetCapabilities in Specification fix by rocky 2012/05/10-->
+					<param name="AcceptVersions">1.0.0</param><!-- OWS 1.1.0 p19 Although optional, client software should always include this parameter, to simplify version negotiation. -->
 					<param name="request">GetCapabilities</param>
 					<parsers:XMLValidatingParser>
                         <parsers:schemas>
@@ -1171,7 +1174,7 @@
 					</url>
 					<method>GET</method>
 					<param name="service"><xsl:value-of select="$serviceType" /></param>
-					<!--<param name="version"><xsl:value-of select="$serviceVersion" /></param> No version parameter for GetCapabilities in Specification fix by rocky 2012/05/10-->
+					<param name="AcceptVersions">1.0.0</param><!-- OWS 1.1.0 p19 Although optional, client software should always include this parameter, to simplify version negotiation. -->
 					<param name="request">GetCapabilities</param>
 					<parsers:XMLValidatingParser>
                         <parsers:schemas>
@@ -1224,6 +1227,7 @@
 					<method>get</method>
 					<param name="service"><xsl:value-of select="$serviceType" /></param>
 					<param name="request">GetCapabilities</param>
+					<param name="AcceptVersions">1.0.0</param><!-- OWS 1.1.0 p19 Although optional, client software should always include this parameter, to simplify version negotiation. -->
                     <param name="sections"></param>
 					<parsers:XMLValidatingParser>
                         <parsers:schemas>
@@ -1286,7 +1290,7 @@
 					<method>get</method>
 					<param name="service"><xsl:value-of select="$serviceType" /></param>
 					<param name="request">GetCapabilities</param>
-                    <!--<param name="version"><xsl:value-of select="$serviceVersion" /></param> No version parameter for GetCapabilities in Specification fix by rocky 2012/05/10-->
+                    <param name="AcceptVersions">1.0.0</param><!-- OWS 1.1.0 p19 Although optional, client software should always include this parameter, to simplify version negotiation. -->
                     <param name="sections">ServiceIdentification,OperationsMetadata</param>
 					<parsers:XMLValidatingParser>
                         <parsers:schemas>
@@ -1346,6 +1350,7 @@
 					<ctl:method>get</ctl:method>
 					<ctl:param name="service"><xsl:value-of select="$serviceType" /></ctl:param>
 					<ctl:param name="request">GetCapabilities</ctl:param>
+					<param name="AcceptVersions">1.0.0</param><!-- OWS 1.1.0 p19 Although optional, client software should always include this parameter, to simplify version negotiation. -->
                     <ctl:param name="acceptformats"><xsl:value-of select="$format"/></ctl:param>
 					<!--<parsers:HTTPParser />-->
 					<parsers:HTTPParser>

@@ -39,6 +39,7 @@
 					</ctl:url>
 					<ctl:method>get</ctl:method>						
 					<ctl:param name="request">GetCapabilities</ctl:param>
+					<ctl:param name="AcceptVersions">1.0.0</ctl:param><!-- OWS 1.1.0 p19 Although optional, client software should always include this parameter, to simplify version negotiation. -->
 					<!-- leaving out the "service" parameter -->		
 					<ctl:call-function name="sosFunctions:xmlValidatingParser">							
 						<ctl:with-param name="schemaFile" select="$exceptionReportSchema"/>
@@ -98,10 +99,11 @@
 					<ctl:method>get</ctl:method>						
 					<ctl:param name="request">GetCapabilities</ctl:param>
 					<ctl:param name="service"><xsl:value-of select="$invalidServiceValue"/></ctl:param>  <!-- Invalid service parameter -->					
-						<ctl:call-function name="sosFunctions:xmlValidatingParser">		
-							<ctl:with-param name="schemaFile" select="$exceptionReportSchema"/>
-						</ctl:call-function>
-					</ctl:request>							
+					<ctl:param name="AcceptVersions">1.0.0</ctl:param><!-- OWS 1.1.0 p19 Although optional, client software should always include this parameter, to simplify version negotiation. -->
+					<ctl:call-function name="sosFunctions:xmlValidatingParser">		
+						<ctl:with-param name="schemaFile" select="$exceptionReportSchema"/>
+					</ctl:call-function>
+				</ctl:request>							
 			</xsl:variable>										
 			
 			<xsl:choose>
@@ -155,7 +157,7 @@
 					<ctl:method>get</ctl:method>						
 					<ctl:param name="request"><xsl:value-of select="$invalidRequestValue"/></ctl:param> <!-- Invalid request parameter -->
 					<ctl:param name="service">SOS</ctl:param>  								
-				
+					<ctl:param name="AcceptVersions">1.0.0</ctl:param><!-- OWS 1.1.0 p19 Although optional, client software should always include this parameter, to simplify version negotiation. -->
 					<ctl:call-function name="sosFunctions:xmlValidatingParser">		
 						<ctl:with-param name="schemaFile" select="$exceptionReportSchema"/>
 					</ctl:call-function>		

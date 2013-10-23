@@ -1,7 +1,12 @@
 SOS 1.0.0 Test Suite Release Notes
 
 Changes included in latest revision:
-
+Revision r8 (2013-10-23):
+- For Alexander Birger <alexander.birger@noaa.gov> issue:Add acceptVersion parameter in all GetCapabilities request via KVP.
+  OWS 1.1.0 06-121r3 7.3.2 Version negotiation 
+  Version negotiation is performed using the optional AcceptVersions parameter in the GetCapabilities operation request. 
+  Although optional, client software should always include this parameter, to simplify version negotiation.
+  
 Revision r7 (2013-05-13):
 - Fixed sosFunctions:describeSensorFirstProcedure sos:ObservationOffering change to 
   sos:ObservationOffering[1] to avoid getting 2 procedures.
