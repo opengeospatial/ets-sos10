@@ -1,6 +1,12 @@
 SOS 1.0.0 Test Suite Release Notes
 
 Changes included in latest revision:
+Revision r9 (2013-10-23):
+- For Alexander Birger
+  function [sosFunctions:operationVersion] changed to get first POST element value.
+  function [sosFunctions:operationPostURL] changed to get first version value.
+  
+
 Revision r8 (2013-10-23):
 - For Alexander Birger <alexander.birger@noaa.gov> issue:Add acceptVersion parameter in all GetCapabilities request via KVP.
   OWS 1.1.0 06-121r3 7.3.2 Version negotiation 

@@ -387,7 +387,7 @@
         <ctl:return>Post URL of given operation</ctl:return>
         <ctl:description>Returns post URL of given operation</ctl:description>
         <ctl:code>
-			<xsl:value-of select="$capabilitiesDocument//ows:Operation[@name=$operation]/ows:DCP/ows:HTTP/ows:Post/@xlink:href"/>						         
+			<xsl:value-of select="$capabilitiesDocument//ows:Operation[@name=$operation]/ows:DCP/ows:HTTP/ows:Post[1]/@xlink:href"/>						         
         </ctl:code>
     </ctl:function>	
 
@@ -397,8 +397,8 @@
         <ctl:return>Post URL of given operation</ctl:return>
         <ctl:description>Returns post URL of given operation</ctl:description>
         <ctl:code>
-			<xsl:value-of select="$capabilitiesDocument//ows:Operation[@name=$operation]/ows:Parameter[@name='version']//ows:AllowedValues/ows:Value | 
-								  $capabilitiesDocument//ows:ServiceIdentification//ows:ServiceTypeVersion"/>																
+			<xsl:value-of select="$capabilitiesDocument//ows:Operation[@name=$operation]/ows:Parameter[@name='version']//ows:AllowedValues/ows:Value[1] | 
+								  $capabilitiesDocument//ows:ServiceIdentification//ows:ServiceTypeVersion[1]"/>																
         </ctl:code>
     </ctl:function>	
 
