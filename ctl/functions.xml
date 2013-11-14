@@ -397,8 +397,21 @@
         <ctl:return>Post URL of given operation</ctl:return>
         <ctl:description>Returns post URL of given operation</ctl:description>
         <ctl:code>
+			<xsl:choose>
+				<xsl:when test="count($capabilitiesDocument//ows:Operation[@name=$operation]/ows:Parameter[@name='version']//ows:AllowedValues/ows:Value) gt 0">
+					<xsl:value-of select="$capabilitiesDocument//ows:Operation[@name=$operation]/ows:Parameter[@name='version']//ows:AllowedValues/ows:Value[1]"/>								
+				</xsl:when>
+				<xsl:when test="count($capabilitiesDocument//sos:Capabilities/ows:OperationsMetadata/ows:Parameter[@name='version']/ows:AllowedValues/ows:Value) gt 0">
+					<xsl:value-of select="$capabilitiesDocument//sos:Capabilities/ows:OperationsMetadata/ows:Parameter[@name='version']/ows:AllowedValues/ows:Value[1]"/>								
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="$capabilitiesDocument//ows:ServiceIdentification//ows:ServiceTypeVersion[1]"/>	
+				</xsl:otherwise>
+			</xsl:choose>
+			<!-- old 
 			<xsl:value-of select="$capabilitiesDocument//ows:Operation[@name=$operation]/ows:Parameter[@name='version']//ows:AllowedValues/ows:Value[1] | 
 								  $capabilitiesDocument//ows:ServiceIdentification//ows:ServiceTypeVersion[1]"/>																
+			-->
         </ctl:code>
     </ctl:function>	
 
