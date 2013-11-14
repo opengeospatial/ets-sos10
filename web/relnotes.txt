@@ -5,7 +5,14 @@ Revision r9 (2013-10-23):
 - For Alexander Birger
   function [sosFunctions:operationVersion] changed to get first POST element value.
   function [sosFunctions:operationPostURL] changed to get first version value.
-  
+  function [sosFunctions:operationVersion] modify scripts to get version according to priority below:
+	1.Version  <ows:Parameter> in each <ows:Operation>.
+	(Xpath = $capabilitiesDocument//ows:Operation[@name=$operation]/ows:Parameter[@name='version']//ows:AllowedValues/ows:Value[1])
+	2.Version  <ows:Parameter> in <ows:OperationsMetadata>.
+	(Xpath = $capabilitiesDocument//sos:Capabilities/ows:OperationsMetadata/ows:Parameter[@name='version']/ows:AllowedValues/ows:Value[1])
+	3.<ows:ServiceTypeVersion> in <ows:ServiceIdentification>.
+	(Xpath = $capabilitiesDocument//sos:Capabilities/ows:ServiceIdentification/ows:ServiceTypeVersion[1])
+ 
 
 Revision r8 (2013-10-23):
 - For Alexander Birger <alexander.birger@noaa.gov> issue:Add acceptVersion parameter in all GetCapabilities request via KVP.
