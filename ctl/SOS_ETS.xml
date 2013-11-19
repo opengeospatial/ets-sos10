@@ -289,6 +289,8 @@
         <ctl:call-test name="sos:general-main">
           <ctl:with-param name="serviceURL" select="$sos.service.url" />
           <ctl:with-param name="exceptionReportSchema" select="$exceptionReportSchema" />
+		  <ctl:with-param name="sosSchemaRoot" select="$sos.schema.root" />
+		  <ctl:with-param name="sosVersion" select="$sos.version" />
         </ctl:call-test>			
       </xsl:if>
 
@@ -368,6 +370,8 @@
   <ctl:test name="sos:general-main">
     <ctl:param name="serviceURL" />
     <ctl:param name="exceptionReportSchema" />
+	<ctl:param name="sosSchemaRoot" />
+	<ctl:param name="sosVersion" />
     <ctl:assertion>All assertions for "general" conformance are satisfied.</ctl:assertion>
     <ctl:comment>Test driver for the general module.</ctl:comment>
     <ctl:link title="2. General">docs/sos/1.0/SOS 1.0 ATS.html#general</ctl:link>
@@ -379,6 +383,8 @@
       <ctl:call-test name="sos:general-SOS.General-InvalidRequest.1">
         <ctl:with-param name="serviceURL" select="$serviceURL" />
         <ctl:with-param name="exceptionReportSchema" select="$exceptionReportSchema" />
+		<ctl:with-param name="sosSchemaRoot" select="$sosSchemaRoot" />
+		<ctl:with-param name="sosVersion" select="$sosVersion" />
       </ctl:call-test>
       <ctl:message>**********************************************************************</ctl:message>
       <ctl:call-test name="sos:general-SOS.General-ValidResponse.1">
@@ -389,6 +395,8 @@
   <ctl:test name="sos:general-SOS.General-InvalidRequest.1">
     <ctl:param name="serviceURL" />
     <ctl:param name="exceptionReportSchema" />
+	<ctl:param name="sosSchemaRoot" />
+	<ctl:param name="sosVersion" />
     <!-- orig modified 2010-07-12 PwD
         <ctl:assertion>Sending a request that is non-conformant to a schema associated with an SOS operation 
         causes the server to return a valid error report message with an exceptionCode value of InvalidRequest.</ctl:assertion>
