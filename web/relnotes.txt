@@ -2,7 +2,7 @@ SOS 1.0.0 Test Suite Release Notes
 
 Changes included in latest revision:
 Revision r11:
-	Fixed sosFunctions:describeSensor schemaFile parameter value =  "'xsd/ogc/sensorML/1.0.1/sensorML.xsd'" (Got value from capabilities before).
+	-Issue 908:Fixed sosFunctions:describeSensor schemaFile parameter value =  "'xsd/ogc/sensorML/1.0.1/sensorML.xsd'" (Got value from capabilities before).
 
 Revision r10 (2013-11-22):
 	-Issue 894:
