@@ -22,7 +22,7 @@ Revision r9 (2013-10-23):
  
 
 Revision r8 (2013-10-23):
-	-Issue 894:
+	-Issue 877,878
 	Add acceptVersion parameter in all GetCapabilities request via KVP.
 	OWS 1.1.0 06-121r3 7.3.2 Version negotiation 
 	Version negotiation is performed using the optional AcceptVersions parameter in the GetCapabilities operation request. 
