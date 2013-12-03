@@ -963,7 +963,7 @@
 
 					<!-- was changed to be <ctl:call-function name="sosFunctions:xmlValidatingParser4DescribeSensor">  2010-12-14 PwD -->
 					<ctl:call-function name="sosFunctions:xmlValidatingParser">
-						<ctl:with-param name="schemaFile" select="$schemaFile"/>										
+						<ctl:with-param name="schemaFile" select="'xsd/ogc/sensorML/1.0.1/sensorML.xsd'"/>										
 					</ctl:call-function>									
 
 				</ctl:request>	
