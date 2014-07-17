@@ -2,6 +2,8 @@
 
 The OGC Sensor Observation Service 1.0.0 Test-Suite provides the Executable Test Script (ETS) to test implementations against the following specification(s):
 
+  * _OpenGIS Sensor Observation Service Implementation Specification_, Version 1.0 [[OGC 06-009r6]](http://portal.opengeospatial.org/files/?artifact_id=26667)
+
 Detailed information about this test suite is available [here]( http://htmlpreview.github.com/?https://github.com/opengeospatial/ets-sos10/blob/master/src/main/web/index.html).
 
 ## License

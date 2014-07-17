@@ -1,47 +1,88 @@
-# OGC Sensor Observation Service Executable Test Suite
-
-## Overview
+# Overview
 
 This test suite is based on the following OGC specifications:
 
-- OGC XYZ Specification - 2.0.1 [OGC 0000](http://portal.opengeospatial.org/files/?artifact_id=00000) 
-- ...
+  * _OpenGIS Web Services Common Specification_, Version 1.1.0 [[OGC 06-121r3]](http://portal.opengeospatial.org/files/?artifact_id=20040)
+  * _Definition Identifier URNs in OGC Namespace_, Version 1.1.0 [[OGC 06-023r1]](http://portal.opengeospatial.org/files/?artifact_id=4700) (ISO/CD 19136, OGC 03-105r1)
+  * _OpenGIS Sensor Observation Service Implementation Specification_, Version 1.0 [[OGC 06-009r6]](http://portal.opengeospatial.org/files/?artifact_id=26667)
 
 ## What is tested
 
-- GetCapabilitiesXYZ, GET method
-- ....
+  * GetCapabilities, _GET_ method_
+  * DescribeSensor, _POST_ method
+  * GetObservation, _POST_ method
 
 ## What is not tested
 
-- GetCapabilities with DFT
+  * DescribeSensor, _GET_ method
+  * GetObservation, _GET_ method
+  * GetObservation with "result" parameters/filters
+  * Optional operations: 
+    * DescribeFeatureType
+    * DescribeObservationType
+    * DescribeResultModel
+    * GetObservationById
+    * GetResult
+    * GetFeatureOfInterest
+    * GetFeatureOfInterestTime
+    * InsertObservation
+    * RegisterSensor
+  
 
+## Test Data
 
-##  Test data
+  * Not needed.
 
-the....
+## Namespaces
 
-##  Contributors
+  * ### Service being tested must use these namespaces:
 
-- Luis Bermudez
-- ...
+gml
 
-##  License
+-
+http://www.opengis.net/gml
 
-[Apache License, Version 2.0](http://opensource.org/licenses/Apache-2.0 "Apache License")
+ows
 
-## Bugs
+-
+http://www.opengis.net/ows/1.1
 
-Issue tracker is available at [github](https://github.com/opengeospatial/ets-sos10/issues)
+ogc
 
-## Mailing Lists
+-
+http://www.opengis.net/ogc
 
-The [cite-forum](http://cite.opengeospatial.org/forum) is where software developers discuss issues and solutions related to OGC tests. 
+om
 
+-
+http://www.opengis.net/om/1.0
 
-##  Release Notes
+sensorML v1.0.1
 
-### r34 (2014-04-11)
+-
+http://www.opengis.net/sensorML/1.0.1
 
-- CITE-901: amended describeRecord schemalocation check in Capabilities.sch
+sensorML v1.0
+
+-
+http://www.opengis.net/sensorML/1.0
+
+sos
+
+-
+http://www.opengis.net/sos/1.0
+
+tml
+
+-
+http://www.opengis.net/tml
+
+## Schemas
+
+All schemas used for validation in these tests can be found at:
+<http://schemas.opengis.net/>
+
+## Release Notes
+
+Release notes are available from the [relnotes.txt](relnotes.txt).
 
