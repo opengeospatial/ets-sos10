@@ -14,7 +14,7 @@
         <description>Checks service implementations for conformance to OGC 06-009r6.</description>
       </suite>
       <revision>
-        <name>r12</name>
+        <name>r13</name>
         <sources>
           <source>sos/1.0.0/ctl</source>
         </sources>
