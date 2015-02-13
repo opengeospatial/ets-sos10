@@ -40,7 +40,7 @@
             <h3 align="center">Service metadata and test options</h3>
             <p>Please provide a URL from which a capabilities document can be retrieved. </p>
             <p>Modify the URL template below to specify the location of an OGC SOS implementation under test.</p>	
-            <p>Example reference implementations can be found at http://cite.opengeospatial.org/reference
+            <p>Example reference implementations can be found at http://cite.opengeospatial.org/reference</p>
             <blockquote>
               <table border="1" padding="4" bgcolor="#00ffff" align="center">
                 <tr>

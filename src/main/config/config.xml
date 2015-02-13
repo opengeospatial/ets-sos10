@@ -14,7 +14,7 @@
         <description>Checks service implementations for conformance to OGC Sensor Observation Service (SOS) 1.0</description>
       </suite>
       <revision>
-        <name>r13</name>
+        <name>${project.version}</name>
         <sources>
           <source>sos/1.0.0/ctl</source>
         </sources>
