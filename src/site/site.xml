@@ -25,6 +25,11 @@
     <links>
       <item name="Issues" href="https://github.com/opengeospatial/ets-sos10/issues"/>
     </links>
+    <menu name="Documentation">
+      <item href="index.html" name="Overview" />
+      <item href="relnotes.html" name="Release Notes" />
+      <item href="ats.html" name="Abstract Test Suite" />
+    </menu>
 
   </body>
 </project>

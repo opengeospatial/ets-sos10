@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>ets-sos10</artifactId>
   <groupId>org.opengis.cite</groupId>
-  <version>1.0.0-r13</version>
+  <version>r13-SNAPSHOT</version>
 
 
   <name>Conformance Test Suite - OGC Sensor Observation Service</name>
@@ -69,9 +69,7 @@
     </pluginManagement>
     <plugins>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>2.4</version>
         <executions>
           <execution>
             <id>default-jar</id>
@@ -81,11 +79,9 @@
       </plugin>
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
-        <version>2.4</version>
         <configuration>
-          <appendAssemblyId>false</appendAssemblyId>
           <descriptors>
-            <descriptor>${basedir}/src/assembly/dist.xml</descriptor>
+            <descriptor>src/assembly/ctl.xml</descriptor>
           </descriptors>
         </configuration>
         <executions>
@@ -98,7 +94,6 @@
         </executions>
       </plugin>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-site-plugin</artifactId>
         <version>3.3</version>
         <executions>
@@ -106,35 +101,19 @@
             <id>site-package</id>
             <phase>prepare-package</phase>
             <goals>
-              <goal>jar</goal>
+              <goal>site</goal>
             </goals>
           </execution>
         </executions>
-        <!--
-        <dependencies>
-          <dependency>
-            <groupId>org.apache.maven.doxia</groupId>
-            <artifactId>doxia-module-markdown</artifactId>
-            <version>1.5</version>
-          </dependency>
-        </dependencies>
-        -->
         <configuration>
           <relativizeDecorationLinks>false</relativizeDecorationLinks>
-          <generateReports>false</generateReports>
         </configuration>
       </plugin>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
+        
         <artifactId>maven-surefire-plugin</artifactId>
         <version>2.17</version>
-        <configuration>
-          <includes>
-            <include>**/Verify*.java</include>
-            <include>**/*Tests.java</include>
-            <include>**/*Test.java</include>
-          </includes>
-        </configuration>
+        
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -147,65 +126,11 @@
       </plugin>
       
     </plugins>
-    <testResources>
-      <testResource>
-        <directory>${basedir}/src/test/resources</directory>
-        <filtering>true</filtering>
-        <includes>
-          <include>*.properties</include>
-        </includes>
-      </testResource>
-    </testResources>
+    
   </build>
 
-  <reporting>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-project-info-reports-plugin</artifactId>
-        <version>2.7</version>
-        <reportSets>
-          <reportSet>
-            <reports>
-            </reports>
-          </reportSet>
-        </reportSets>
-      </plugin>
-    </plugins>
-  </reporting>
+ 
 
-  <distributionManagement>
-    <site>
-      <id>website</id>
-      <url>http://myhome</url>
-    </site>
-  </distributionManagement>
-
-  <dependencies>
-    <dependency>
-      <groupId>org.opengis.cite.teamengine</groupId>
-      <artifactId>teamengine-core</artifactId>
-      <version>${teamengine.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.11</version>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
-
-  <repositories>
-    <repository>
-      <!-- Allows public read-only access -->
-      <id>opengeospatial-cite</id>
-      <name>OGC CITE Repository</name>
-      <url>https://svn.opengeospatial.org/ogc-projects/cite/maven</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </repository>
-  </repositories>
+  
 
 </project>

@@ -11,7 +11,7 @@
         <prefix>sos</prefix>
         <local-name>suite</local-name>
         <title>SOS 1.0 Conformance Test Suite</title>
-        <description>Checks service implementations for conformance to OGC 06-009r6.</description>
+        <description>Checks service implementations for conformance to OGC Sensor Observation Service (SOS) 1.0</description>
       </suite>
       <revision>
         <name>r13</name>
@@ -19,7 +19,7 @@
           <source>sos/1.0.0/ctl</source>
         </sources>
         <resources>sos/1.0.0/resources</resources>
-        <webdir>sos/1.0.0/web</webdir>
+        <webdir>sos/1.0.0/site</webdir>
       </revision>
     </version>
   </standard>

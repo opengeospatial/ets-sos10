@@ -28,6 +28,8 @@ This test suite is based on the following OGC specifications:
     * InsertObservation
     * RegisterSensor
   
+## Abstract Test Suite
+Details of the Abstract Test Suite (ATS) can be found [here](ats.html).
 
 ## Test Data
 
@@ -35,54 +37,23 @@ This test suite is based on the following OGC specifications:
 
 ## Namespaces
 
-  * ### Service being tested must use these namespaces:
+The service being tested must use these namespaces:
 
-gml
-
--
-http://www.opengis.net/gml
-
-ows
-
--
-http://www.opengis.net/ows/1.1
-
-ogc
-
--
-http://www.opengis.net/ogc
-
-om
-
--
-http://www.opengis.net/om/1.0
-
-sensorML v1.0.1
-
--
-http://www.opengis.net/sensorML/1.0.1
-
-sensorML v1.0
-
--
-http://www.opengis.net/sensorML/1.0
-
-sos
-
--
-http://www.opengis.net/sos/1.0
-
-tml
-
--
-http://www.opengis.net/tml
+  * gml: http://www.opengis.net/gml
+  * ows: http://www.opengis.net/ows/1.1
+  * ogc: http://www.opengis.net/ogc
+  * om: http://www.opengis.net/om/1.0
+  * sensorML v1.0.1: http://www.opengis.net/sensorML/1.0.1
+  * sensorML v1.0: http://www.opengis.net/sensorML/1.0
+  * sos: http://www.opengis.net/sos/1.0
+  * tml: http://www.opengis.net/tml
 
 ## Schemas
 
-All schemas used for validation in these tests can be found at:
-<http://schemas.opengis.net/>
+All schemas used for validation in these tests can be found at
+[http://schemas.opengis.net/](http://schemas.opengis.net/).
 
 ## Release Notes
 
-Release notes are available from the [relnotes.txt](relnotes.txt).
+Release notes are available [here](relnotes.html).
 
