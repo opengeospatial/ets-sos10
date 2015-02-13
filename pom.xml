@@ -145,24 +145,7 @@
           <target>1.7</target>
         </configuration>
       </plugin>
-      <plugin>
-        <artifactId>maven-remote-resources-plugin</artifactId>
-        <version>1.5</version>
-        <configuration>
-          <resourceBundles>
-            <resourceBundle>org.opengis.cite.teamengine:teamengine-resources:${teamengine.version}</resourceBundle>
-          </resourceBundles>
-          <!-- attach resources to test build only -->
-          <attachToMain>false</attachToMain>
-        </configuration>
-        <executions>
-          <execution>
-            <goals>
-              <goal>process</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
+      
     </plugins>
     <testResources>
       <testResource>
