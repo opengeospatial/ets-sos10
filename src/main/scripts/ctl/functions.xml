@@ -387,7 +387,37 @@
         <ctl:return>Post URL of given operation</ctl:return>
         <ctl:description>Returns post URL of given operation</ctl:description>
         <ctl:code>
-			<xsl:value-of select="$capabilitiesDocument//ows:Operation[@name=$operation]/ows:DCP/ows:HTTP/ows:Post[1]/@xlink:href"/>						         
+			<!-- <xsl:value-of select="$capabilitiesDocument//ows:Operation[@name=$operation]/ows:DCP/ows:HTTP/ows:Post[1]/@xlink:href"/> -->
+			<xsl:variable name="form2-values">
+				<ctl:form height="750" width="1024">
+					<body>
+						<h2>Please select URL for GetCapabilities POST:</h2>
+						<blockquote>
+							<table border="1" padding="4" bgcolor="#00ffff" align="center">
+								<!-- GetCapabilities -->
+								<tr>
+									<td colspan="2">GetCapabilities URL</td>
+								</tr>
+								<tr>
+									<td>
+										<select name="GetCapabilities_DropDown">
+											<xsl:for-each select="$capabilitiesDocument//ows:Operation[@name=$operation]/ows:DCP/ows:HTTP/ows:Post/@xlink:href">
+												<xsl:variable name="Post_GetCapabilities" select="." />
+												<option><xsl:attribute name="value"><xsl:value-of select="$Post_GetCapabilities" /></xsl:attribute><xsl:value-of select="$Post_GetCapabilities" /></option> 
+											</xsl:for-each>
+										</select>
+									</td>
+								</tr>
+							</table>						
+						</blockquote>
+						<p>Please press the "Submit" button to start testing.</p>
+						<div align="center">
+							<input type="submit" value="Submit"/>						
+						</div>
+					</body>
+				</ctl:form>
+			</xsl:variable>
+			<xsl:value-of select="$form2-values/values/value[@key='GetCapabilities_DropDown']"/>
         </ctl:code>
     </ctl:function>	
 
