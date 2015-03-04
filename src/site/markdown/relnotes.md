@@ -1,7 +1,7 @@
 # Release Notes OGC SOS 1.0.0 Test Suite
 
 ## r14 (2015-03-04)
-* When test GetCapabilities via POST, user should select an URL (from capabilities).
+* When test operations via POST, user should select an URL (from GetCapabilities response). 
 
 ## r13 (2015-02-13)
 
