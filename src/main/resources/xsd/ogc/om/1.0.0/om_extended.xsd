@@ -3,8 +3,11 @@
 	<annotation>
 		<documentation>om.xsd
 
-The Observations and Measurements schema
-This document contains only the normative elements described in the OGC standard
+The Observations and Measurements schema. 
+This document includes  the normative elements, plus 
+   * the extensions to define specialized observations with constrained result types
+   * specialized procedure types
+   * coverage-observations
 
 Observations and Measurements is an OGC Standard.
 Copyright (c) 2007,2010 Open Geospatial Consortium, Inc. All Rights Reserved.
@@ -12,15 +15,12 @@ To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .
 		</documentation>
 	</annotation>
 	<!-- ====================================================================== -->
-	<include schemaLocation="./observation.xsd"/>
-	<include schemaLocation="./om_extended.xsd"/>
 	<!--
+	<include schemaLocation="../observation.xsd"/>
+	included transitively by the following -->
+	<include schemaLocation="./observationSpecialization_constraint.xsd"/>
 	<include schemaLocation="./observationCoverage.xsd"/>
 	<include schemaLocation="./observationCoverageCompact.xsd"/>
-	<include schemaLocation="./observationSpecialization_constraint.xsd"/>
-	<include schemaLocation="./observationSpecialization_override.xsd"/>
 	<include schemaLocation="./procedureSpecialization.xsd"/>
-	<include schemaLocation="./redefineObservation.xsd"/>
-	-->
 	<!-- ====================================================================== -->
 </schema>

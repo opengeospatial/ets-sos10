@@ -3,7 +3,10 @@ SOS 1.0.0 Test Suite Release Notes
 Changes included in latest revision:
 Revision r14 (2015-03-04)
 	-When test operations via POST, user should select an URL (from GetCapabilities response). 
-
+	-Move all xsd file in the path "\resources\xsd\ogc\om\1.0.0\extensions\" to path "\resources\xsd\ogc\om\1.0.0\",
+	 and insert "<include schemaLocation="./om_extended.xsd"/>" into the om.xsd file.
+	 Thus, CountObservation can be use in OM test.
+	
 Revision r13 (2015-02-13)
 	-[6](https://github.com/opengeospatial/ets-sos10/issues/6) - clean readme file and structure of folders
 	 Remove updated URL of reference implementation 

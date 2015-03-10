@@ -401,7 +401,7 @@
 
 						<!-- <ctl:message select="concat('Identifier URN from response: ',$responseId)"/>	Original position 2010-12-27	 -->																	  
 							<xsl:choose>
-								<xsl:when test="$responseId = $procedure">
+								<xsl:when test="contains($responseId, $procedure)">
 									<ctl:message select="concat('Identifier URN from response: ',$responseId)"/>
 									<ctl:message>OK</ctl:message>
 								</xsl:when>

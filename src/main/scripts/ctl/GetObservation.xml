@@ -836,6 +836,9 @@
 			<ctl:code>
 				<xsl:variable name="invalidResponseMode" select="'NotValid'"/>
 				<ctl:message select="concat('Making GetObservation request with a &quot;responseMode&quot; parameter value that is not advertised in the capabilities document: ', $invalidResponseMode, '   ...')"/>									
+				<ctl:message>
+					<xsl:value-of select="concat('Schema file: ', $exceptionReportSchema)"  />
+				</ctl:message>
 				<xsl:variable name="getObservation">
 					<ctl:request>
 						<ctl:url>
@@ -884,7 +887,9 @@
 					<!-- check for valid schema or missing response-->
 					<xsl:when test="not($getObservation/*)">							
 						<ctl:message>Exception report failed schema validation, or no exception was produced.</ctl:message>
-						<ctl:message select="concat('Schema file: ', $exceptionReportSchema)"/>
+						<ctl:message>
+							<xsl:value-of select="concat('Schema file: ', $exceptionReportSchema)"  />
+						</ctl:message>
 						<ctl:fail/>
 					</xsl:when>
 
@@ -942,7 +947,10 @@
 								<xsl:for-each select="distinct-values($capabilitiesDocument//sos:ObservationOffering[@gml:id=$offeringId]//@srsName
 																	 | $capabilitiesDocument//sos:ObservationOffering[@gml:id=$offeringId]//gml:srsName)">
 									<xsl:variable name="srsName" select="."/>		
-									<ctl:message select="concat('Making GetObservation request with a valid &quot;srsName&quot; parameter of: ', $srsName, '   ...')"/>									
+									<ctl:message select="concat('Making GetObservation request with a valid &quot;srsName&quot; parameter of: ', $srsName, '   ...')"/>
+									<ctl:message>*****************************************************************</ctl:message>
+									<ctl:message select="sosFunctions:schemaPathFromMimeType($ogcSchemaRoot, $responseFormat)"/>				
+									<ctl:message>*****************************************************************</ctl:message>
 									<xsl:variable name="getObservation">
 										<ctl:request>
 											<ctl:url>
