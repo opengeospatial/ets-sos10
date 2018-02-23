@@ -23,7 +23,7 @@
 		
 
 <!--*****************************************************************************************************************************************************************************-->		
-	<ctl:test name="getCapabilities:core-SOS.GetCapabilities-KVPRequestParameterHandling.1">
+	<ctl:test name="getCapabilities:core-SOS.GetCapabilities-KVPRequestParameterHandling.1" isConformanceClass="true" isBasic="true">
 		<ctl:param name="serviceURL"/>
 		<ctl:param name="exceptionReportSchema"/>
 		<ctl:assertion>The server returns a valid error report message with an exceptionCode of MissingParameterValue when mandatory parameters are missing from the request. </ctl:assertion>
@@ -80,7 +80,7 @@
 		</ctl:code>
 	</ctl:test>
 	<!--*****************************************************************************************************************************************************************************-->
-	<ctl:test name="getCapabilities:core-SOS.GetCapabilities-KVPRequestServiceParameterHandling.1">
+	<ctl:test name="getCapabilities:core-SOS.GetCapabilities-KVPRequestServiceParameterHandling.1" isConformanceClass="true" isBasic="true">
 		<ctl:param name="serviceURL"/>
 		<ctl:param name="exceptionReportSchema"/>
 		<ctl:assertion>The server returns a valid error report message with an exceptionCode of InvalidParameterValue when the service key value is not SOS. </ctl:assertion>
@@ -138,7 +138,7 @@
 		</ctl:code>
 	</ctl:test>
 	<!--*****************************************************************************************************************************************************************************-->		
-	<ctl:test name="getCapabilities:core-SOS.GetCapabilities-KVPRequestRequestParameterHandling.1">
+	<ctl:test name="getCapabilities:core-SOS.GetCapabilities-KVPRequestRequestParameterHandling.1" isConformanceClass="true" isBasic="true">
 		<ctl:param name="serviceURL"/>
 		<ctl:param name="exceptionReportSchema"/>			
 		<ctl:assertion>The server returns a valid error report message with an exceptionCode of InvalidRequest when the request key value is not GetCapabilities.</ctl:assertion>
@@ -197,7 +197,7 @@
 		
 	<!--*****************************************************************************************************************************************************************************-->		
 
-	<ctl:test name="getCapabilities:core-SOS.GetCapabilities-OperationsMetadataMandatoryOperations.1">
+	<ctl:test name="getCapabilities:core-SOS.GetCapabilities-OperationsMetadataMandatoryOperations.1" isConformanceClass="true" isBasic="true">
 		<ctl:param name="capabilitiesDocument"/>			
 		<ctl:assertion>The OperationsMetadata section lists the mandatory operations of the SOS.</ctl:assertion>
 		<ctl:comment>Check that the OperationsMetadata section lists the mandatory operations of the SOS.  Pass if assertion holds; fail otherwise.</ctl:comment>
@@ -235,7 +235,7 @@
 		
 	<!--*****************************************************************************************************************************************************************************-->
 	
-	<ctl:test name="getCapabilities:core-SOS.GetCapabilities-OperationsMetadaOptionalOperations.1">
+	<ctl:test name="getCapabilities:core-SOS.GetCapabilities-OperationsMetadaOptionalOperations.1" isConformanceClass="true" isBasic="true">
 		<ctl:param name="capabilitiesDocument"/>			
 		<ctl:assertion>Any non-mandatory operations advertised in the OperationsMetadata section have valid SOS method names.</ctl:assertion>
 		<ctl:comment>Check that any non-mandatory operations advertised in the OperationsMetadata section have valid SOS method names.  Pass if assertion holds; fail otherwise.</ctl:comment>
@@ -259,7 +259,7 @@
 	
 	<!--*****************************************************************************************************************************************************************************-->
 
-	<ctl:test name="getCapabilities:core-SOS.GetCapabilities-ResponseContentsValidTime.1">
+	<ctl:test name="getCapabilities:core-SOS.GetCapabilities-ResponseContentsValidTime.1" isConformanceClass="true" isBasic="true">
 		<ctl:param name="capabilitiesDocument"/>
 		<ctl:assertion>The values in the time element for each ObservationOffering are valid time values (ISO 8601) or are valid named times (i.e. indeterminate, now, etc.).  If a time period is specified, then the beginTime must come before the endTime or be equal to the endTime.</ctl:assertion>
 		<ctl:comment>Check that the values in the time element for each ObservationOffering are valid time values (ISO 8601) or are valid named times (i.e. indeterminate, now, etc.).  If a time period is specified, then the beginTime must come before the endTime or be equal to the endTime.  Pass if time the values in the time element are valid time values; fail otherwise.</ctl:comment>
@@ -308,7 +308,7 @@
 
 	<!--*****************************************************************************************************************************************************************************-->
 		
-	<ctl:test name="getCapabilities:core-SOS.GetCapabilities-ResponseContentsValidProcedure.1">
+	<ctl:test name="getCapabilities:core-SOS.GetCapabilities-ResponseContentsValidProcedure.1" isConformanceClass="true" isBasic="true">
 		<ctl:param name="capabilitiesDocument"/>
 		<ctl:assertion>The values in the procedure element(s) for each ObservationOffering contain a value and are valid URNs.</ctl:assertion>
 		<ctl:comment>Check that the values in the procedure element(s) for each ObservationOffering contain a value and are valid URNs according to the OGC URN scheme.  Pass if values in the procedure element(s) contain a value and are valid URNs; fail otherwise.</ctl:comment>
@@ -335,7 +335,7 @@
 		
 	<!--*****************************************************************************************************************************************************************************-->
 		
-	<ctl:test name="getCapabilities:core-SOS.GetCapabilities-ResponseContentsValidObservedProperty.1">
+	<ctl:test name="getCapabilities:core-SOS.GetCapabilities-ResponseContentsValidObservedProperty.1" isConformanceClass="true" isBasic="true">
 		<ctl:param name="capabilitiesDocument"/>
 		<!-- Modified 2010-07-13 to allow some URLs as well as URNs  PwD
 		<ctl:assertion>The values in the observedProperty element(s) for each ObservationOffering contain a value and are valid URNs. See document OGC 05-010 for correct formatting of definition URN.</ctl:assertion>
@@ -365,7 +365,7 @@
 		
 	<!--*****************************************************************************************************************************************************************************-->
 
-	<ctl:test name="getCapabilities:core-SOS.GetCapabilities-ResponseContentsValidResponseFormat.1">
+	<ctl:test name="getCapabilities:core-SOS.GetCapabilities-ResponseContentsValidResponseFormat.1" isConformanceClass="true" isBasic="true">
 		<ctl:param name="capabilitiesDocument"/>
 		<ctl:assertion>The values in the responseFormat element(s) for each ObservationOffering contain a value and are valid MIME types.</ctl:assertion>
 		<ctl:comment>Check that the values in the responseFormat element(s) for each ObservationOffering contain a value and are valid MIME types.  Pass if assertions hold; fail otherwise.</ctl:comment>
@@ -421,7 +421,7 @@
 
 	<!--*****************************************************************************************************************************************************************************-->		
 				
-	<ctl:test name="getCapabilities:core-SOS.GetCapabilities-ResponseContentsValidResultModel.1">
+	<ctl:test name="getCapabilities:core-SOS.GetCapabilities-ResponseContentsValidResultModel.1" isConformanceClass="true" isBasic="true">
 		<ctl:param name="capabilitiesDocument"/>
 		<ctl:assertion> If an ObservationOffering provides the resultModel element, then the resultModel element must be in the om:Observation substitution group and is typically om:Observation or a specialized extension.  Value must be namespace-qualified.</ctl:assertion>
 		<ctl:comment>Check If an ObservationOffering provides the resultModel element, then the resultModel element must be in the om:Observation substitution group and is typically om:Observation or a specialized extension.  Value must be namespace-qualified. Pass if assertions hold; fail otherwise.</ctl:comment>
@@ -448,7 +448,7 @@
 		
 	<!--*****************************************************************************************************************************************************************************-->		
 				
-	<ctl:test name="getCapabilities:core-SOS.GetCapabilities-ResponseContentsValidResponseMode.1">
+	<ctl:test name="getCapabilities:core-SOS.GetCapabilities-ResponseContentsValidResponseMode.1" isConformanceClass="true" isBasic="true">
 		<ctl:param name="capabilitiesDocument"/>
 		<ctl:assertion> If an ObservationOffering provides the responseMode element, then the responseMode element contains a value that is one of the valid responseMode values.</ctl:assertion>
 		<ctl:comment>Check if an ObservationOffering provides the responseMode element, then the responseMode element contains a value that is one of the valid responseMode values. Pass if assertions hold; fail otherwise.</ctl:comment>

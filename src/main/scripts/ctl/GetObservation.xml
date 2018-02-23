@@ -20,7 +20,7 @@
 	xmlns:xml="http://www.w3.org/XML/1998/namespace"
 >
 <!--*****************************************************************************************************************************************************************************-->		
-		<ctl:test name="getObservation:core-SOS.GetObservation-RequestInvalidSRSName.1">
+		<ctl:test name="getObservation:core-SOS.GetObservation-RequestInvalidSRSName.1" isConformanceClass="true" isBasic="true">
 			<ctl:param name="exceptionReportSchema"/>
 			<ctl:param name="postURL"/>
 			<ctl:param name="getObservationVersion"/>
@@ -108,7 +108,7 @@
 		</ctl:test>
 		
 <!--*****************************************************************************************************************************************************************************-->				
-		<ctl:test name="getObservation:core-SOS.GetObservation-RequestInvalidOffering.1">
+		<ctl:test name="getObservation:core-SOS.GetObservation-RequestInvalidOffering.1" isConformanceClass="true" isBasic="true">
 		    <ctl:param name="exceptionReportSchema"/>
 			<ctl:param name="postURL"/>
 			<ctl:param name="getObservationVersion"/>
@@ -190,7 +190,7 @@
 		</ctl:test>
 		
 <!--*****************************************************************************************************************************************************************************-->				
-		<ctl:test name="getObservation:core-SOS.GetObservation-RequestInvalidEventTime.1">
+		<ctl:test name="getObservation:core-SOS.GetObservation-RequestInvalidEventTime.1" isConformanceClass="true" isBasic="true">
 			<ctl:param name="capabilitiesDocument"/>
 			<ctl:param name="exceptionReportSchema"/>			
 			<ctl:param name="postURL"/>
@@ -273,7 +273,7 @@
 		</ctl:test>
 		
 <!--*****************************************************************************************************************************************************************************-->				
-		<ctl:test name="getObservation:core-SOS.GetObservation-RequestInvalidProcedure.1">
+		<ctl:test name="getObservation:core-SOS.GetObservation-RequestInvalidProcedure.1" isConformanceClass="true" isBasic="true">
 			<ctl:param name="exceptionReportSchema"/>
 			<ctl:param name="postURL"/>
 			<ctl:param name="getObservationVersion"/>
@@ -362,7 +362,7 @@
 			</ctl:code>
 		</ctl:test>
 <!--*****************************************************************************************************************************************************************************-->				
-		<ctl:test name="getObservation:core-SOS.GetObservation-RequestInvalidObservedProperty.1">
+		<ctl:test name="getObservation:core-SOS.GetObservation-RequestInvalidObservedProperty.1" isConformanceClass="true" isBasic="true">
 			<ctl:param name="exceptionReportSchema"/>
 			<ctl:param name="postURL"/>
 			<ctl:param name="getObservationVersion"/>
@@ -450,7 +450,7 @@
 		</ctl:test>
 		
 <!--*****************************************************************************************************************************************************************************-->						
-		<ctl:test name="getObservation:core-SOS.GetObservation-RequestInvalidFeatureOfInterest.1">
+		<ctl:test name="getObservation:core-SOS.GetObservation-RequestInvalidFeatureOfInterest.1" isConformanceClass="true" isBasic="true">
 			<ctl:param name="exceptionReportSchema"/>
 			<ctl:param name="postURL"/>
 			<ctl:param name="getObservationVersion"/>
@@ -544,7 +544,7 @@
 		
 <!--*****************************************************************************************************************************************************************************-->				
 		
-		<ctl:test name="getObservation:core-SOS.GetObservation-RequestInvalidResult.1">
+		<ctl:test name="getObservation:core-SOS.GetObservation-RequestInvalidResult.1" isConformanceClass="true" isBasic="true">
 			<ctl:param name="compareOperatorElement"/>
 			<ctl:param name="exceptionReportSchema"/>
 			<ctl:param name="postURL"/>
@@ -645,7 +645,7 @@
 		</ctl:test>
 		
 <!--*****************************************************************************************************************************************************************************-->						
-		<ctl:test name="getObservation:core-SOS.GetObservation-RequestInvalidResponseFormat.1">
+		<ctl:test name="getObservation:core-SOS.GetObservation-RequestInvalidResponseFormat.1" isConformanceClass="true" isBasic="true">
 			<ctl:param name="exceptionReportSchema"/>
 			<ctl:param name="postURL"/>
 			<ctl:param name="getObservationVersion"/>							
@@ -731,7 +731,7 @@
 			</ctl:code>		
 		</ctl:test>
 <!--*****************************************************************************************************************************************************************************-->						
-		<ctl:test name="getObservation:core-SOS.GetObservation-RequestInvalidResultModel.1">
+		<ctl:test name="getObservation:core-SOS.GetObservation-RequestInvalidResultModel.1" isConformanceClass="true" isBasic="true">
 			<ctl:param name="exceptionReportSchema"/>
 			<ctl:param name="postURL"/>
 			<ctl:param name="getObservationVersion"/>
@@ -822,7 +822,7 @@
 			</ctl:code>		
 		</ctl:test>
 <!--*****************************************************************************************************************************************************************************-->				
-		<ctl:test name="getObservation:core-SOS.GetObservation-RequestInvalidResponseMode.1">
+		<ctl:test name="getObservation:core-SOS.GetObservation-RequestInvalidResponseMode.1" isConformanceClass="true" isBasic="true">
 			<ctl:param name="exceptionReportSchema"/>
 			<ctl:param name="postURL"/>
 			<ctl:param name="getObservationVersion"/>
@@ -918,7 +918,7 @@
 			</ctl:code>
 		</ctl:test>
 <!--*****************************************************************************************************************************************************************************-->				
-		<ctl:test name="getObservation:core-SOS.GetObservation-ResponseMatchingSRSData.1">
+		<ctl:test name="getObservation:core-SOS.GetObservation-ResponseMatchingSRSData.1" isConformanceClass="true" isBasic="true">
 			<ctl:param name="capabilitiesDocument"/>
 			<ctl:param name="ogcSchemaRoot"/>
 			<ctl:param name="postURL"/>
@@ -1044,7 +1044,7 @@
 			</ctl:code>
 		</ctl:test>
 <!--*****************************************************************************************************************************************************************************-->				
-		<ctl:test name="getObservation:core-SOS.GetObservation-ResponseMatchingProcedureData.1">
+		<ctl:test name="getObservation:core-SOS.GetObservation-ResponseMatchingProcedureData.1" isConformanceClass="true" isBasic="true">
 			<ctl:param name="capabilitiesDocument"/>
 			<ctl:param name="ogcSchemaRoot"/>
 			<ctl:param name="postURL"/>
@@ -1194,7 +1194,7 @@
 			</ctl:code>
 		</ctl:test>
 <!--*****************************************************************************************************************************************************************************-->				
-		<ctl:test name="getObservation:core-SOS.GetObservation-ResponseMatchingObservedPropertyData.1">
+		<ctl:test name="getObservation:core-SOS.GetObservation-ResponseMatchingObservedPropertyData.1" isConformanceClass="true" isBasic="true">
 			<ctl:param name="capabilitiesDocument"/>
 			<ctl:param name="ogcSchemaRoot"/>
 			<ctl:param name="postURL"/>
@@ -1311,7 +1311,7 @@
 			</ctl:code>
 		</ctl:test>
 <!--*****************************************************************************************************************************************************************************-->				
-		<ctl:test name="getObservation:core-SOS.GetObservation-ResponseAdvertisedEventTimeData.1">
+		<ctl:test name="getObservation:core-SOS.GetObservation-ResponseAdvertisedEventTimeData.1" isConformanceClass="true" isBasic="true">
 			<ctl:param name="capabilitiesDocument"/>
 			<ctl:param name="ogcSchemaRoot"/>
 			<ctl:param name="postURL"/>
@@ -1425,7 +1425,7 @@
 			</ctl:code>
 		</ctl:test>
 <!--*****************************************************************************************************************************************************************************-->				
-		<ctl:test name="getObservation:core-SOS.GetObservation-ResponseMatchingEventTimeData.1">
+		<ctl:test name="getObservation:core-SOS.GetObservation-ResponseMatchingEventTimeData.1" isConformanceClass="true" isBasic="true">
 			<ctl:param name="capabilitiesDocument"/>
 			<ctl:param name="ogcSchemaRoot"/>
 			<ctl:param name="postURL"/>
@@ -1622,7 +1622,7 @@
 			</ctl:code>
 		</ctl:test>
 <!--*****************************************************************************************************************************************************************************-->				
-		<ctl:test name="getObservation:core-SOS.GetObservation-ResponseMatchingFeatureOfInterestData.1">
+		<ctl:test name="getObservation:core-SOS.GetObservation-ResponseMatchingFeatureOfInterestData.1" isConformanceClass="true" isBasic="true">
 			<ctl:param name="capabilitiesDocument"/>
 			<ctl:param name="ogcSchemaRoot"/>
 			<ctl:param name="postURL"/>
@@ -1755,7 +1755,7 @@
 			</ctl:code>
 		</ctl:test>
 <!--*****************************************************************************************************************************************************************************-->				
-		<ctl:test name="getObservation:core-SOS.GetObservation-ResponseMatchingResultData.1">
+		<ctl:test name="getObservation:core-SOS.GetObservation-ResponseMatchingResultData.1" isConformanceClass="true" isBasic="true">
 			<ctl:param name="ogcSchemaRoot"/>
 			<ctl:param name="compareOperatorElement"/>
 			<ctl:param name="exceptionReportSchema"/>
@@ -1850,7 +1850,7 @@
 			</ctl:code>
 		</ctl:test>
 <!--*****************************************************************************************************************************************************************************-->				
-		<ctl:test name="getObservation:core-SOS.GetObservation-ResponseMatchingResponseFormatData.1">
+		<ctl:test name="getObservation:core-SOS.GetObservation-ResponseMatchingResponseFormatData.1" isConformanceClass="true" isBasic="true">
 			<ctl:param name="capabilitiesDocument"/>
 			<ctl:param name="ogcSchemaRoot"/>
 			<ctl:param name="postURL"/>
@@ -1953,7 +1953,7 @@
 
 <!--*****************************************************************************************************************************************************************************-->		
 		
-		<ctl:test name="getObservation:core-SOS.GetObservation-ResponseMatchingResultModel.1">
+		<ctl:test name="getObservation:core-SOS.GetObservation-ResponseMatchingResultModel.1" isConformanceClass="true" isBasic="true">
 			<ctl:param name="capabilitiesDocument"/>
 			<ctl:param name="ogcSchemaRoot"/>
 			<ctl:param name="postURL"/>
@@ -2061,7 +2061,7 @@
 			</ctl:code>
 		</ctl:test>
 <!--*****************************************************************************************************************************************************************************-->				
-		<ctl:test name="getObservation:core-SOS.GetObservation-ResponseMatchingResponseMode.1">
+		<ctl:test name="getObservation:core-SOS.GetObservation-ResponseMatchingResponseMode.1" isConformanceClass="true" isBasic="true">
 			<ctl:param name="capabilitiesDocument"/>
 			<ctl:param name="ogcSchemaRoot"/>
 			<ctl:param name="postURL"/>

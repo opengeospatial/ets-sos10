@@ -21,7 +21,7 @@
 	xmlns:xml="http://www.w3.org/XML/1998/namespace"
 >
 
-		<ctl:test name="describeSensor:core-SOS.DescribeSensor-RequestInvalidMIMEType.1">						
+		<ctl:test name="describeSensor:core-SOS.DescribeSensor-RequestInvalidMIMEType.1" isConformanceClass="true" isBasic="true">						
 			<ctl:param name="exceptionReportSchema"/>
 			<ctl:param name="postURL"/>
 			<ctl:param name="describeSensorVersion"/>
@@ -159,7 +159,7 @@
 <!--*****************************************************************************************************************************************************************************-->		
 
 		
-		<ctl:test name="describeSensor:core-SOS.DescribeSensor-RequestInvalidProcedure.1">			
+		<ctl:test name="describeSensor:core-SOS.DescribeSensor-RequestInvalidProcedure.1" isConformanceClass="true" isBasic="true">			
 			<ctl:param name="exceptionReportSchema"/>
 			<ctl:param name="postURL"/>
 			<ctl:param name="describeSensorVersion"/>
@@ -297,7 +297,7 @@
 		
 		<!--*****************************************************************************************************************************************************************************-->		
 		
-		<ctl:test name="describeSensor:core-SOS.DescribeSensor-ResponseMatchingResponseFormat.1">
+		<ctl:test name="describeSensor:core-SOS.DescribeSensor-ResponseMatchingResponseFormat.1" isConformanceClass="true" isBasic="true">
 			<ctl:param name="capabilitiesDocument"/>
 			<ctl:param name="postURL"/>
 			<ctl:param name="describeSensorVersion"/>
@@ -343,7 +343,7 @@
 			</ctl:code>
 		</ctl:test>
 		
-	<ctl:test name="describeSensor:core-SOS.DescribeSensor-ResponseMatchingProcedure.1">
+	<ctl:test name="describeSensor:core-SOS.DescribeSensor-ResponseMatchingProcedure.1" isConformanceClass="true" isBasic="true">
 			<ctl:param name="capabilitiesDocument"/>
 			<ctl:param name="postURL"/>
 			<ctl:param name="describeSensorVersion"/>

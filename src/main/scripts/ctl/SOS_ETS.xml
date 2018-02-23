@@ -29,7 +29,7 @@
     <ctl:starting-test>sos:Main</ctl:starting-test>
   </ctl:suite>
 
-  <ctl:test name="sos:Main">
+  <ctl:test name="sos:Main" isConformanceClass="true" isBasic="true">
     <ctl:assertion>The IUT satisfies all applicable assertions.</ctl:assertion>
     <ctl:code>
 
@@ -342,7 +342,7 @@
     </ctl:code>
   </ctl:test>
 
-  <ctl:test name="sos:ows-main">
+  <ctl:test name="sos:ows-main" isConformanceClass="true" isBasic="true">
     <ctl:param name="serviceURL" />
     <ctl:param name="exceptionReportSchema" />
     <ctl:param name="sosSchemaRoot"/>
@@ -368,7 +368,7 @@
     </ctl:code>
   </ctl:test>
 
-  <ctl:test name="sos:general-main">
+  <ctl:test name="sos:general-main" isConformanceClass="true" isBasic="true">
     <ctl:param name="serviceURL" />
     <ctl:param name="exceptionReportSchema" />
 	<ctl:param name="sosSchemaRoot" />
@@ -393,7 +393,7 @@
       </ctl:call-test>
     </ctl:code>
   </ctl:test>
-  <ctl:test name="sos:general-SOS.General-InvalidRequest.1">
+  <ctl:test name="sos:general-SOS.General-InvalidRequest.1" isConformanceClass="true" isBasic="true">
     <ctl:param name="serviceURL" />
     <ctl:param name="exceptionReportSchema" />
 	<ctl:param name="sosSchemaRoot" />
@@ -494,7 +494,7 @@
 		</xsl:choose>
     </ctl:code>
   </ctl:test>
-  <ctl:test name="sos:general-SOS.General-ValidResponse.1">
+  <ctl:test name="sos:general-SOS.General-ValidResponse.1" isConformanceClass="true" isBasic="true">
     <ctl:param name="responseDocument" />
     <ctl:assertion>A response is a valid response for the SOS.  This general assertion should be tested by all other tests.</ctl:assertion>
     <ctl:comment>Tested through other tests.</ctl:comment>
@@ -504,7 +504,7 @@
     </ctl:code>
   </ctl:test>
 
-  <ctl:test name="sos:core-main">
+  <ctl:test name="sos:core-main" isConformanceClass="true" isBasic="true">
     <ctl:param name="serviceURL"/>
     <ctl:param name="ogcSchemaRoot"/>
     <ctl:param name="exceptionReportSchema"/>

@@ -15,7 +15,7 @@
  xmlns:owsFunctions="https://www.cite.opengeospatial.org/ows-1.0/functions">
  
     <!--The main test that should be called by your ETS in order to execute the OWS Common tests.-->
-    <ctl:test name="owsTests:ows-main">
+    <ctl:test name="owsTests:ows-main" isConformanceClass="true" isBasic="true">
       <param name="serviceURL">The URL of the service being tested</param>
       <param name="serviceType">The OGC identifier for the type of service being tested (i.e. SPS)</param>
       <param name="serviceVersion">The version of the service being tested</param>
@@ -50,7 +50,7 @@
     </ctl:test>
     
     <!--GetCapabilities request-->
-    <test name="owsTests:ows-OWS.GetCapabilities.1">
+    <test name="owsTests:ows-OWS.GetCapabilities.1" isConformanceClass="true" isBasic="true">
       <param name="serviceURL"/>
       <param name="serviceType" />
       <param name="serviceVersion" />
@@ -249,7 +249,7 @@
 	</test>
     
     <!--Case Insensitive KVP Names-->
-	<test name="owsTests:ows-OWS.CaseInsensitiveKvpNames.1">
+	<test name="owsTests:ows-OWS.CaseInsensitiveKvpNames.1" isConformanceClass="true" isBasic="true">
       <param name="serviceURL"/>
       <param name="serviceType" />
       <param name="serviceVersion" />
@@ -350,7 +350,7 @@
 		</code>
 	</test>
 
-    <test name="owsTests:ows-OWS.ContentType.1">
+    <test name="owsTests:ows-OWS.ContentType.1" isConformanceClass="true" isBasic="true">
       <param name="serviceURL"/>
       <param name="serviceType" />
       <param name="serviceVersion" />
@@ -406,7 +406,7 @@
 		</code>
 	</test>
 	
-	<test name="owsTests:ows-OWS.GetCapabilities.11">
+	<test name="owsTests:ows-OWS.GetCapabilities.11" isConformanceClass="true" isBasic="true">
       <param name="serviceURL"/>
       <param name="serviceType" />
       <param name="serviceVersion" />
@@ -458,7 +458,7 @@
 		</code>
 	</test>
 	
-	<test name="owsTests:ows-OWS.GetCapabilities.2">
+	<test name="owsTests:ows-OWS.GetCapabilities.2" isConformanceClass="true" isBasic="true">
       <param name="serviceURL"/>
       <param name="serviceType" />
       <param name="serviceVersion" />
@@ -510,7 +510,7 @@
 		</code>
 	</test>
 	
-	<test name="owsTests:ows-OWS.GetCapabilities.3">
+	<test name="owsTests:ows-OWS.GetCapabilities.3" isConformanceClass="true" isBasic="true">
       <param name="serviceURL"/>
       <param name="serviceVersion" />
       <param name="responseSchemaLocation" />
@@ -558,7 +558,7 @@
 		</code>
 	</test>
 	
-	<test name="owsTests:ows-OWS.GetCapabilities.4">
+	<test name="owsTests:ows-OWS.GetCapabilities.4" isConformanceClass="true" isBasic="true">
       <param name="serviceURL"/>
       <param name="serviceType" />
       <param name="serviceVersion" />
@@ -617,7 +617,7 @@
 		</code>
 	</test>
 	
-	<test name="owsTests:ows-OWS.GetCapabilities-AcceptVersions.1">
+	<test name="owsTests:ows-OWS.GetCapabilities-AcceptVersions.1" isConformanceClass="true" isBasic="true">
       <param name="serviceURL"/>
       <param name="serviceType" />
       <param name="serviceVersion" />
@@ -676,7 +676,7 @@
 		</code>
 	</test>
 	
-	<test name="owsTests:ows-OWS.GetCapabilities-AcceptVersions.2">
+	<test name="owsTests:ows-OWS.GetCapabilities-AcceptVersions.2" isConformanceClass="true" isBasic="true">
       <param name="serviceURL"/>
       <param name="serviceType" />
       <param name="serviceVersion" />
@@ -736,7 +736,7 @@
 		</code>
 	</test>
 	
-	<test name="owsTests:ows-OWS.GetCapabilities-AcceptVersions.3">
+	<test name="owsTests:ows-OWS.GetCapabilities-AcceptVersions.3" isConformanceClass="true" isBasic="true">
       <param name="serviceURL"/>
       <param name="serviceType" />
       <param name="serviceVersion" />
@@ -793,7 +793,7 @@
 		</code>
 	</test>
     
-    <test name="owsTests:ows-OWS.GetCapabilities-Exceptions.1">
+    <test name="owsTests:ows-OWS.GetCapabilities-Exceptions.1" isConformanceClass="true" isBasic="true">
       <param name="serviceURL"/>
       <param name="serviceVersion" />
       <param name="exceptionReportSchemaLocation" />
@@ -850,7 +850,7 @@
 		</code>
 	</test>
 	
-	<test name="owsTests:ows-OWS.GetCapabilities-Exceptions.2">
+	<test name="owsTests:ows-OWS.GetCapabilities-Exceptions.2" isConformanceClass="true" isBasic="true">
       <param name="serviceURL"/>
       <param name="serviceVersion" />
       <param name="exceptionReportSchemaLocation" />
@@ -910,7 +910,7 @@
 		</code>
 	</test>
 	
-	<test name="owsTests:ows-OWS.GetCapabilities-Exceptions.3">
+	<test name="owsTests:ows-OWS.GetCapabilities-Exceptions.3" isConformanceClass="true" isBasic="true">
       <param name="serviceURL"/>
       <param name="serviceType"/>
       <param name="serviceVersion" />
@@ -970,7 +970,7 @@
 		</code>
 	</test>	
 	
-	<test name="owsTests:ows-OWS.GetCapabilities-UpdateSequence.1">
+	<test name="owsTests:ows-OWS.GetCapabilities-UpdateSequence.1" isConformanceClass="true" isBasic="true">
       <param name="serviceURL"/>
       <param name="serviceType" />
       <param name="serviceVersion" />
@@ -1031,7 +1031,7 @@
 		</code>
 	</test>
 	
-	<test name="owsTests:ows-OWS.GetCapabilities-Exceptions.5">
+	<test name="owsTests:ows-OWS.GetCapabilities-Exceptions.5" isConformanceClass="true" isBasic="true">
       <param name="serviceURL"/>
       <param name="serviceType" />
       <param name="serviceVersion" />
@@ -1097,7 +1097,7 @@
 		</code>
 	</test>
     
-    <test name="owsTests:ows-OWS.GetCapabilities.6">
+    <test name="owsTests:ows-OWS.GetCapabilities.6" isConformanceClass="true" isBasic="true">
       <param name="serviceURL"/>
       <param name="serviceType" />
       <param name="serviceVersion" />
@@ -1150,7 +1150,7 @@
 		</code>
 	</test>
 	
-	<test name="owsTests:ows-OWS.GetCapabilities.7">
+	<test name="owsTests:ows-OWS.GetCapabilities.7" isConformanceClass="true" isBasic="true">
       <param name="serviceURL"/>
       <param name="serviceType" />
       <param name="serviceVersion" />
@@ -1201,7 +1201,7 @@
 		</code>
 	</test>
     
-    <test name="owsTests:ows-OWS.GetCapabilities-Sections.1">
+    <test name="owsTests:ows-OWS.GetCapabilities-Sections.1" isConformanceClass="true" isBasic="true">
       <param name="serviceURL"/>
       <param name="serviceType" />
       <param name="serviceVersion" />
@@ -1260,7 +1260,7 @@
 		</code>
 	</test>
     
-    <test name="owsTests:ows-OWS.GetCapabilities-Sections.2">
+    <test name="owsTests:ows-OWS.GetCapabilities-Sections.2" isConformanceClass="true" isBasic="true">
       <param name="serviceURL"/>
       <param name="serviceType" />
       <param name="serviceVersion" />
@@ -1327,7 +1327,7 @@
 		</code>
 	</test>
     
-    <test name="owsTests:ows-OWS.GetCapabilities-AcceptFormats.1">
+    <test name="owsTests:ows-OWS.GetCapabilities-AcceptFormats.1" isConformanceClass="true" isBasic="true">
       <param name="serviceURL"/>
       <param name="serviceType" />
       <param name="formats"/>
