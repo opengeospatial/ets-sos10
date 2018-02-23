@@ -1,4 +1,6 @@
 # Release Notes OGC SOS 1.0.0 Test Suite
+## 1.14
+* [#7](https://github.com/opengeospatial/ets-sos10/issues/7) Update CTL with better information about conformance classes
 
 ## r14 (2015-03-04)
 * When test operations via POST, user should select an URL (from GetCapabilities response). 
