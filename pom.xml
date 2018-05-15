@@ -5,6 +5,11 @@
   <artifactId>ets-sos10</artifactId>
   <groupId>org.opengis.cite</groupId>
   <version>r1.14-SNAPSHOT</version>
+  <parent>
+    <groupId>org.opengis.cite</groupId>
+    <artifactId>ets-common</artifactId>
+    <version>6</version>
+  </parent>
 
   <name>Conformance Test Suite - OGC Sensor Observation Service</name>
   <description>
