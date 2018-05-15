@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>ets-sos10</artifactId>
   <groupId>org.opengis.cite</groupId>
-  <version>1.14</version>
+  <version>1.15-SNAPSHOT</version>
   <parent>
     <groupId>org.opengis.cite</groupId>
     <artifactId>ets-common</artifactId>
@@ -24,7 +24,7 @@
     <url>https://github.com/opengeospatial/ets-sos10</url>
     <connection>scm:git:https://github.com/opengeospatial/ets-sos10.git</connection>
     <developerConnection>scm:git:git@github.com:opengeospatial/ets-sos10.git</developerConnection>
-    <tag>1.14</tag>
+    <tag>HEAD</tag>
   </scm>
   <issueManagement>
     <system>GitHub Issue Tracker</system>
