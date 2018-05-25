@@ -4,6 +4,8 @@
   <artifactId>ets-sos10</artifactId>
   <groupId>org.opengis.cite</groupId>
   <version>1.15-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  
   <parent>
     <groupId>org.opengis.cite</groupId>
     <artifactId>ets-common</artifactId>
@@ -30,6 +32,17 @@
     <system>GitHub Issue Tracker</system>
     <url>https://github.com/opengeospatial/ets-sos10/issues</url>
   </issueManagement>
+
+  <developers>
+    <developer>
+      <name>L. Bermudez</name>
+      <url>https://github.com/bermud</url>
+    </developer>
+    <developer>
+      <name>R. Lin</name>
+      <url>https://github.com/epicureanism</url>
+    </developer>
+  </developers>
 
   <properties>
     <ets-code>sos</ets-code>
