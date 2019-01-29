@@ -4,7 +4,6 @@
   <artifactId>ets-sos10</artifactId>
   <groupId>org.opengis.cite</groupId>
   <version>1.15-SNAPSHOT</version>
-  <packaging>pom</packaging>
   
   <parent>
     <groupId>org.opengis.cite</groupId>
@@ -48,9 +47,17 @@
     <ets-code>sos</ets-code>
     <spec-version>1.0.0</spec-version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <teamengine.version>4.0.5</teamengine.version>
+    <teamengine.version>5.3</teamengine.version>
   </properties>
 
+  <dependencies>
+    <dependency>
+      <groupId>org.opengis.cite.teamengine</groupId>
+      <artifactId>teamengine-spi-ctl</artifactId>
+      <version>${teamengine.version}</version>
+    </dependency>
+  </dependencies>
+  
   <build>
     <pluginManagement>
       <plugins>
