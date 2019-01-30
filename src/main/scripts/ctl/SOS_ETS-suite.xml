@@ -196,6 +196,8 @@
                </body>
             </ctl:form>
          </xsl:variable>
+         <!-- Enable the ctl:form if found in the subtests in interactive mode. -->
+         <xsl:variable name="isInteractive" select="true" />
          <!-- Get user input, message user options -->
          <xsl:variable name="sos.service.url" select="$form-values/values/value[@key='service-url']" />
          <!-- New messages and user option variables added 2010-12-30 PwD -->
@@ -329,6 +331,7 @@
             <!-- 2010-12-30 PwD -->
             <ctl:call-test name="sos:general-main">
                <ctl:with-param name="serviceURL" select="$sos.service.url" />
+               <ctl:with-param name="isInteractive" select="$isInteractive" />
                <ctl:with-param name="exceptionReportSchema" select="$exceptionReportSchema" />
                <ctl:with-param name="sosSchemaRoot" select="$sos.schema.root" />
                <ctl:with-param name="sosVersion" select="$sos.version" />
@@ -338,6 +341,7 @@
             <!-- 2010-12-30 PwD -->
             <ctl:call-test name="sos:core-main">
                <ctl:with-param name="serviceURL" select="$sos.service.url" />
+               <ctl:with-param name="isInteractive" select="$isInteractive"/>
                <ctl:with-param name="ogcSchemaRoot" select="$ogc.schema.root" />
                <ctl:with-param name="exceptionReportSchema" select="$exceptionReportSchema" />
                <ctl:with-param name="sosSchemaRoot" select="$sos.schema.root" />

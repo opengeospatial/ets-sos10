@@ -1046,6 +1046,7 @@
 <!--*****************************************************************************************************************************************************************************-->				
 		<ctl:test name="getObservation:core-SOS.GetObservation-ResponseMatchingProcedureData.1" isConformanceClass="true" isBasic="true">
 			<ctl:param name="capabilitiesDocument"/>
+            <ctl:param name="isInteractive" />
 			<ctl:param name="ogcSchemaRoot"/>
 			<ctl:param name="postURL"/>
 			<ctl:param name="getObservationVersion"/>						
@@ -1079,6 +1080,7 @@
 								<xsl:variable name="responseFormat" select="."/>	
 								<ctl:message select="concat('ResponseFormat: ', $responseFormat)"/>						
 								<xsl:variable name="observedProperty" select="sosFunctions:observationOfferingObservedPropertyAsTextXML($capabilitiesDocument,
+                                                                                                                                        $isInteractive,
 																																		$offeringId,
 																																		$offeringName,
 																																		$getObservationVersion,
@@ -1624,6 +1626,7 @@
 <!--*****************************************************************************************************************************************************************************-->				
 		<ctl:test name="getObservation:core-SOS.GetObservation-ResponseMatchingFeatureOfInterestData.1" isConformanceClass="true" isBasic="true">
 			<ctl:param name="capabilitiesDocument"/>
+            <ctl:param name="isInteractive" />
 			<ctl:param name="ogcSchemaRoot"/>
 			<ctl:param name="postURL"/>
 			<ctl:param name="getObservationVersion"/>
@@ -1658,6 +1661,7 @@
 								<xsl:variable name="responseFormat" select="."/>	
 								<ctl:message select="concat('ResponseFormat: ', $responseFormat)"/>			
 								<xsl:variable name="observedProperty" select="sosFunctions:observationOfferingObservedPropertyAsTextXML($capabilitiesDocument,
+                                                                                                                                        $isInteractive,
 																																		$offeringId,
 																																		$offeringName,
 																																		$getObservationVersion,
@@ -1852,6 +1856,7 @@
 <!--*****************************************************************************************************************************************************************************-->				
 		<ctl:test name="getObservation:core-SOS.GetObservation-ResponseMatchingResponseFormatData.1" isConformanceClass="true" isBasic="true">
 			<ctl:param name="capabilitiesDocument"/>
+            <ctl:param name="isInteractive" />
 			<ctl:param name="ogcSchemaRoot"/>
 			<ctl:param name="postURL"/>
 			<ctl:param name="getObservationVersion"/>
@@ -1871,6 +1876,7 @@
 						<xsl:variable name="responseFormat" select="."/>	
 						<ctl:message select="concat('Making GetObservation request with a valid &quot;responseFormat&quot; parameter of: ', $responseFormat, '   ...')"/>
 						<xsl:variable name="observedProperty" select="sosFunctions:observationOfferingObservedPropertyAsTextXML($capabilitiesDocument,
+                                                                                                                                $isInteractive,
 																																$offeringId,
 																																$offeringName,
 																																$getObservationVersion,
