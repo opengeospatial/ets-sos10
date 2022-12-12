@@ -384,12 +384,15 @@
     <ctl:function name="sosFunctions:operationPostURL">
 		<ctl:param name="capabilitiesDocument">The capabilities document</ctl:param>
         <ctl:param name="operation">The operation for which the URL is reqested</ctl:param>
+        <ctl:param name="isInteractive" />
         <ctl:return>Post URL of given operation</ctl:return>
         <ctl:description>Returns post URL of given operation</ctl:description>
         <ctl:code>
 			<!-- <xsl:value-of select="$capabilitiesDocument//ows:Operation[@name=$operation]/ows:DCP/ows:HTTP/ows:Post[1]/@xlink:href"/> -->
 			<xsl:variable name="form2-values">
-				<ctl:form height="750" width="1024">
+            <xsl:choose>
+               <xsl:when test="$isInteractive eq 'true'">
+				<ctl:form height="750" width="1024">  
 					<body>
 						<h2>Please select URL for GetCapabilities POST:</h2>
 						<blockquote>
@@ -416,6 +419,16 @@
 						</div>
 					</body>
 				</ctl:form>
+            </xsl:when>
+            <xsl:otherwise>
+                     <xsl:variable name="result2">
+                        <values>
+                           <value key="Post_GetCapabilities"><xsl:value-of select="$capabilitiesDocument//ows:Operation[@name=$operation]/ows:DCP/ows:HTTP/ows:Post[1]/@xlink:href" /></value>
+                        </values>
+                     </xsl:variable>
+                     <xsl:value-of select="$result2" />
+                  </xsl:otherwise>
+               </xsl:choose>
 			</xsl:variable>
 			<xsl:value-of select="$form2-values/values/value[@key='GetCapabilities_DropDown']"/>
         </ctl:code>
@@ -498,13 +511,14 @@
 	available in text/xml format, if any, or the first observation offering if not.   Added 2010-12-27 PwD -->
 	<ctl:function name="sosFunctions:observationOfferingObservedPropertyAsTextXML">
 		<ctl:param name="capabilitiesDocument">The capabilities document</ctl:param>
+        <ctl:param name="isInteractive" />
 		<ctl:param name="offeringId">The offering Id</ctl:param>        
 		<ctl:param name="offeringName">The offering name</ctl:param>
 		<ctl:param name="getObservationVersion">The capabilities doc version</ctl:param>
 		<ctl:param name="responseFormat">The first Text/XML response format</ctl:param>
 		<ctl:return>The only observation offering, or the first observation offering available in text/XML format, if any, or the first observation offering if none are available in text/XML.</ctl:return>
 		<ctl:code>
-			<xsl:variable name="getObservationPostURL" select="sosFunctions:operationPostURL($capabilitiesDocument, 'GetObservation')"/>
+			<xsl:variable name="getObservationPostURL" select="sosFunctions:operationPostURL($capabilitiesDocument, 'GetObservation', $isInteractive)"/>
 			<xsl:variable name="offering" select="$capabilitiesDocument//sos:ObservationOffering[@gml:id=$offeringId]"/>
 			<xsl:choose>
 				<xsl:when test="count($offering/sos:observedProperty/@xlink:href | $offering/sos:observedProperty//gml:name) lt 2">
