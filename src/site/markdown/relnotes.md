@@ -1,4 +1,12 @@
 # Release Notes OGC SOS 1.0.0 Test Suite
+
+## 1.15 (2025-03-07)
+
+Attention: Java 17 and Tomcat 10.1 are required.
+
+* [#12](https://github.com/opengeospatial/ets-sos10/issues/12) Migrate test suite to TEAM Engine 6 (Java 17)
+* [#11](https://github.com/opengeospatial/ets-sos10/issues/11) Deployment to Central Maven Repository fails
+
 ## 1.14
 * [#7](https://github.com/opengeospatial/ets-sos10/issues/7) Update CTL with better information about conformance classes
 
